@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  workflow_id: 1
+  error_code: MyString
+  name: MyString
+  pattern: MyString
+  message: MyString
+  run_count: 1
+  port_count: 1
+
+two:
+  workflow_id: 1
+  error_code: MyString
+  name: MyString
+  pattern: MyString
+  message: MyString
+  run_count: 1
+  port_count: 1
