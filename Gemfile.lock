@@ -3,6 +3,7 @@ PATH
   specs:
     taverna_lite (0.0.1)
       rails (~> 3.2.14)
+      taverna-t2flow (~> 0.4.3)
 
 GEM
   remote: https://rubygems.org/
@@ -44,6 +45,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.0)
+    libxml-ruby (2.7.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -81,6 +83,8 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.8)
+    taverna-t2flow (0.4.5)
+      libxml-ruby (>= 1.1.4)
     thor (0.18.1)
     tilt (1.4.1)
     treetop (1.4.15)
@@ -94,4 +98,5 @@ PLATFORMS
 DEPENDENCIES
   jquery-rails
   sqlite3
+  taverna-t2flow (~> 0.4.3)
   taverna_lite!

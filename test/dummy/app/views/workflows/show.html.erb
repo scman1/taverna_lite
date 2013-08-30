@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @workflow.title %>
+</p>
+
+<p>
+  <b>Author:</b>
+  <%= @workflow.author %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @workflow.description %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @workflow.name %>
+</p>
+
+<p>
+  <b>Workflow file:</b>
+  <%= @workflow.workflow_file %>
+</p>
+
+<p>
+  <b>My experiment:</b>
+  <%= @workflow.my_experiment_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @workflow.user_id %>
+</p>
+
+<p>
+  <b>Is shared:</b>
+  <%= @workflow.is_shared %>
+</p>
+
+
+<%= link_to 'Edit', edit_workflow_path(@workflow) %> |
+<%= link_to 'Back', workflows_path %>

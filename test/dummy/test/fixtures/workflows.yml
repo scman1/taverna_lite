@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  author: MyString
+  description: MyText
+  name: MyString
+  workflow_file: MyString
+  my_experiment_id: 1
+  user_id: 1
+  is_shared: false
+
+two:
+  title: MyString
+  author: MyString
+  description: MyText
+  name: MyString
+  workflow_file: MyString
+  my_experiment_id: 1
+  user_id: 1
+  is_shared: false

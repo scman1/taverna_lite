@@ -1,0 +1,37 @@
+<h1>Listing workflows</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Description</th>
+    <th>Name</th>
+    <th>Workflow file</th>
+    <th>My experiment</th>
+    <th>User</th>
+    <th>Is shared</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @workflows.each do |workflow| %>
+  <tr>
+    <td><%= workflow.title %></td>
+    <td><%= workflow.author %></td>
+    <td><%= workflow.description %></td>
+    <td><%= workflow.name %></td>
+    <td><%= workflow.workflow_file %></td>
+    <td><%= workflow.my_experiment_id %></td>
+    <td><%= workflow.user_id %></td>
+    <td><%= workflow.is_shared %></td>
+    <td><%= link_to 'Show', workflow %></td>
+    <td><%= link_to 'Edit', TavernaLite.workflow_profiles_path %></td>
+    <td><%= link_to 'Destroy', workflow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Workflow', new_workflow_path %>
