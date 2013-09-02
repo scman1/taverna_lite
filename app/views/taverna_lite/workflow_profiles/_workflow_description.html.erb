@@ -1,3 +1,4 @@
+<%
 # Copyright (c) 2012-2013 Cardiff University, UK.
 # Copyright (c) 2012-2013 The University of Manchester, UK.
 #
@@ -13,7 +14,7 @@
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
 #
-# * Neither the names of Cardiff University nor The University of Manchester nor
+# * Neither the names of The University of Manchester nor Cardiff University nor
 #   the names of its contributors may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
 #
@@ -34,35 +35,58 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite is a prototype interface provided to support the
-# inspection and modification of workflows.
+# BioVeL Taverna Lite  is a prototype interface provided to support
+# the inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
-module TavernaLite
-  class WorkflowPort < ActiveRecord::Base
-    attr_accessible :description, :display_control_id, :display_description, 
-      :display_name, :name, :order, :port_type_id, :sample_value, :workflow_id
-    # Each port will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class 
-    # Before saving the port, set the workflow to which it has been associated
-    before_save :set_workflow
+%>
+<div id="wf_description" style="min-height:300px;
+     				height:auto !important;
+                                height:300px; ">
+<%= form_for(@workflow,
+  :url => {:action => "update"},
+  :html => { :multipart => true,
+  :method =>:put}) do |f| %>
+  <% if @workflow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@workflow.errors.count, "error") %> prohibited this workflow from being saved:</h2>
 
-    # get a list of all worflow ports
-    # type:
-    #      1 Inputs
-    #      2 Outputs
-    def self.get_custom_ports(workflow_id = 1, type = 1)
-      @custom_ports = WorkflowPort.where("workflow_id = ? and port_type_id=?",
-                                          workflow_id, type)
-      return @custom_ports
-    end
-
-    private
-    def set_workflow
-      self.workflow = TavernaLite.workflow_class.find(self.workflow_id)
-    end 
-  end
-end
+      <ul>
+      <% @workflow.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :my_experiment_id %><br />
+    <%= f.text_field :my_experiment_id %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :author %><br />
+    <%= f.text_field :author %>
+  </div>
+  <div class="field">
+    <%= f.label :workflow_file %>:  <%= @workflow.workflow_file %><br />
+    <%= f.file_field :wf_file%>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+</div>

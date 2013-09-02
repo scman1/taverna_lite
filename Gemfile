@@ -8,6 +8,8 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
+gem 'jquery-ui-rails', "~> 4.0.2"
+
 # T2flow gem to parse and read workflows
 gem 'taverna-t2flow', "~> 0.4.3"
 

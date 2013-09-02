@@ -1,3 +1,4 @@
+<%
 # Copyright (c) 2012-2013 Cardiff University, UK.
 # Copyright (c) 2012-2013 The University of Manchester, UK.
 #
@@ -41,28 +42,21 @@
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
-module TavernaLite
-  class WorkflowPort < ActiveRecord::Base
-    attr_accessible :description, :display_control_id, :display_description, 
-      :display_name, :name, :order, :port_type_id, :sample_value, :workflow_id
-    # Each port will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class 
-    # Before saving the port, set the workflow to which it has been associated
-    before_save :set_workflow
-
-    # get a list of all worflow ports
-    # type:
-    #      1 Inputs
-    #      2 Outputs
-    def self.get_custom_ports(workflow_id = 1, type = 1)
-      @custom_ports = WorkflowPort.where("workflow_id = ? and port_type_id=?",
-                                          workflow_id, type)
-      return @custom_ports
-    end
-
-    private
-    def set_workflow
-      self.workflow = TavernaLite.workflow_class.find(self.workflow_id)
-    end 
-  end
-end
+%>
+<% if ((content.nil?) || content.blank?) then
+     content = "Not Provided"
+   end -%>
+<div id="<%='snip_'+ content_label %>" class="contentdiv">
+  <%= content.blank? ? "Not Provided" : content[0,79]+(content.length > 80 ? "..." : "")  -%>
+</div>
+<% if content.length > 80 -%>
+  <div id="<%='dialog_'+ content_label %>" style="display:none" class="contentdiv">
+    <%= simple_format(content) %>
+  </div>
+  <div style="float:left;">
+   <%= link_to "more",
+      "javascript:snip_full('dialog_#{content_label}','snip_#{content_label}',
+       'switch_#{content_label}');", :id=>"switch_#{content_label}",
+       :class => "link_img", :title=>"show all", :alt=>"show all" -%>
+  </div>
+<% end -%>

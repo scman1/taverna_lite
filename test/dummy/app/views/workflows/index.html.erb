@@ -26,7 +26,7 @@
     <td><%= workflow.user_id %></td>
     <td><%= workflow.is_shared %></td>
     <td><%= link_to 'Show', workflow %></td>
-    <td><%= link_to 'Edit', TavernaLite.workflow_profiles_path %></td>
+    <td><%= link_to 'Edit', taverna_lite.edit_workflow_profile_path(workflow) %></td>
     <td><%= link_to 'Destroy', workflow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>

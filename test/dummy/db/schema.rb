@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830170947) do
+ActiveRecord::Schema.define(:version => 20130902142953) do
 
   create_table "taverna_lite_port_types", :force => true do |t|
     t.string   "name"
@@ -41,6 +41,11 @@ ActiveRecord::Schema.define(:version => 20130830170947) do
     t.integer  "order"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.integer  "display_control_id"
+    t.string   "sample_value"
+    t.string   "sample_file"
+    t.string   "sample_file_type"
+    t.boolean  "show"
   end
 
   create_table "taverna_lite_workflow_profiles", :force => true do |t|
@@ -53,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20130830170947) do
     t.integer  "version"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "workflow_id"
   end
 
   create_table "users", :force => true do |t|
