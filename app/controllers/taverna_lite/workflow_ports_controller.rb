@@ -48,14 +48,16 @@ module TavernaLite
     def save_custom_inputs
       action = params[:commit]
       @workflow = Workflow.find(params[:id])
-      @inputs, @input_desc = @workflow.get_inputs
+      @workflow_profile = WorkflowProfile.new()
+      @workflow_profile.workflow_id = @workflow.id
+      @inputs, @input_desc = @workflow_profile.get_inputs
       if action == 'Save'
         save_inputs
       elsif action == 'Reset'
         reset_inputs
       end
       respond_to do |format|
-        format.html { redirect_to @workflow, :notice => 'Workflow inputs updated'}
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow inputs updated'}
         format.json { head :no_content }
        end
     end
@@ -71,7 +73,7 @@ module TavernaLite
             ((params[:file_uploads].include? file_for_i) ||
              (params[:file_uploads][i_name] != ""))
           # verify if customised input exists
-          wfps = WorkflowPort.where("port_type = ? and name = ?", "1", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
@@ -79,7 +81,7 @@ module TavernaLite
           end
           #get values for customised input
           @wfp.workflow_id = @workflow.id
-          @wfp.port_type = 1 # 1 = input
+          @wfp.port_type_id = 1 # 1 = input
           @wfp.name = i_name
           @wfp.display_control_id = params[:file_uploads][display_i]
           if params[:file_uploads].include? file_for_i
@@ -96,7 +98,7 @@ module TavernaLite
           @wfp.save
         elsif params[:file_uploads][customise_i] == "0"
           # reset port customisation
-          wfps = WorkflowPort.where("port_type = ? and name = ?", "1", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
           unless wfps.empty?
             @wfp = wfps[0]
             @wfp.delete_files
@@ -109,7 +111,7 @@ module TavernaLite
     def reset_inputs
       @input_desc.each do |indiv_in|
         i_name = indiv_in[0]
-        wfps = WorkflowPort.where("port_type = ? and name = ?", "1", i_name)
+        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
         unless wfps.empty?
           @wfp = wfps[0]
           @wfp.delete_files
@@ -121,7 +123,11 @@ module TavernaLite
     def save_custom_outputs
       action = params[:commit]
       @workflow = Workflow.find(params[:id])
-      @outputs, @output_desc = @workflow.get_outputs
+      @workflow_profile = WorkflowProfile.new()
+      @workflow_profile.workflow_id = @workflow.id
+      # get outputs from the model and any customisation if they exist
+      @outputs, @output_desc = @workflow_profile.get_outputs
+
       selected_tab = params[:selected_tab]
       selected_choice = params[:selected_choice]
 
@@ -131,7 +137,9 @@ module TavernaLite
         reset_outputs
       end
       respond_to do |format|
-        format.html { redirect_to @workflow, :notice => 'Workflow outputs updated'}
+        format.html { 
+          redirect_to taverna_lite.edit_workflow_profile_path(@workflow), 
+          :notice => 'Workflow outputs updated'}
         format.json { head :no_content }
       end
     end
@@ -147,7 +155,7 @@ module TavernaLite
             ((params[:file_uploads].include? file_for_i) ||
              (params[:file_uploads][i_name] != ""))
           # verify if customised output exists
-          wfps = WorkflowPort.where("port_type = ? and name = ?", "2", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", i_name)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
@@ -155,7 +163,7 @@ module TavernaLite
           end
           #get values for customised output
           @wfp.workflow_id = @workflow.id
-          @wfp.port_type = 2 # 2 = output
+          @wfp.port_type_id = 2 # 2 = output
           @wfp.name = i_name
           @wfp.display_control_id = params[:file_uploads][display_i]
           if params[:file_uploads].include? file_for_i
@@ -172,7 +180,7 @@ module TavernaLite
           @wfp.save
         elsif params[:file_uploads][customise_i] == "0"
           # reset port customisation
-          wfps = WorkflowPort.where("port_type = ? and name = ?", "2", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", i_name)
           unless wfps.empty?
             @wfp = wfps[0]
             @wfp.delete_files
@@ -185,7 +193,7 @@ module TavernaLite
     def reset_outputs
       @output_desc.each do |indiv_out|
         o_name = indiv_out[0]
-        wfps = WorkflowPort.where("port_type = ? and name = ?", "2", o_name)
+        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", o_name)
         unless wfps.empty?
           @wfp = wfps[0]
           @wfp.delete_files

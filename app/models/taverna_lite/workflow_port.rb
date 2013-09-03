@@ -60,6 +60,33 @@ module TavernaLite
       return @custom_ports
     end
 
+    #workflow store should be a setting on the host application 
+    WORKFLOW_STORE = Rails.root.join('public', 'workflow_store')
+
+    def file_content=(file_data)
+      unless file_data.blank?
+        # store the uploaded data into a private instance variable
+        @file_data = file_data
+      end
+    end
+
+    def sample_file_relative_path
+      port_dir = File.join '/workflow_store', "#{workflow_id}/#{name}"
+      port_filename = File.join port_dir, "#{sample_file}"
+      return port_filename
+    end
+
+    def sample_file_actual_path
+      port_dir = File.join WORKFLOW_STORE, "#{workflow_id}/#{name}"
+      port_filename = File.join port_dir, "#{sample_file}"
+      return port_filename
+    end
+
+    def delete_files
+      port_dir = File.join WORKFLOW_STORE, "#{workflow_id}/#{name}"
+      FileUtils.rm_rf(port_dir)
+    end
+
     private
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(self.workflow_id)

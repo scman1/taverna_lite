@@ -45,16 +45,16 @@
 %>
 <div id="tabs_wf_parts">
   <ul>
-    <li><a href="#wf_description">Description</a></li>
-    <li><a href="#wf_inputs">Inputs</a></li>
-    <li><a href="#wf_outputs">Outputs</a></li>
-    <li><a href="#wf_errors">Errors</a></li>
-    <li><a href="#wf_components">Components</a></li>
+    <li><a href="#edit_description">Description</a></li>
+    <li><a href="#edit_inputs">Inputs</a></li>
+    <li><a href="#edit_outputs">Outputs</a></li>
+    <li><a href="#edit_errors">Errors</a></li>
+    <li><a href="#edit_components">Components</a></li>
   </ul>
-  <%= render :partial => 'workflow_description', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_ports/workflow_inputs', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_ports/workflow_outputs', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_errors/workflow_errors', :locals => {:workflow => @workflow} %>
+  <%= render :partial => 'edit_description', :locals => {:workflow => @workflow} %>
+  <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs', :locals => {:workflow => @workflow} %>
+  <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs', :locals => {:workflow => @workflow} %>
+  <%= render :partial => 'taverna_lite/workflow_errors/edit', :locals => {:workflow => @workflow} %>
 </div>
 
 

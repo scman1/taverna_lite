@@ -4,10 +4,10 @@
 #
 # All rights reserved.
 #
-# Redistribution and use in sink and binary forms, with or without
+# Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-# * Redistributions of sink code must retain the above copyright notice,
+# * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 #
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -36,61 +36,65 @@
 # Synopsis
 #
 # BioVeL Taverna Lite is a prototype interface provided to support the
-# inspection and execution of workflows.
+# inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="wf_outputs" class="workflow_part" style="min-height:300px;
+
+<div id="edit_inputs" class="workflow_part" style="min-height:300px;
      			    height:auto !important;
-                            height:300px; display:none;">
-<% if @sinks.count>0 %>
+                            height:300px;">
+
+<% if @sources.count>0 %>
 <%= form_for :file_uploads,
-      :url => {:controller => 'workflow_ports', :action => 'save_custom_outputs'},
-      :html => {:multipart => true}, :disable_with => "Initialising Run" do |f| %>
+      :url => {:controller => 'workflow_ports', :action => 'save_custom_inputs'},
+      :html => {:multipart => true}, :disable_with => "Saving..." do |f| -%>
   <%= hidden_field_tag "workflow_id", @workflow.id %>
   <%= hidden_field_tag "selected_tab", 'customise' %>
   <%= hidden_field_tag "selected_choice", 'inputs' %>
     <h3>
-      This workflow has <%= @sinks.count %>
-      <%= "Output".pluralize(@sinks.count)%>
+      This workflow has <%= @sources.count %>
+      <%= "Input".pluralize(@sources.count)%>
     </h3>
       <p>
         <b>
-          To customise an output:
+          To customise an input:
         </b>
       <ol>
         <li>
-          Select the output (click on the ckeck box)
+          Select the input (click on the ckeck box)
         </li>
         <li>
           Provide a custom value and/or a file
         </li>
         <li>
-          Select the output type (value or file)
+          Select the input type (value, file or both)
         </li>
         <li>
-          Repeat 1 - 3 for every output you want to customise
+          Repeat 1 - 3 for every input you want to customise
         </li>
         <li>
-          Click "Save" to save customised outputs
+          Click "Save" to save customised inputs
         </li>
       </ol>
       <b>
-        The custom values or files will be used when workflow ports are shown
+        The custom values and/or files will be used when the workflow is shown
+        and run
       </b>
-    </p>
-   <% @custom_outputs.each do |item| %>
+   </p>
+
+   <% @custom_inputs.each do |item| %>
      <% portname = item.name %>
-     <!-- Use sinks to get the original sample and descriptio values -->
-     <% example_value = @sinks[portname].blank? ? "": @sinks[portname] -%>
+     <!-- Use sources to get the original sample and descriptio values -->
+     <% example_value = @sources[portname].blank? ? "": @sources[portname] -%>
      <h2> <%= label_tag portname %></h2>
      <dl class='list_any'>
        <dt class='list_title'>Description:</dt>
        <dd class='list_description'>
-         <%=@sink_descriptions[portname].blank? ? "Not Provided" : simple_format(@sink_descriptions[portname]) -%>
+         <%=@source_descriptions[portname].blank? ? "Not Provided" : simple_format(@source_descriptions[portname]) -%>
        </dd>
        <dt class='list_title'>Example Value:</dt>
        <dd class='list_description'>
@@ -115,11 +119,11 @@
          <%= f.file_field  "file_for_#{portname}" %>
          <%= item.sample_file.nil? ? "No sample" : "Current: " + item.sample_file -%>
        </dd>
-       <dt class='list_title'>Output type:</dt>
+       <dt class='list_title'>Input Type:</dt>
        <dd class='list_description'>
          <%= f.select "display_for_#{portname}",
-           options_for_select([["value (Default)", 2],
-                                ["file", 3]], item.display_control_id) %>
+           options_for_select([["value or file (Default)", 1],
+                               ["value", 2], ["file", 3]], item.display_control_id) %>
        </dd>
        <!-- Add a preview that shows how data will be displayed according with
             the selected input control-->
@@ -127,19 +131,21 @@
        <!-- If file is present add a button link to it -->
      </dl>
    <% end %>
-   <div title="Save Output Changes" alt="Save Output Changes" style="float:right; padding:10px;">
+   <div title="Save Input Changes" alt="Save Input Changes" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>
    </div>
    <div title="Revert workflow annotation" alt="Revert workflow annotation" style="float:right; padding:10px;">
      <%= submit_tag 'Reset' %>
    </div>
+
    <div style="clear:both;">
    </div>
   <% end -%> <!--form-->
-<% else %>  <!--if no outputs-->
+<% else %>
   <p>
-    <b> This workflow has no outputs </b>
+    <b> This workflow has no inputs </b>
   </p>
-<% end %>
+<% end %> <!--if output.count-->
 </div>
+
 

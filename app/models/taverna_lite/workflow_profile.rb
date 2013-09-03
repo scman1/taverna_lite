@@ -80,7 +80,7 @@ module TavernaLite
 
     def get_custom_inputs
       # 1 Get custom inputs
-      custom_inputs = WorkflowPort.get_custom_ports(id, 1)
+      custom_inputs = WorkflowPort.get_custom_ports(workflow.id, 1)
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
@@ -130,11 +130,11 @@ module TavernaLite
 
     def get_custom_outputs
       # 1 Get custom inputs
-      custom_outputs = WorkflowPort.get_custom_ports(id, 2)
+      custom_outputs = WorkflowPort.get_custom_ports(workflow.id, 2)
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
-      model.sinks().each{|sink|
+      model.sinks().each{|sink| 
         if (custom_outputs).where("name='#{sink.name}'").count() == 0 then
           # missing output
           missing_port = WorkflowPort.new()
