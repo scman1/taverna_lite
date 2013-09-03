@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Run identification:</b>
+  <%= @run.run_identification %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @run.state %>
+</p>
+
+<p>
+  <b>Creation:</b>
+  <%= @run.creation %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%= @run.start %>
+</p>
+
+<p>
+  <b>End:</b>
+  <%= @run.end %>
+</p>
+
+<p>
+  <b>Expiry:</b>
+  <%= @run.expiry %>
+</p>
+
+<p>
+  <b>Workflow:</b>
+  <%= @run.workflow_id %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @run.description %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @run.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_run_path(@run) %> |
+<%= link_to 'Back', runs_path %>

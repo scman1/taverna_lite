@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :runs
+
+
+  resources :results
+
+
   resources :workflows
 
 

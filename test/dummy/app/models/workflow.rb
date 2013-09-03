@@ -2,6 +2,9 @@ class Workflow < ActiveRecord::Base
   attr_accessible :author, :description, :is_shared, :my_experiment_id, :name, 
   :title, :user_id, :workflow_file, :wf_file
 
+  # a workflow can have many runs
+  has_many :runs
+
   # after the workflow details have been written to the DB
   # write the workflow file to the filesystem
   after_save :store_wffile
@@ -9,6 +12,10 @@ class Workflow < ActiveRecord::Base
   # Validate the workflow file
   validate :validate_file_is_included, :on=>:create
   validate :validate_file_is_t2flow
+
+  def run_count
+    return runs.count
+  end
 
   # Validate that there is a file is selected
   def validate_file_is_included

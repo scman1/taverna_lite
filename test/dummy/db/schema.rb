@@ -11,7 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130902142953) do
+ActiveRecord::Schema.define(:version => 20130903162607) do
+
+  create_table "results", :force => true do |t|
+    t.string   "name"
+    t.integer  "depth"
+    t.integer  "run_id"
+    t.string   "filetype"
+    t.string   "filepath"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "runs", :force => true do |t|
+    t.string   "run_identification"
+    t.string   "state"
+    t.datetime "creation"
+    t.datetime "start"
+    t.datetime "end"
+    t.datetime "expiry"
+    t.integer  "workflow_id"
+    t.string   "description"
+    t.integer  "user_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "taverna_lite_port_types", :force => true do |t|
     t.string   "name"

@@ -58,6 +58,9 @@ module TavernaLite
       # get outputs from the model and any customisation if they exist
       @sinks, @sink_descriptions = @workflow_profile.get_outputs
       @custom_outputs = @workflow_profile.get_custom_outputs
+      #get errors and error codes
+      @workflow_errors = @workflow_profile.get_errors
+      @workflow_error_codes = @workflow_profile.get_error_codes
     end
   end
 end

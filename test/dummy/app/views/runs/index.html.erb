@@ -1,0 +1,39 @@
+<h1>Listing runs</h1>
+
+<table>
+  <tr>
+    <th>Run identification</th>
+    <th>State</th>
+    <th>Creation</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Expiry</th>
+    <th>Workflow</th>
+    <th>Description</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @runs.each do |run| %>
+  <tr>
+    <td><%= run.run_identification %></td>
+    <td><%= run.state %></td>
+    <td><%= run.creation %></td>
+    <td><%= run.start %></td>
+    <td><%= run.end %></td>
+    <td><%= run.expiry %></td>
+    <td><%= run.workflow_id %></td>
+    <td><%= run.description %></td>
+    <td><%= run.user_id %></td>
+    <td><%= link_to 'Show', run %></td>
+    <td><%= link_to 'Edit', edit_run_path(run) %></td>
+    <td><%= link_to 'Destroy', run, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Run', new_run_path %>
