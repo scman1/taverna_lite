@@ -54,7 +54,7 @@ module TavernaLite
     belongs_to :workflow, class_name: TavernaLite.workflow_class 
     # Set the workflow to which the profile is associated before saving
     before_save :set_workflow    
-
+    
     def get_inputs
       sources = {}
       descriptions = {}
@@ -182,13 +182,13 @@ module TavernaLite
 
     def get_runs_with_errors_count
       runs_with_errors =
-        Run.where('workflow_id = ?',id).joins(:results).where('filetype = ?','error').group('run_id').count.count
+        Run.where('workflow_id = ?',workflow.id).joins(:results).where('filetype = ?','error').group('run_id').count.count
       return runs_with_errors
     end
 
     def filter_errors
       bad_results =
-        Result.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", id)
+        TavernaLite.result_class.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", workflow.id)
       collect = []
       samples = []
       runs = []
@@ -205,28 +205,32 @@ module TavernaLite
 
     def get_error_codes
       error_codes =
-        WorkflowError.where('workflow_id = ?',id)
+        WorkflowError.where('workflow_id = ?',workflow.id)
       unhandled =  unhandled_errors
       return error_codes | unhandled
     end
 
   def unhandled_errors
     bad_results =
-      Result.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", id)
+      TavernaLite.result_class.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", workflow.id)
     error_codes =
-      WorkflowError.where('workflow_id = ?',id)
+      WorkflowError.where('workflow_id = ?',workflow.id)
     collect = []
     samples = []
     runs = []
     bad_results.each do |ind_result|
       is_new = true
       error_codes.each do |ind_error|
-        File.open(ind_result.result_filename) do |f|
-          f.each_line do |line|
-            if line =~ /#{ind_error.error_pattern}/ then
-              is_new = false
-            end
-          end
+        #File.read(ind_result.result_filename) do |f|
+        #  f.each_line do |line|
+        #    if line =~ /#{ind_error.pattern}/m then
+        #      is_new = false
+        #    end
+        #  end
+        #end
+        file_content = IO.read(ind_result.result_filename)  
+        if file_content =~ /#{ind_error.pattern}/m then
+          is_new = false
         end
       end
       if is_new then
@@ -235,20 +239,20 @@ module TavernaLite
         unless samples.include?(example_value)
           new_error = WorkflowError.new
           new_error.error_code = "E_" + (100000+ind_result.run_id).to_s + "_" + ind_result.name
-          new_error.error_message = "Workflow run produced an error for " + ind_result.name
-          new_error.error_name = name + " Error"
-          new_error.error_pattern = example_value
-          if Run.exists?(ind_result.run_id)
+          new_error.message = "Workflow run produced an error for " + ind_result.name
+          new_error.name = ind_result.name + " Error"
+          new_error.pattern = example_value
+          #if TavernaLite.run_class.exists?(ind_result.run_id)
             # if run still exists assign the run creation date
-            new_error.most_recent = Run.find(ind_result.run_id).creation
-          else
+           # new_error.most_recent = TavernaLite.run_class.find(ind_result.run_id).creation
+          #else
             # if run has been deleted assign result creation date
-            new_error.most_recent = ind_result.created_at
-          end
-          new_error.my_experiment_id = my_experiment_id
-          new_error.ports_count = 1
-          new_error.runs_count = 1
-          new_error.workflow_id = id
+           # new_error.most_recent = ind_result.created_at
+          #end
+          #new_error.my_experiment_id = my_experiment_id
+          #new_error.ports_count = 1
+          #new_error.runs_count = 1
+          new_error.workflow_id = workflow.id
           collect << new_error
           samples << example_value
           runs << ind_result.id
@@ -260,10 +264,10 @@ module TavernaLite
 
     private
     def set_author
-      self.author = TavernaLite.author_class.find(1)
+      self.author = TavernaLite.author_class.find(:workflow)
     end 
     def set_workflow
-      self.workflow = TavernaLite.workflow_class.find(1)
+      self.workflow = TavernaLite.workflow_class.find(:author)
     end 
   end
 end

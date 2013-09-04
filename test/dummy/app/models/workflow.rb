@@ -17,6 +17,12 @@ class Workflow < ActiveRecord::Base
     return runs.count
   end
 
+  def get_runs_with_errors_count
+    runs_with_errors =
+      Run.where('workflow_id = ?',id).joins(:results).where('filetype = ?','error').group('run_id').count.count
+    return runs_with_errors
+  end
+
   # Validate that there is a file is selected
   def validate_file_is_included
     if workflow_file.nil? && @file_data.nil?

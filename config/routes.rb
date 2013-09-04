@@ -50,4 +50,9 @@ TavernaLite::Engine.routes.draw do
       post "save_custom_outputs"
     end
   end
+  resources :workflow_errors do
+    member do
+      post "save_custom_errors"
+    end
+  end
 end

@@ -49,9 +49,7 @@ module TavernaLite
     def edit
       @workflow = TavernaLite.workflow_class.find(params[:id])
       @author = TavernaLite.author_class.find(@workflow.user_id)
-      @workflow_profile = WorkflowProfile.new()
-      @workflow_profile.author_id = @author.id
-      @workflow_profile.workflow_id = @workflow.id
+      @workflow_profile = WorkflowProfile.new(author_id: @author.id, workflow_id: @workflow.id)
       # get inputs from the model and any customisation if they exist
       @sources, @source_descriptions = @workflow_profile.get_inputs
       @custom_inputs = @workflow_profile.get_custom_inputs
