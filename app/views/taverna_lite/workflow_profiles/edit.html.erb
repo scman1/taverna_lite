@@ -43,10 +43,21 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
+<% if @workflow.title.nil?
+     wf_title="No Title"
+   else
+     wf_title = @workflow.title
+   end
+ %>
+<% content_for :title, "BioVeL Portal - Workflow: " + wf_title %>
+
+<h1><%= "Editing : " + wf_title%></h1>
+<h2>Name: <%= @workflow.name %></h2>
 
 <%= render :partial => 'workflow_tabs', :locals => {:workflow => @workflow} %>
 
 <%= javascript_tag do -%>
+
   $("#tabs_wf_parts").tabs();
 <% end -%>
 

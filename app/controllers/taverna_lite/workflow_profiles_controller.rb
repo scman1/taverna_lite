@@ -60,5 +60,14 @@ module TavernaLite
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes
     end
+    def update_annotations
+      # open the workflow file
+      # get the annotation node
+      # add annotations (title, author, description)
+      # get the name node
+      # add name
+      # save file
+      # save workflow in the host app passing the file
+    end
   end
 end

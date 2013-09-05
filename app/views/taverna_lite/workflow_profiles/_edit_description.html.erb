@@ -46,6 +46,10 @@
 <div id="edit_description" style="min-height:300px;
      				height:auto !important;
                                 height:300px; ">
+<p>
+This tab allows editing the workflow annotations. Changes will be saved to the 
+workflow file and the database.
+</p>
 <%= form_for(@workflow,
   :url => {:action => "update"},
   :html => { :multipart => true,
@@ -53,7 +57,6 @@
   <% if @workflow.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@workflow.errors.count, "error") %> prohibited this workflow from being saved:</h2>
-
       <ul>
       <% @workflow.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -62,31 +65,32 @@
     </div>
   <% end %>
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name %> 
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :title %><br />
+    <%= f.label :title %>
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :my_experiment_id %><br />
-    <%= f.text_field :my_experiment_id %>
+    <%= f.label :author %>
+    <%= f.text_field :author %>
   </div>
   <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
-  <div class="field">
-    <%= f.label :author %><br />
-    <%= f.text_field :author %>
-  </div>
+
   <div class="field">
     <%= f.label :workflow_file %>:  <%= @workflow.workflow_file %><br />
-    <%= f.file_field :wf_file%>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+   <div title="Save Workflow" alt="Save Workflow" style="float:right; padding:10px;">
+     <%= submit_tag 'Save' %>
+   </div>
+   <div title="Save Workflow with a different name" alt="Save Workflow with a different name" style="float:right; padding:10px;">
+     <%= submit_tag 'Save as...' %>
+   </div>
+
 <% end %>
 </div>
+<br />
