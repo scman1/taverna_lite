@@ -43,7 +43,11 @@
 # through the grant agreement number 283359.
 
 TavernaLite::Engine.routes.draw do
-  resources :workflow_profiles 
+  resources :workflow_profiles do
+    member do
+      put "update_profile"
+    end
+  end
   resources :workflow_ports do
     member do
       post "save_custom_inputs"

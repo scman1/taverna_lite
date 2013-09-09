@@ -23,7 +23,7 @@ class Workflow < ActiveRecord::Base
     return runs_with_errors
   end
 
-  # Validate that there is a file is selected
+  # Validate that there is a file
   def validate_file_is_included
     if workflow_file.nil? && @file_data.nil?
       errors.add :workflow_file,

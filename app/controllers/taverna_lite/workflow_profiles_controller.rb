@@ -43,6 +43,7 @@
 # through the grant agreement number 283359.
 
 require_dependency "taverna_lite/application_controller"
+require "xml"
 
 module TavernaLite
   class WorkflowProfilesController < ApplicationController
@@ -60,14 +61,139 @@ module TavernaLite
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes
     end
-    def update_annotations
+    def update_profile
+      @workflow = TavernaLite.workflow_class.find(params[:id])
+      name =  params[:workflow][:name]
+      title = params[:workflow][:title]
+      author = params[:workflow][:author]
+      description = params[:workflow][:description]
+      @workflow.name = name
+      @workflow.title = title
+      @workflow.author = author
+      @workflow.description = description
       # open the workflow file
-      # get the annotation node
+      xmlFile = @workflow.workflow_filename
+      document = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
       # add annotations (title, author, description)
-      # get the name node
+      insert_annotation(document, "author", author)
+      insert_annotation(document, "description", description)
+      insert_annotation(document, "title", title)
+      # get the name node 
+      name_node = get_node_by_name(document.root,'name')
       # add name
-      # save file
+      name_node.content = name
+      document.root["producedBy"]="TavernaLite_v_0.3.8"  
       # save workflow in the host app passing the file
+      File.open(xmlFile, "w:UTF-8") do |f| 
+        f.write document.root 
+      end 
+      @workflow.save
+      respond_to do |format|
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow annotations updated'}
+        format.json { head :no_content }
+       end
+    end
+    private
+    #add a list of namespaces to the node
+    #the namespaces formal parameter is a hash
+    #with "prefix" and "prefix_uri" as
+    #key, value pairs
+    #prefix for the default namespace is "default"
+    def add_namespaces( node, namespaces )
+      #pass nil as the prefix to create a default node
+      default = namespaces.delete( "default" )
+      node.namespaces.namespace = XML::Namespace.new( node, nil, default )
+      namespaces.each do |prefix, prefix_uri|
+        XML::Namespace.new( node, prefix, prefix_uri )
+      end
+    end
+
+    #add a list of attributes to the node
+    #the attributes formal parameter is a hash
+    #with "name" and "value" as
+    #key, value pairs
+    def add_attributes( node, attributes )
+      attributes.each do |name, value|
+        XML::Attr.new( node, name, value )
+      end
+    end
+
+    #create a node with name
+    #and a hash of namespaces or attributes
+    #passed to options
+    def create_node( name, options )
+      node = XML::Node.new( name )
+
+      namespaces = options.delete( :namespaces )
+      add_namespaces( node, namespaces ) if namespaces
+
+      attributes = options.delete( :attributes )
+      add_attributes( node, attributes ) if attributes
+      node
+    end
+
+    def create_annotation (type, content)
+      annotation = create_node("annotation_chain", :attributes=>{"encoding"=>"xstream"})
+      annotationchainimpl = create_node("net.sf.taverna.t2.annotation.AnnotationChainImpl", :attributes=>{"xmlns"=>""})
+      annotationassertions = create_node("annotationAssertions", :attributes=>{})
+      annotationassertionimpl = create_node("net.sf.taverna.t2.annotation.AnnotationAssertionImpl", :attributes=>{})
+      annotationbean = create_node("annotationBean", :attributes=>{"class"=>type})
+      text = create_node("text", :attributes=>{})
+      text.content = content
+      date = create_node("date", :attributes=>{})
+      date.content = Time.now.to_s
+      creators = create_node("creators", :attributes=>{})
+      curationEventList = create_node("curationEventList", :attributes=>{})
+      annotationbean << text
+      annotationassertionimpl << annotationbean
+      annotationassertionimpl << date
+      annotationassertionimpl << creators
+      annotationassertionimpl << curationEventList
+      annotationassertions << annotationassertionimpl
+      annotationchainimpl << annotationassertions
+      annotation << annotationchainimpl 
+      annotation
+    end
+
+    def get_node_by_name(root,name)
+      root.each_element do |dataflow|
+        dataflow.each_element do |element|
+          if element.name == name
+            return element
+          end
+        end
+      end
+      return nil
+    end
+
+    def insert_annotation(xml_doc = nil, annotation_type = "author",
+      annotation_text = "Unknown")
+      annotations = get_node_by_name(xml_doc.root,'annotations')
+      annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
+      case annotation_type
+        when "author"
+          annotation_bean += ".Author"
+        when "description"
+          annotation_bean += ".FreeTextDescription"
+        when "title"
+          annotation_bean += ".DescriptiveTitle"
+        when "example" 
+          annotation_bean += ".ExampleValue"
+        else
+          annotation_bean += ".FreeTextDescription"
+      end
+      #check if there is already an annotation of this type in the workflow  
+      new_ann = nil
+      annotations.children.each do |ann|
+        if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
+          new_ann = ann.children[0].children[0].children[0].children[0].children[0]
+          new_ann.content = annotation_text
+          break
+        end 
+      end
+      if new_ann.nil?
+        annotations << create_annotation(annotation_bean, annotation_text)
+      end
     end
   end
 end

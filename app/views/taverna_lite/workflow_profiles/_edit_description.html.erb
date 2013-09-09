@@ -51,7 +51,7 @@ This tab allows editing the workflow annotations. Changes will be saved to the
 workflow file and the database.
 </p>
 <%= form_for(@workflow,
-  :url => {:action => "update"},
+  :url => {:action => "update_profile"},
   :html => { :multipart => true,
   :method =>:put}) do |f| %>
   <% if @workflow.errors.any? %>
