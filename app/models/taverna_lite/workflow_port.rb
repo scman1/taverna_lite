@@ -49,6 +49,7 @@ module TavernaLite
     belongs_to :workflow, class_name: TavernaLite.workflow_class 
     # Before saving the port, set the workflow to which it has been associated
     before_save :set_workflow
+    after_save :store_file
 
     # get a list of all worflow ports
     # type:
@@ -91,5 +92,21 @@ module TavernaLite
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(self.workflow_id)
     end 
+    # ****************************************************************************
+    # verify if there is actually a file to be saved
+    def store_file
+      if @file_data
+        # create the WORKFLOW_STORE Folder if it does not exist
+        port_dir = File.join WORKFLOW_STORE, "#{workflow_id}/#{name}"
+        FileUtils.mkdir_p port_dir
+        port_filename = File.join port_dir, "#{sample_file}"
+        # create the file and write the data to the file system
+        File.open(port_filename, 'wb') do |f|
+          f.write(@file_data.read)
+        end
+        # ensure that the data is only save once by clearing the cache after savig
+        @file_data = nil
+      end
+    end
   end
 end
