@@ -41,7 +41,10 @@
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
-module TavernaLite
-  class ApplicationController < ActionController::Base
-  end
+#module TavernaLite
+#  class ApplicationController < ActionController::Base
+#  end
+#end
+class TavernaLite::ApplicationController < ApplicationController
 end
+

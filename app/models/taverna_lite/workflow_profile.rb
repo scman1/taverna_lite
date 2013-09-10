@@ -130,17 +130,17 @@ module TavernaLite
 
     def get_custom_outputs
       # 1 Get custom inputs
-      custom_outputs = WorkflowPort.get_custom_ports(workflow.id, 2)
+      custom_outputs = TavernaLite::WorkflowPort.get_custom_ports(workflow.id, 2)
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
       model.sinks().each{|sink| 
         if (custom_outputs).where("name='#{sink.name}'").count() == 0 then
           # missing output
-          missing_port = WorkflowPort.new()
+          missing_port = TavernaLite::WorkflowPort.new()
           missing_port.name = sink.name
           missing_port.workflow_id = id
-          missing_port.port_type_id = 2          # id of outputs
+          missing_port.port_type_id = 2       # id of outputs
           missing_port.display_control_id = 1 # default display control
           example_values = sink.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
@@ -214,7 +214,7 @@ module TavernaLite
     bad_results =
       TavernaLite.result_class.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", workflow.id)
     error_codes =
-      WorkflowError.where('workflow_id = ?',workflow.id)
+      TavernaLite::WorkflowError.where('workflow_id = ?',workflow.id)
     collect = []
     samples = []
     runs = []
