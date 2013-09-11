@@ -55,7 +55,10 @@
 <h2>Name: <%= @workflow.name %></h2>
 
 <%= render :partial => 'workflow_tabs', :locals => {:workflow => @workflow} %>
-
+<div title="Show workflow details" alt="Show workflow details" style="float:right">
+  <%= link_to '<Back', main_app.workflow_path(@workflow), :class => "link_img" %>
+</div>
+<br/>
 <%= javascript_tag do -%>
 
   $("#tabs_wf_parts").tabs();
