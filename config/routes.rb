@@ -46,6 +46,8 @@ TavernaLite::Engine.routes.draw do
   resources :workflow_profiles do
     member do
       put "update_profile"
+      post "save_as"
+      get "copy"
     end
   end
   resources :workflow_ports do

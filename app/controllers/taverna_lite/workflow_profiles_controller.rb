@@ -47,6 +47,8 @@ require "xml"
 
 module TavernaLite
   class WorkflowProfilesController < ApplicationController
+  #workflow store should be a setting on the host application
+  WORKFLOW_STORE = Rails.root.join('public', 'workflow_store')
     def edit
       @workflow = TavernaLite.workflow_class.find(params[:id])
       @author = TavernaLite.author_class.find(@workflow.user_id)
@@ -94,6 +96,36 @@ module TavernaLite
         format.json { head :no_content }
        end
     end
+
+    def copy
+      # just copy the workflow, not the entire profile, need workflow and author
+      @workflow = TavernaLite.workflow_class.find(params[:id])
+      @author = TavernaLite.author_class.find(params[:user_id])
+    end
+
+    def save_as
+      # get workflow again
+      workflow = TavernaLite.workflow_class.find(params[:id])
+      title = params[:workflow][:title]
+      @author = TavernaLite.author_class.find(params[:workflow][:author_id])
+      # create the new workflow using the workflow_class and the values
+      file_name = title
+      file_name = file_name.gsub! /\s/, '_'
+      @new_wf = TavernaLite.workflow_class.new(:name => workflow.name,
+        :description=>workflow.description, :title => title)
+      @new_wf.workflow_file = file_name+".t2flow"
+      @new_wf.user_id = @author.id
+      @new_wf.save
+      # after save copy the workflow file
+      # create the WORKFLOW_STORE Folder if it does not exist
+      FileUtils.mkdir_p(File.join(WORKFLOW_STORE, "#{@new_wf.id}"), :mode => 0700)
+      FileUtils.cp(workflow.workflow_filename,@new_wf.workflow_filename)
+      respond_to do |format|
+        format.html { redirect_to main_app.workflow_path(@new_wf), :notice => 'Workflow Copied'}
+        format.json { head :no_content }
+       end
+    end
+
     private
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
