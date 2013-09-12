@@ -22,7 +22,7 @@ This workflow will be associated to: <%= @author.name %>
   <%= f.hidden_field :author_id, :value => @author.id %>
   <div class="field">
     <p>
-      <b>1.</b> Select new name for the workflow (the file name will be the same as the title)<br/>
+      <b>1.</b> Select new name for the workflow file <br/>
       <%= f.label :title %><br/>
       <%= f.text_area :title, :value => 'Copy of ' + @workflow.title, :rows => 1 %>
     </p>

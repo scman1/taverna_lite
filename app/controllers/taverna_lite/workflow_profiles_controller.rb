@@ -106,17 +106,19 @@ module TavernaLite
     def save_as
       # get workflow again
       workflow = TavernaLite.workflow_class.find(params[:id])
-      title = params[:workflow][:title]
+      # clean the input to allow only valid characters for filenames
+      title =   params[:workflow][:title].gsub(/[^\w\s\.\-]/, '')
       @author = TavernaLite.author_class.find(params[:workflow][:author_id])
       # create the new workflow using the workflow_class and the values
-      file_name = title
-      file_name = file_name.gsub! /\s/, '_'
       @new_wf = TavernaLite.workflow_class.new(:name => workflow.name,
-        :description=>workflow.description, :title => title)
-      @new_wf.workflow_file = file_name+".t2flow"
+        :description=>workflow.description, :title => title,
+        :author => workflow.author)
       @new_wf.user_id = @author.id
       @new_wf.save
-      # after save copy the workflow file
+      file_name = title.clone
+      file_name = file_name.gsub! /\s/, '_'
+      @new_wf.workflow_file = file_name+".t2flow"      # after save copy the workflow file
+      @new_wf.save
       # create the WORKFLOW_STORE Folder if it does not exist
       FileUtils.mkdir_p(File.join(WORKFLOW_STORE, "#{@new_wf.id}"), :mode => 0700)
       FileUtils.cp(workflow.workflow_filename,@new_wf.workflow_filename)
