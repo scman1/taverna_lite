@@ -14,7 +14,7 @@ module TavernaLite
 
   mattr_accessor :result_class
 
-  # To save having to call constantize on theresults from the accessor classes 
+  # To save having to call constantize on theresults from the accessor classes
   # all the time, override the classes getter method inside the TavernaLite
   # module to always call constantize on the saved value before returning the
   # result:

@@ -10,4 +10,5 @@ test/dummy/public/*
 read_script/*
 anotation_snips.xml
 parsing.rb
-
+git_commands.txt
+shell_commands.txt

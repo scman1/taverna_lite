@@ -61,6 +61,7 @@ module TavernaLite
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes
     end
+
     def update_profile
       @workflow = TavernaLite.workflow_class.find(params[:id])
       name =  params[:workflow][:name]
@@ -78,15 +79,15 @@ module TavernaLite
       insert_annotation(document, "author", author)
       insert_annotation(document, "description", description)
       insert_annotation(document, "title", title)
-      # get the name node 
+      # get the name node
       name_node = get_node_by_name(document.root,'name')
       # add name
       name_node.content = name
-      document.root["producedBy"]="TavernaLite_v_0.3.8"  
+      document.root["producedBy"]="TavernaLite_v_0.3.8"
       # save workflow in the host app passing the file
-      File.open(xmlFile, "w:UTF-8") do |f| 
-        f.write document.root 
-      end 
+      File.open(xmlFile, "w:UTF-8") do |f|
+        f.write document.root
+      end
       @workflow.save
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow annotations updated'}
@@ -151,7 +152,7 @@ module TavernaLite
       annotationassertionimpl << curationEventList
       annotationassertions << annotationassertionimpl
       annotationchainimpl << annotationassertions
-      annotation << annotationchainimpl 
+      annotation << annotationchainimpl
       annotation
     end
 
@@ -177,19 +178,19 @@ module TavernaLite
           annotation_bean += ".FreeTextDescription"
         when "title"
           annotation_bean += ".DescriptiveTitle"
-        when "example" 
+        when "example"
           annotation_bean += ".ExampleValue"
         else
           annotation_bean += ".FreeTextDescription"
       end
-      #check if there is already an annotation of this type in the workflow  
+      #check if there is already an annotation of this type in the workflow
       new_ann = nil
       annotations.children.each do |ann|
         if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
           new_ann = ann.children[0].children[0].children[0].children[0].children[0]
           new_ann.content = annotation_text
           break
-        end 
+        end
       end
       if new_ann.nil?
         annotations << create_annotation(annotation_bean, annotation_text)

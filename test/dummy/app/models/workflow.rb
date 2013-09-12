@@ -1,5 +1,5 @@
 class Workflow < ActiveRecord::Base
-  attr_accessible :author, :description, :is_shared, :my_experiment_id, :name, 
+  attr_accessible :author, :description, :is_shared, :my_experiment_id, :name,
   :title, :user_id, :workflow_file, :wf_file
 
   # a workflow can have many runs

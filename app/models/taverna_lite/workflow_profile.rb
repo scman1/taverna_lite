@@ -44,17 +44,21 @@
 
 module TavernaLite
   class WorkflowProfile < ActiveRecord::Base
-    attr_accessible :author_id, :created, :description, :license_id, :modified, 
+    attr_accessible :author_id, :created, :description, :license_id, :modified,
       :title, :version, :workflow_id
+
     # Each profile will be mapped to a user in the main application
     belongs_to :author, class_name: TavernaLite.author_class
+
     # Set the user to which the profile is associated before saving
     before_save :set_author
+
     # Each profile will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class 
+    belongs_to :workflow, class_name: TavernaLite.workflow_class
+
     # Set the workflow to which the profile is associated before saving
-    before_save :set_workflow    
-    
+    before_save :set_workflow
+
     def get_inputs
       sources = {}
       descriptions = {}
@@ -134,7 +138,7 @@ module TavernaLite
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
-      model.sinks().each{|sink| 
+      model.sinks().each{|sink|
         if (custom_outputs).where("name='#{sink.name}'").count() == 0 then
           # missing output
           missing_port = TavernaLite::WorkflowPort.new()
@@ -221,14 +225,7 @@ module TavernaLite
     bad_results.each do |ind_result|
       is_new = true
       error_codes.each do |ind_error|
-        #File.read(ind_result.result_filename) do |f|
-        #  f.each_line do |line|
-        #    if line =~ /#{ind_error.pattern}/m then
-        #      is_new = false
-        #    end
-        #  end
-        #end
-        file_content = IO.read(ind_result.result_filename)  
+        file_content = IO.read(ind_result.result_filename)
         if file_content =~ /#{ind_error.pattern}/m then
           is_new = false
         end
@@ -265,9 +262,9 @@ module TavernaLite
     private
     def set_author
       self.author = TavernaLite.author_class.find(:workflow)
-    end 
+    end
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(:author)
-    end 
+    end
   end
 end

@@ -137,9 +137,9 @@ module TavernaLite
         reset_outputs
       end
       respond_to do |format|
-        format.html { 
-          redirect_to taverna_lite.edit_workflow_profile_path(@workflow), 
-          :notice => 'Workflow outputs updated'}
+        format.html {
+          redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
+           :notice => 'Workflow outputs updated'}
         format.json { head :no_content }
       end
     end
@@ -166,26 +166,18 @@ module TavernaLite
           @wfp.port_type_id = 2 # 2 = output
           @wfp.name = i_name
           @wfp.display_control_id = params[:file_uploads][display_i]
-          puts "***************************************************************"
-          puts "Variable: " + file_for_i
-          puts "File Name: " +params[:file_uploads][file_for_i].original_filename
-          puts "File Content: " +params[:file_uploads][file_for_i].content_type
-          #puts "Temp File: " + @wfp.file_content = params[:file_uploads][file_for_i].tempfile
           if params[:file_uploads].include? file_for_i
             # save file
             @wfp.file_content = params[:file_uploads][file_for_i].tempfile
             @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
             @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
           end
-          puts "***************************************************************"
-
           if params[:file_uploads][i_name] != ""
             #save value
             @wfp.sample_value = params[:file_uploads][i_name]
           end
           #save the customisation
           @wfp.save
-           
         elsif params[:file_uploads][customise_i] == "0"
           # reset port customisation
           wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", i_name)

@@ -1,0 +1,37 @@
+This workflow will be associated to: <%= @author.name %>
+<%= form_for(@workflow,
+  :url => {:action => "save_as"},
+  :html => { :multipart => true,
+  :method =>:post}) do |f| %>
+  <% if @workflow.errors.any? %>
+    <div id="error_explanation">
+      <h3>
+        <%= pluralize(@workflow.errors.count, "error") %>
+        stopped workflow upload
+      </h3>
+      <ul>
+      <% @workflow.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%
+     # two hidden fields for author_id and workflow_id
+  %>
+  <%= f.hidden_field :author_id, :value => @author.id %>
+  <div class="field">
+    <p>
+      <b>1.</b> Select new name for the workflow (the file name will be the same as the title)<br/>
+      <%= f.label :title %><br/>
+      <%= f.text_area :title, :value => 'Copy of ' + @workflow.title, :rows => 1 %>
+    </p>
+  </div>
+  <div class="actions">
+    <p>
+      <b>2.</b> Click to save the workflow<br/>
+      <%= f.submit 'Save' %>
+    </p>
+  </div>
+<% end %>
+</div>

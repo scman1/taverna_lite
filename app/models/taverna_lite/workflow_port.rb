@@ -43,10 +43,10 @@
 # through the grant agreement number 283359.
 module TavernaLite
   class WorkflowPort < ActiveRecord::Base
-    attr_accessible :description, :display_control_id, :display_description, 
+    attr_accessible :description, :display_control_id, :display_description,
       :display_name, :name, :order, :port_type_id, :sample_value, :workflow_id
     # Each port will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class 
+    belongs_to :workflow, class_name: TavernaLite.workflow_class
     # Before saving the port, set the workflow to which it has been associated
     before_save :set_workflow
     after_save :store_file
@@ -61,7 +61,7 @@ module TavernaLite
       return @custom_ports
     end
 
-    #workflow store should be a setting on the host application 
+    #workflow store should be a setting on the host application
     WORKFLOW_STORE = Rails.root.join('public', 'workflow_store')
 
     def file_content=(file_data)
@@ -91,7 +91,7 @@ module TavernaLite
     private
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(self.workflow_id)
-    end 
+    end
     # ****************************************************************************
     # verify if there is actually a file to be saved
     def store_file
