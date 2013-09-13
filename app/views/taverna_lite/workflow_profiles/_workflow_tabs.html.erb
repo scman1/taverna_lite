@@ -51,10 +51,11 @@
     <li><a href="#edit_errors">Errors</a></li>
     <li><a href="#edit_components">Components</a></li>
   </ul>
-  <%= render :partial => 'edit_description', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs', :locals => {:workflow => @workflow} %>
-  <%= render :partial => 'taverna_lite/workflow_errors/edit', :locals => {:workflow => @workflow} %>
+  <%= render :partial => 'edit_description' %>
+  <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs' %>
+  <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs' %>
+  <%= render :partial => 'taverna_lite/workflow_errors/edit'%>
+  <%= render :partial => 'taverna_lite/workflow_components/edit'%>
 </div>
 
 

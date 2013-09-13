@@ -214,50 +214,115 @@ module TavernaLite
       return error_codes | unhandled
     end
 
-  def unhandled_errors
-    bad_results =
-      TavernaLite.result_class.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", workflow.id)
-    error_codes =
-      TavernaLite::WorkflowError.where('workflow_id = ?',workflow.id)
-    collect = []
-    samples = []
-    runs = []
-    bad_results.each do |ind_result|
-      is_new = true
-      error_codes.each do |ind_error|
-        file_content = IO.read(ind_result.result_filename)
-        if file_content =~ /#{ind_error.pattern}/m then
-          is_new = false
+    def unhandled_errors
+      bad_results =
+        TavernaLite.result_class.where("filetype=? ",'error').joins(:run).where("workflow_id = ?", workflow.id)
+      error_codes =
+        TavernaLite::WorkflowError.where('workflow_id = ?',workflow.id)
+      collect = []
+      samples = []
+      runs = []
+      bad_results.each do |ind_result|
+        is_new = true
+        error_codes.each do |ind_error|
+          file_content = IO.read(ind_result.result_filename)
+          if file_content =~ /#{ind_error.pattern}/m then
+            is_new = false
+          end
+        end
+        if is_new then
+          example_value = IO.read(ind_result.result_filename)
+          # 1 Filer duplicate outputs - Sometimes the same error happens several times
+          unless samples.include?(example_value)
+            new_error = WorkflowError.new
+            new_error.error_code = "E_" + (100000+ind_result.run_id).to_s + "_" + ind_result.name
+            new_error.message = "Workflow run produced an error for " + ind_result.name
+            new_error.name = ind_result.name + " Error"
+            new_error.pattern = example_value
+            #if TavernaLite.run_class.exists?(ind_result.run_id)
+              # if run still exists assign the run creation date
+             # new_error.most_recent = TavernaLite.run_class.find(ind_result.run_id).creation
+            #else
+              # if run has been deleted assign result creation date
+             # new_error.most_recent = ind_result.created_at
+            #end
+            #new_error.my_experiment_id = my_experiment_id
+            #new_error.ports_count = 1
+            #new_error.runs_count = 1
+            new_error.workflow_id = workflow.id
+            collect << new_error
+            samples << example_value
+            runs << ind_result.id
+          end
         end
       end
-      if is_new then
-        example_value = IO.read(ind_result.result_filename)
-        # 1 Filer duplicate outputs - Sometimes the same error happens several times
-        unless samples.include?(example_value)
-          new_error = WorkflowError.new
-          new_error.error_code = "E_" + (100000+ind_result.run_id).to_s + "_" + ind_result.name
-          new_error.message = "Workflow run produced an error for " + ind_result.name
-          new_error.name = ind_result.name + " Error"
-          new_error.pattern = example_value
-          #if TavernaLite.run_class.exists?(ind_result.run_id)
-            # if run still exists assign the run creation date
-           # new_error.most_recent = TavernaLite.run_class.find(ind_result.run_id).creation
-          #else
-            # if run has been deleted assign result creation date
-           # new_error.most_recent = ind_result.created_at
-          #end
-          #new_error.my_experiment_id = my_experiment_id
-          #new_error.ports_count = 1
-          #new_error.runs_count = 1
-          new_error.workflow_id = workflow.id
-          collect << new_error
-          samples << example_value
-          runs << ind_result.id
-        end
-      end
+      return collect
     end
-    return collect
-  end
+
+    def get_processors
+      # get the workflow t2flow model
+      wf_model = get_model
+      # collect the workflow processors and their descriptions
+      return wf_model.processors()
+    end
+
+    def get_processors_in_order
+      # get the workflow t2flow model
+      wf_model = get_model
+      ordered_processors = get_processors_order()
+      ordered_processors.each do |nth_processor|
+        wf_model.processors.each do |a_processor|
+          if a_processor.name == nth_processor[1]
+            ordered_processors[nth_processor[0]] = a_processor
+          end
+        end
+      end
+      # collect the workflow processors and their descriptions
+      #return ordered_processors
+      # temporarily disable this because it creates infinite loop
+      return wf_model.processors()
+    end
+
+    def get_processors_order
+      # get the workflow t2flow model
+      wf_model = get_model
+      # list should be as long as the number of processors
+      i = wf_model.processors.count
+      ordered_processors ={}
+      # need a list of sources to filter them out
+      wf_sources=[]
+      wf_model.sources.each do |e_sou|
+        wf_sources << e_sou.name
+      end
+      wf_model.sinks.each do |e_sink|
+        wf_model.datalinks.each do |dl|
+          if dl.sink == e_sink.name &&
+               !ordered_processors.has_value?(dl.source.split(':')[0])
+            ordered_processors[i] = dl.source.split(':')[0]
+            i -= 1
+          end
+        end
+      end
+
+      while ordered_processors.count < wf_model.processors.count
+        wf_model.datalinks.each do |lnk|
+          ordered_processors.dup.each do |pr|
+            unless wf_sources.include?(lnk.source.split(':')[0])
+              # processors put processors in order according to data links
+              unless ordered_processors.has_value?(lnk.source.split(':')[0])
+                if (lnk.sink.split(':')[0] == pr[1])
+                  ordered_processors[i] = lnk.source.split(':')[0]
+                  i -= 1
+                end
+              end
+            end
+          end
+        end
+      end
+
+      #return the list of processors with their orders
+      return ordered_processors
+    end
 
     private
     def set_author
