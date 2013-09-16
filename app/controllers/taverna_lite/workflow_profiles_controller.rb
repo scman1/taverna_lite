@@ -65,9 +65,6 @@ module TavernaLite
       #get the workflow processors to display structure
       @processors = @workflow_profile.get_processors
       @ordered_processors = @workflow_profile.get_processors_in_order
-      puts "*******************************************************************"
-      puts ("Ordered Processors: " + (@ordered_processors.nil? ? 0.to_s : @ordered_processors.count.to_s)).center(68)
-      puts "*******************************************************************"
     end
 
     def update_profile

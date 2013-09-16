@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'taverna-t2flow', "~> 0.4.3"
 
   # s.add_dependency "jquery-rails"
+  s.add_dependency 'jquery-ui-rails', "~> 4.0.2"
 
   s.add_development_dependency "sqlite3"
 end
