@@ -42,6 +42,8 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 
+require 'tsort'
+
 module TavernaLite
   class WorkflowProfile < ActiveRecord::Base
     attr_accessible :author_id, :created, :description, :license_id, :modified,
@@ -134,7 +136,7 @@ module TavernaLite
 
     def get_custom_outputs
       # 1 Get custom inputs
-      custom_outputs = TavernaLite::WorkflowPort.get_custom_ports(workflow.id, 2)
+      custom_outputs = WorkflowPort.get_custom_ports(workflow.id, 2)
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
@@ -269,60 +271,71 @@ module TavernaLite
     def get_processors_in_order
       # get the workflow t2flow model
       wf_model = get_model
-      ordered_processors = get_processors_order()
-      ordered_processors.each do |nth_processor|
-        wf_model.processors.each do |a_processor|
-          if a_processor.name == nth_processor[1]
-            ordered_processors[nth_processor[0]] = a_processor
+      processor_names = get_processors_order(wf_model)
+      in_order = []
+      processor_names.each do |a_processor|
+        wf_model.processors.each do |nth_processor|
+          if a_processor == nth_processor.name
+            in_order << nth_processor
           end
         end
       end
       # collect the workflow processors and their descriptions
       #return ordered_processors
       # temporarily disable this because it creates infinite loop
-      return wf_model.processors()
+      return in_order
     end
 
-    def get_processors_order
-      # get the workflow t2flow model
-      wf_model = get_model
-      # list should be as long as the number of processors
-      i = wf_model.processors.count
-      ordered_processors ={}
-      # need a list of sources to filter them out
-      wf_sources=[]
-      wf_model.sources.each do |e_sou|
-        wf_sources << e_sou.name
-      end
-      wf_model.sinks.each do |e_sink|
-        wf_model.datalinks.each do |dl|
-          if dl.sink == e_sink.name &&
-               !ordered_processors.has_value?(dl.source.split(':')[0])
-            ordered_processors[i] = dl.source.split(':')[0]
-            i -= 1
-          end
+    def get_processors_order(wf_model)
+      nodes_hash = {}
+      # Build the hash of graph nodes, something like:
+      # {'display'=>[],
+      #  'display_csv'=>[],
+      #  'display_trans'=>[],
+      #  'display_trans01'=>[],
+      #  'generate_matrix'=>['display','display_csv','display_trans','display_trans01'],
+      #  'getstages'=>['Interaction','Interaction_2'],
+      #  'Interaction'=>['generate_matrix'],
+      #  'Interaction_2'=>['generate_matrix'],
+      #  'Message'=>['Interaction'],
+      #  'parse_table'=>['generate_matrix','getstages'],
+      #  'SelectRecruitmentStages'=>['Interaction_2']
+      #  }
+      wf_model.datalinks.each do |dl|
+        proc_s = ""
+        input = ""
+        if (dl.source =~ /:/)
+          # comes from another processor output
+          proc_s =  dl.source.split(':')[0]
         end
-      end
-
-      while ordered_processors.count < wf_model.processors.count
-        wf_model.datalinks.each do |lnk|
-          ordered_processors.dup.each do |pr|
-            unless wf_sources.include?(lnk.source.split(':')[0])
-              # processors put processors in order according to data links
-              unless ordered_processors.has_value?(lnk.source.split(':')[0])
-                if (lnk.sink.split(':')[0] == pr[1])
-                  ordered_processors[i] = lnk.source.split(':')[0]
-                  i -= 1
-                end
-              end
+        proc_e = ""
+        if (dl.sink =~ /:/)
+          # puts "has a colon"
+          proc_e =  dl.sink.split(':')[0]
+        end
+        unless proc_s == ""
+          if nodes_hash.include?(proc_s)
+            unless proc_e ==""
+              nodes_hash[proc_s] << proc_e
+            end
+          else
+            unless proc_e ==""
+              nodes_hash[proc_s] = [proc_e]
+            else
+              nodes_hash[proc_s] = []
             end
           end
         end
       end
-
-      #return the list of processors with their orders
-      return ordered_processors
+      # tsort returns a topologically sorted array of nodes. The array is sorted from
+      # children to parents, i.e. the first element has no child and the last node has
+      # no parent.
+      sorted_array = nodes_hash.tsort
+      # return the sorted array in reverse order
+      sorted_array.reverse
     end
+
+
 
     private
     def set_author
@@ -331,5 +344,13 @@ module TavernaLite
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(:author)
     end
+  end
+end
+
+class Hash
+  include TSort
+  alias tsort_each_node each_key
+  def tsort_each_child(node, &block)
+    fetch(node).each(&block)
   end
 end
