@@ -56,6 +56,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.selectable
 //= require jquery.ui.button
 //= require jquery.ui.tabs
 //= require jquery.ui.accordion
