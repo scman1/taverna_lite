@@ -47,7 +47,7 @@
 #feedback { font-size: 1.4em; }
 #selectable .ui-selecting { background: #FECA40; }
 #selectable .ui-selected { background: #F39814; color: white; }
-#selectable { list-style-type: none; margin: 0; padding: 0; width: 25%; }
+#selectable { list-style-type: none; margin: 0; padding: 0; width: 20%; }
 #selectable div { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 60px; }
 </style>
 <script>
@@ -57,7 +57,8 @@
         var result = $( "#select-result" ).empty();
         $( ".ui-selected", this ).each(function() {
           var index = $( "#selectable li" ).index( this );
-          result.append( " #" + ( index + 1 ) );
+          var namex = $(this).attr('id')
+          result.append( namex );
         });
       }
     });
@@ -72,18 +73,18 @@
       <%= "Component".pluralize(@processors.count)%> </b>
   </p>
 <p id="feedback">
-  <span>You've selected:</span> <span id="select-result">none</span>.
+  <span>You've selected:</span> <span id="select-result">none</span>
 </p>
 <ol id="selectable">
 <%if @sources.count > 0 %>
-   <li class="ui-widget-content">
+   <li class="ui-widget-content"  id="Inputs">
          <%= image_tag "taverna_lite/inputport.png", :size => "64x64", :alt => "input" %>
          <%= pluralize(@sources.count, "Input")%>
-   <li>
+   </li>
  <% end %>
  <% for i in 0..@ordered_processors.count-1 %>
    <% item = @ordered_processors[i] %>
-   <li class="ui-widget-content" id='<%= item.name%>'>
+   <li class="ui-widget-content" id="<%= item.name%>">
        <% componentname = item.name %>
        <% if item.type=="rshell" %>
          <%= image_tag "taverna_lite/rlogo.png", :size => "64x64", :alt => "R-Server",
@@ -116,7 +117,7 @@
    </li>
  <% end %>
   <%if @sinks.count > 0 %>
-    <li class="ui-widget-content" id='<%=pluralize(@sinks.count, "Output")%>'>
+    <li id="<%=pluralize(@sinks.count, "Output")%>" class="ui-widget-content" >
          <%= image_tag "taverna_lite/outputport.png", :size => "64x64", :alt => "output" %>
          <%=pluralize(@sinks.count, "Output")%>
     </li>
