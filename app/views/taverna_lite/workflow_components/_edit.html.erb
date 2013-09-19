@@ -78,7 +78,7 @@
 <ol id="selectable">
 <%if @sources.count > 0 %>
    <li class="ui-widget-content"  id="Inputs">
-         <%= image_tag "taverna_lite/inputport.png", :size => "64x64", :alt => "input" %>
+         <%= image_tag "taverna_lite/inputport.png", :size => "48x48", :alt => "input" %>
          <%= pluralize(@sources.count, "Input")%>
    </li>
  <% end %>
@@ -87,38 +87,38 @@
    <li class="ui-widget-content" id="<%= item.name%>">
        <% componentname = item.name %>
        <% if item.type=="rshell" %>
-         <%= image_tag "taverna_lite/rlogo.png", :size => "64x64", :alt => "R-Server",
+         <%= image_tag "taverna_lite/rlogo.png", :size => "48x48", :alt => "R-Server",
              :class=>"componenticon"%>
        <%elsif item.type =="workflow"%>
-         <%= image_tag "taverna_lite/nestedwf.png", :size => "64x64",
+         <%= image_tag "taverna_lite/nestedwf.png", :size => "48x48",
              :alt => "Workflow", :class=>"componenticon" %>
        <% elsif item.type=="stringconstant" %>
-         <%= image_tag "taverna_lite/stringconstant.png", :size => "64x64",
+         <%= image_tag "taverna_lite/stringconstant.png", :size => "48x48",
             :alt => "constant", :class=>"componenticon" %>
        <%elsif item.type =="localworker"%>
-         <%= image_tag "taverna_lite/localworker.png", :size => "64x64", :alt => "worker",
+         <%= image_tag "taverna_lite/localworker.png", :size => "48x48", :alt => "worker",
             :class=>"componenticon" %>
        <%elsif item.type =="interaction"%>
-         <%= image_tag "taverna_lite/interaction.png", :size => "64x64", :alt =>"interaction",
+         <%= image_tag "taverna_lite/interaction.png", :size => "48x48", :alt =>"interaction",
              :class=>"componenticon" %>
        <%elsif item.type =="wsdl"%>
-         <%= image_tag "taverna_lite/webservice.png", :size => "64x64", :alt => "WS",
+         <%= image_tag "taverna_lite/webservice.png", :size => "48x48", :alt => "WS",
              :class=>"componenticon" %>
        <%elsif item.type =="beanshell"%>
-         <%= image_tag "taverna_lite/beanshell.png", :size => "64x64", :alt => "WS",
+         <%= image_tag "taverna_lite/beanshell.png", :size => "48x48", :alt => "WS",
              :class=>"componenticon" %>
        <%elsif item.type =="component"%>
-         <%= image_tag "taverna_lite/taverna-component-05.png", :size => "64x64", :alt => "WS",
+         <%= image_tag "taverna_lite/taverna-component-05.png", :size => "48x48", :alt => "WS",
              :class=>"componenticon" %>
        <%else%>
          <b> <%= item.type %> |</b>
        <% end %>
-         <b> <%= label_tag componentname %> </b>
+         <b> <<<%= label_tag item.type %>>> <%= label_tag componentname %> </b>
    </li>
  <% end %>
   <%if @sinks.count > 0 %>
     <li id="<%=pluralize(@sinks.count, "Output")%>" class="ui-widget-content" >
-         <%= image_tag "taverna_lite/outputport.png", :size => "64x64", :alt => "output" %>
+         <%= image_tag "taverna_lite/outputport.png", :size => "48x48", :alt => "output" %>
          <%=pluralize(@sinks.count, "Output")%>
     </li>
   <% end %>
