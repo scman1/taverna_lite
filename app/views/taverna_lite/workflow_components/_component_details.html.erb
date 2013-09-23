@@ -35,7 +35,7 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface to Taverna Server which is
+# BioVeL Taverna Lite is a prototype interface to Taverna Server which is
 # provided to support easy inspection and execution of workflows.
 #
 # For more details see http://www.biovel.eu
@@ -43,20 +43,71 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="edit_components" >
-<div id="component_details_head" style="float: left; width: 24%; text-align: center;font-size: 1.4em;">
-  <b>Workflow Components</b>
+<div id="component_details" >
+  <% if @processors.count > 0 %>
+    <p id="feedback">
+      <span id="select-result">Select a component to view its description</span>
+    </p>
+    <dl class="wf_snip">
+      <dt>
+        Processor Name:
+      </dt>
+      <dd>
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Type:
+      </dt>
+      <dd>Component
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Version
+      </dt>
+      <dd>2
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>myExperiment
+      </dt>
+      <dd>2255
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt> Family:
+      </dt>
+      <dd>POPMOD
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Description:
+      </dt>
+      <dd>Uses R
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Authors:
+      </dt>
+      <dd>Jon, Maria, Gerard
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>References:
+      </dt>
+      <dd>CRAN
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Highlights:
+      </dt>
+      <dd>Uses R to parse
+      </dd>
+    </dl>
+    <dl class="wf_snip">
+      <dt>Sponsors:
+      </dt>
+      <dd>UC, UVA, BioVeL
+      </dd>
+    </dl>
+  <% end %>
 </div>
-<div id="component_details_head" style="float: left; width: 48%; text-align: center;font-size: 1.4em;">
-  <b> Selected Component </b>
-</div>
-<div id="component_details_head" style="float: left; width: 24%; text-align: center;font-size: 1.4em;">
-  <b>Alternative Components</b>
-</div>
-
-  <%= render :partial => 'taverna_lite/workflow_components/component_list' %>
-  <%= render :partial => 'taverna_lite/workflow_components/component_details' %>
-  <%= render :partial => 'taverna_lite/workflow_components/alternative_list' %>
-</div>
-<div style="clear:both;"/>
-<br/>

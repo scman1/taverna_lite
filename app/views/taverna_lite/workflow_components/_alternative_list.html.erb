@@ -43,20 +43,52 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="edit_components" >
-<div id="component_details_head" style="float: left; width: 24%; text-align: center;font-size: 1.4em;">
-  <b>Workflow Components</b>
+<% if @processors.count>0 %>
+<div id="component_list" style="float: left; width: 24%;">
+<ol id="selectable">
+ <% for i in 0..@ordered_processors.count-1 %>
+   <% item = @ordered_processors[i] %>
+   <% componentname = item.name %>
+   <li class="ui-widget-content" id="<%= item.name%>">
+     <div style="float: left;width:20%">
+       <% if item.type=="rshell" %>
+         <%= image_tag "taverna_lite/rlogo.png", :size => "48x48", :alt => "R-Server",
+             :class=>"componenticon"%>
+       <%elsif item.type =="workflow"%>
+         <%= image_tag "taverna_lite/nestedwf.png", :size => "48x48",
+             :alt => "Workflow", :class=>"componenticon" %>
+       <% elsif item.type=="stringconstant" %>
+         <%= image_tag "taverna_lite/stringconstant.png", :size => "48x48",
+            :alt => "constant", :class=>"componenticon" %>
+       <%elsif item.type =="localworker"%>
+         <%= image_tag "taverna_lite/localworker.png", :size => "48x48", :alt => "worker",
+            :class=>"componenticon" %>
+       <%elsif item.type =="interaction"%>
+         <%= image_tag "taverna_lite/interaction.png", :size => "48x48", :alt =>"interaction",
+             :class=>"componenticon" %>
+       <%elsif item.type =="wsdl"%>
+         <%= image_tag "taverna_lite/webservice.png", :size => "48x48", :alt => "WS",
+             :class=>"componenticon" %>
+       <%elsif item.type =="beanshell"%>
+         <%= image_tag "taverna_lite/beanshell.png", :size => "48x48", :alt => "WS",
+             :class=>"componenticon" %>
+       <%elsif item.type =="component"%>
+         <%= image_tag "taverna_lite/taverna-component-05.png", :size => "48x48", :alt => "WS",
+             :class=>"componenticon" %>
+       <%else%>
+         <b> <%= item.type %> |</b>
+       <% end %>
+     </div>
+     <div class="desc_div">
+       <b><< <%= label_tag item.type %> >></b><br/>
+       <b><%= label_tag componentname %></b>
+     </div>
+   </li>
+ <% end %>
+</ol>
+<% else %>
+  <p>
+    <b> This workflow has no components </b>
+  </p>
+<% end %>
 </div>
-<div id="component_details_head" style="float: left; width: 48%; text-align: center;font-size: 1.4em;">
-  <b> Selected Component </b>
-</div>
-<div id="component_details_head" style="float: left; width: 24%; text-align: center;font-size: 1.4em;">
-  <b>Alternative Components</b>
-</div>
-
-  <%= render :partial => 'taverna_lite/workflow_components/component_list' %>
-  <%= render :partial => 'taverna_lite/workflow_components/component_details' %>
-  <%= render :partial => 'taverna_lite/workflow_components/alternative_list' %>
-</div>
-<div style="clear:both;"/>
-<br/>

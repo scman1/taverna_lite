@@ -41,7 +41,7 @@ class WorkflowsController < ApplicationController
   # POST /workflows.json
   def create
     @workflow = Workflow.new(params[:workflow])
-
+    @workflow.user_id = 1
     respond_to do |format|
       if @workflow.save
         format.html { redirect_to @workflow, notice: 'Workflow was successfully created.' }

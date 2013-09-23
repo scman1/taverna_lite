@@ -44,3 +44,8 @@
   -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
   border: solid 3px #3300CC;}
 .desc_div {float: left;text-align: center;width:80%}
+
+.edit_components { min-height:300px; height:auto !important; height:300px;}
+#component_list { float: left; width: 24%; }
+#component_details { float: left; width: 49%;  border: solid 1px #3300CC; -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
+  border: solid 3px #3300CC; padding: 0.4em;}
