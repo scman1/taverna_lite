@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  workflow_id: 1
+  license_id: 1
+  version: 1
+  family: MyString
+
+two:
+  workflow_id: 1
+  license_id: 1
+  version: 1
+  family: MyString

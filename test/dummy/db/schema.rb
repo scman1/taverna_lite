@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923113013) do
+ActiveRecord::Schema.define(:version => 20130923132657) do
 
   create_table "results", :force => true do |t|
     t.string   "name"
@@ -44,18 +44,12 @@ ActiveRecord::Schema.define(:version => 20130923113013) do
   end
 
   create_table "taverna_lite_workflow_components", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "created"
-    t.datetime "modified"
+    t.integer  "workflow_id"
     t.integer  "license_id"
-    t.integer  "author_id"
     t.integer  "version"
     t.string   "family"
-    t.integer  "my_experiment_id"
-    t.string   "workflow_file"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "taverna_lite_workflow_errors", :force => true do |t|

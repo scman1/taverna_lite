@@ -2,7 +2,11 @@ class WorkflowsController < ApplicationController
   # GET /workflows
   # GET /workflows.json
   def index
-    @workflows = Workflow.all
+    #@workflows = Workflow.all
+    # Filter out those that have been identified as workflow components
+    @workflows = Workflow.find(:all,
+      :conditions=>['id not in (?)',
+        TavernaLite::WorkflowComponent.select(:workflow_id).map(&:workflow_id)])
 
     respond_to do |format|
       format.html # index.html.erb

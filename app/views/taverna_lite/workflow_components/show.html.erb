@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Workflow:</b>
+  <%= @workflow_component.workflow_id %>
+</p>
+
+<p>
+  <b>License:</b>
+  <%= @workflow_component.license_id %>
+</p>
+
+<p>
+  <b>Version:</b>
+  <%= @workflow_component.version %>
+</p>
+
+<p>
+  <b>Family:</b>
+  <%= @workflow_component.family %>
+</p>
+
+
+<%= link_to 'Edit', edit_workflow_component_path(@workflow_component) %> |
+<%= link_to 'Back', workflow_components_path %>
