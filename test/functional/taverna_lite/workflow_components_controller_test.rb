@@ -19,7 +19,7 @@ module TavernaLite
 
     test "should create workflow_component" do
       assert_difference('WorkflowComponent.count') do
-        post :create, workflow_component: { family: @workflow_component.family, license_id: @workflow_component.license_id, version: @workflow_component.version, workflow_id: @workflow_component.workflow_id }
+        post :create, workflow_component: { family: @workflow_component.family, license_id: @workflow_component.license_id, name: @workflow_component.name, registry: @workflow_component.registry, version: @workflow_component.version, workflow_id: @workflow_component.workflow_id }
       end
 
       assert_redirected_to workflow_component_path(assigns(:workflow_component))
@@ -36,7 +36,7 @@ module TavernaLite
     end
 
     test "should update workflow_component" do
-      put :update, id: @workflow_component, workflow_component: { family: @workflow_component.family, license_id: @workflow_component.license_id, version: @workflow_component.version, workflow_id: @workflow_component.workflow_id }
+      put :update, id: @workflow_component, workflow_component: { family: @workflow_component.family, license_id: @workflow_component.license_id, name: @workflow_component.name, registry: @workflow_component.registry, version: @workflow_component.version, workflow_id: @workflow_component.workflow_id }
       assert_redirected_to workflow_component_path(assigns(:workflow_component))
     end
 

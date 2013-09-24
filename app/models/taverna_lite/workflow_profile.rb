@@ -52,14 +52,8 @@ module TavernaLite
     # Each profile will be mapped to a user in the main application
     belongs_to :author, class_name: TavernaLite.author_class
 
-    # Set the user to which the profile is associated before saving
-    before_save :set_author
-
     # Each profile will be mapped to a workflow in the main application
     belongs_to :workflow, class_name: TavernaLite.workflow_class
-
-    # Set the workflow to which the profile is associated before saving
-    before_save :set_workflow
 
     def get_inputs
       sources = {}
@@ -338,12 +332,6 @@ module TavernaLite
 
 
     private
-    def set_author
-      self.author = TavernaLite.author_class.find(:workflow)
-    end
-    def set_workflow
-      self.workflow = TavernaLite.workflow_class.find(:author)
-    end
   end
 end
 

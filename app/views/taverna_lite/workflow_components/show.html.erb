@@ -20,6 +20,16 @@
   <%= @workflow_component.family %>
 </p>
 
+<p>
+  <b>Name:</b>
+  <%= @workflow_component.name %>
+</p>
+
+<p>
+  <b>Registry:</b>
+  <%= @workflow_component.registry %>
+</p>
+
 
 <%= link_to 'Edit', edit_workflow_component_path(@workflow_component) %> |
 <%= link_to 'Back', workflow_components_path %>

@@ -5,6 +5,8 @@ class CreateTavernaLiteWorkflowComponents < ActiveRecord::Migration
       t.integer :license_id
       t.integer :version
       t.string :family
+      t.string :name
+      t.string :registry
 
       t.timestamps
     end
