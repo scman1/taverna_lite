@@ -1,0 +1,27 @@
+<h1>Listing alternative_components</h1>
+
+<table>
+  <tr>
+    <th>Component</th>
+    <th>Alternative</th>
+    <th>Note</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @alternative_components.each do |alternative_component| %>
+  <tr>
+    <td><%= alternative_component.component_id %></td>
+    <td><%= alternative_component.alternative_id %></td>
+    <td><%= alternative_component.note %></td>
+    <td><%= link_to 'Show', alternative_component %></td>
+    <td><%= link_to 'Edit', edit_alternative_component_path(alternative_component) %></td>
+    <td><%= link_to 'Destroy', alternative_component, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Alternative component', new_alternative_component_path %>

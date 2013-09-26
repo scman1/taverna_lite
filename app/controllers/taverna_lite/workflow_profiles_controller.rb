@@ -71,7 +71,8 @@ module TavernaLite
       @processors = @workflow_profile.get_processors
       @ordered_processors = @workflow_profile.get_processors_in_order
       @wf_components = get_workflow_components(@workflow_profile.id)
-      @wf_alternative = {}
+      puts @wf_components
+      @component_alternatives = get_component_alternatives(@wf_components)
     end
 
     def update_profile
@@ -138,6 +139,7 @@ module TavernaLite
        end
     end
 
+    # Get the components for a given workflow
     def get_workflow_components(id)
       workflow_profile = WorkflowProfile.find(id)
       processors = workflow_profile.get_processors
@@ -177,5 +179,27 @@ module TavernaLite
       end
       return components
     end
+
+    # Get the registered alternative components from a given list of components
+    def get_component_alternatives(wf_components)
+      component_alternatives = {}
+      wf_components.each do |component|
+        unless component[1][1].nil? then
+          name = component[1][0].name # the name of the component
+          wfc_db = WorkflowComponent.find_by_name(name) # get component in db
+          # find alternatives registered in DB
+          alternatives = AlternativeComponent.find_by_component_id(wfc_db.id)
+          unless alternatives.nil? then
+            component_alternatives[name] = []
+            alternatives.each do |alt_comp|
+              a_wfc = WorkflowComponent.find(alt_comp.alternative_id)
+              wf =  TavernaLite.workflow_class.find(wfc.workflow_id)
+              component_alternatives[name].add([a_wfc,wf])
+            end
+          end
+        end
+      end
+    end
+
   end
 end

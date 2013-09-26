@@ -43,6 +43,9 @@
 # through the grant agreement number 283359.
 
 TavernaLite::Engine.routes.draw do
+  resources :alternative_components
+
+
   resources :workflow_components
 
 
