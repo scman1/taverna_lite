@@ -143,11 +143,11 @@ module TavernaLite
       processors = workflow_profile.get_processors
       xmlFile = workflow_profile.workflow.workflow_filename
       doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
-      components = []
+      components = {}
       processors.each do |proc|
         if proc.type == 'component'
           wfc = WorkflowComponent.new()
-          a=get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name).parent
+          a=get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name)
           b=get_node(a,"activities/activity/configBean")
           #extract component info from the file
           b.children[0].each do |cacb|
@@ -166,10 +166,16 @@ module TavernaLite
               # node name: componentVersion content: 3
                 wfc.version = cacb.content
             end
-            components << wfc
           end
+          wfc_db = WorkflowComponent.find_by_name(wfc.name)
+          wf = nil
+          unless wfc_db.nil?
+            wf =  TavernaLite.workflow_class.find(wfc_db.workflow_id)
+          end
+          components[proc.name] = [wfc, wf]
         end
       end
+      return components
     end
   end
 end

@@ -48,66 +48,80 @@
     <p id="feedback">
       <span id="select-result">Select a component to view its description</span>
     </p>
-    <dl class="wf_snip">
-      <dt>
-        Processor Name:
-      </dt>
-      <dd>
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Type:
-      </dt>
-      <dd>Component
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Version
-      </dt>
-      <dd>2
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>myExperiment
-      </dt>
-      <dd>2255
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt> Family:
-      </dt>
-      <dd>POPMOD
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Description:
-      </dt>
-      <dd>Uses R
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Authors:
-      </dt>
-      <dd>Jon, Maria, Gerard
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>References:
-      </dt>
-      <dd>CRAN
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Highlights:
-      </dt>
-      <dd>Uses R to parse
-      </dd>
-    </dl>
-    <dl class="wf_snip">
-      <dt>Sponsors:
-      </dt>
-      <dd>UC, UVA, BioVeL
-      </dd>
-    </dl>
+    <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs' %>
+    <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs' %>
+    <% @processors.each do |proc| %>
+    <div id="<%= proc.name %>_component" class="div_component"
+      style="display: none;">
+      <dl>
+        <dt>
+          Processor Name:
+        </dt>
+        <dd>
+          <%= proc.name%>
+        </dd>
+        <dt>
+          Type:
+        </dt>
+        <dd>
+          <%= proc.type%>
+        </dd>
+        <dt>
+          Description:
+        </dt>
+        <dd>
+          <%= proc.description%>
+        </dd>
+        <% if @wf_components.count > 0 %>
+          <% wfc = @wf_components[proc.name][0] -%>
+          <dt>
+            Component Name:
+          </dt>
+          <dd>
+            <%= wfc.name%>
+          </dd>
+          <dt>
+            Family:
+          </dt>
+          <dd>
+            <%= wfc.family%>
+          </dd>
+          <dt>
+            Registry:
+          </dt>
+          <dd>
+            <%= wfc.registry%>
+          </dd>
+          <dt>
+            Version:
+          </dt>
+          <dd>
+            <%= wfc.version%>
+          </dd>
+          <% unless @wf_components[proc.name][1].nil? -%>
+            <% cwf = @wf_components[proc.name][1] -%>
+            <dt>
+              Description:
+            </dt>
+            <dd>
+              <%= cwf.description %>
+            </dd>
+            <dt>
+              Author:
+            </dt>
+            <dd>
+              <%= cwf.author%>
+            </dd>
+            <dt>
+              Registry ID:
+            </dt>
+            <dd>
+              <%= cwf.my_experiment_id %>
+            </dd>
+          <% end%>
+        <% end -%>
+      </dl>
+    </div>
+    <% end %>
   <% end %>
 </div>

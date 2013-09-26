@@ -43,9 +43,7 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="edit_outputs" class="workflow_part" style="min-height:300px;
-     			    height:auto !important;
-                            height:300px; display:none;">
+<div id="Outputs_component" class="div_component" style="display:none;">
 <% if @sinks.count>0 %>
 <%= form_for :file_uploads,
       :url => {:controller => 'workflow_ports', :action => 'save_custom_outputs'},

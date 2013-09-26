@@ -131,16 +131,24 @@ class TavernaLite::ApplicationController < ApplicationController
     # matches the content and returns the corresponding node:
     # Example: a = get_node_containing(doc.root,'dataflow/processors/processor/name/','Output_Stage_Matrix')
     def get_node_containing(node,path,content)
+      if path == "" then
+        return nil
+      end
       name = path.split("/")[0]
       rest = path.split("/")
       rest.delete(name)
       rest = rest.join("/")
       node.each_element do |element|
-          if element.name == name
-            if rest == "" && element.content = content
-              return element
+        if element.name == name
+           if rest == "" && element.content == content
+            return element.parent
+          else
+            node = get_node_containing(element,rest,content)
+            if node == nil
+              next
             else
-              return get_node_containing(element,rest,content)
+              return node
+            end
           end
         end
       end
