@@ -35,43 +35,52 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface to Taverna Server which is
-# provided to support easy inspection and execution of workflows.
+# BioVeL Taverna Lite is a prototype interface provided to support the
+# inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<% if @processors.count>0 %>
-<div id="component_list" style="float: left; width: 24%;">
-  <%= render :partial => 'taverna_lite/workflow_ports/input_instructions'%>
-  <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
-<% @component_alternatives.each do |ca| %>
-  <div id="<%=ca[0]%>_alternatives" class="div_alternative" style="display:none;">
-    <h3>Alternatives to <%=ca[0]%></h3>
-    <%unless ca[1].count==0 %>
-    <ol id="replaceable">
-    <% ca[1].each do |item| %>
-      <% componentname = item[0].name %>
-      <li class="ui-widget-content" id="<%= item[0].name%>">
-        <div style="float: left;width:20%">
-          <%= image_tag "taverna_lite/taverna-component-05.png", :size => "48x48", :alt => "WS",
-              :class=>"componenticon" %>
-        </div>
-        <div class="desc_div">
-          <b><%= componentname %></b><br/>
-          <b>Family: </b><%= item[0].family %><br/>
-          <b>Version: </b><%= item[0].version %><br/>
-          <b>Registry: </b><%= item[0].registry %><br/>
-        </div>
-      </li>
-    <% end %>
-    </ol>
-    <%else%>
-      There are no alternatives for the selected component
-    <%end%>
+  <div id="Inputs_alternatives" class="div_alternative" style="display:none;" >
+  <% if @sources.count>0 %>
+    <h3>
+      This workflow has <%= @sources.count %>
+      <%= "Input".pluralize(@sources.count)%>
+    </h3>
+    <p>
+      <b>
+        To customise an input:
+      </b>
+      <ol>
+        <li>
+          Select the input (click on the ckeck box)
+        </li>
+        <li>
+          Provide a custom value and/or a file
+        </li>
+        <li>
+          Select the input type (value, file or both)
+        </li>
+        <li>
+          Repeat 1 - 3 for every input you want to customise
+        </li>
+        <li>
+          Click "Save" to save customised inputs
+        </li>
+        <li>
+          Click "Reset" to use default annotations on workflow file
+        </li>
+      </ol>
+      <b>
+        The custom values and/or files will be used when the workflow is shown
+        and run
+      </b>
+    </p>
+  <%else %>
+    <p>
+      <b> This workflow has no inputs </b>
+    </p>
+  <%end %>
   </div>
-<% end %>
-</div>
-<%end %>

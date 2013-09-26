@@ -51,35 +51,6 @@
   <%= hidden_field_tag "workflow_id", @workflow.id %>
   <%= hidden_field_tag "selected_tab", 'customise' %>
   <%= hidden_field_tag "selected_choice", 'inputs' %>
-    <h3>
-      This workflow has <%= @sinks.count %>
-      <%= "Output".pluralize(@sinks.count)%>
-    </h3>
-      <p>
-        <b>
-          To customise an output:
-        </b>
-      <ol>
-        <li>
-          Select the output (click on the ckeck box)
-        </li>
-        <li>
-          Provide a custom value and/or a file
-        </li>
-        <li>
-          Select the output type (value or file)
-        </li>
-        <li>
-          Repeat 1 - 3 for every output you want to customise
-        </li>
-        <li>
-          Click "Save" to save customised outputs
-        </li>
-      </ol>
-      <b>
-        The custom values or files will be used when workflow ports are shown
-      </b>
-    </p>
    <% @custom_outputs.each do |item| %>
      <% portname = item.name %>
      <!-- Use sinks to get the original sample and descriptio values -->
