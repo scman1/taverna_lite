@@ -51,7 +51,7 @@
       :url => {:controller => 'workflow_ports', :action => 'save_custom_inputs'},
       :html => {:multipart => true}, :disable_with => "Saving..." do |f| -%>
   <%= hidden_field_tag "workflow_id", @workflow.id %>
-  <%= hidden_field_tag "selected_tab", 'customise' %>
+  <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'inputs' %>
    <% @custom_inputs.each do |item| %>
      <% portname = item.name %>

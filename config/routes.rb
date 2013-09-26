@@ -45,9 +45,11 @@
 TavernaLite::Engine.routes.draw do
   resources :alternative_components
 
-
-  resources :workflow_components
-
+  resources :workflow_components do
+    member do
+      post "replace"
+    end
+  end
 
   resources :workflow_profiles do
     member do

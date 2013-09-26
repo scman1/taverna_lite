@@ -44,7 +44,7 @@
 # through the grant agreement number 283359.
 %>
 <% if @processors.count>0 %>
-<div id="component_list" style="float: left; width: 24%;">
+<div id="component_list" style="float: left; width: 24%; padding: 0.4em;">
   <%= render :partial => 'taverna_lite/workflow_ports/input_instructions'%>
   <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
 <% @component_alternatives.each do |ca| %>
@@ -64,6 +64,18 @@
           <b>Family: </b><%= item[0].family %><br/>
           <b>Version: </b><%= item[0].version %><br/>
           <b>Registry: </b><%= item[0].registry %><br/>
+          <%= form_for :file_uploads,
+            :url => {:controller => 'workflow_components', :action => 'replace'},
+            :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
+            <%= hidden_field_tag "processor_name", ca[0] %>
+            <%= hidden_field_tag "component_id", item[0].id %>
+            <%= hidden_field_tag "workflow_id", @workflow.id %>
+            <div title="Use this to replace the selected component"
+              alt="Use this to replace the selected component"
+              style="float:center; padding:10px;">
+                <%= submit_tag 'Replace' %>
+            </div>
+          <% end -%> <!--form-->
         </div>
       </li>
     <% end %>
