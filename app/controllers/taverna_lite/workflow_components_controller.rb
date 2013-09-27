@@ -144,7 +144,7 @@ module TavernaLite
         f.write doc.root
       end
       respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow annotations updated'}
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow componet replaced', :from_op=>'replace'}
         format.json { head :no_content }
       end
     end

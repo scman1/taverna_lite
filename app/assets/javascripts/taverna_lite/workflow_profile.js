@@ -20,7 +20,7 @@
     for(var x=0; x<all_dls.length; x++){
       all_dls[x].style.display = 'none';
     }
-     if (ele != null) {ele.style.display = "block";}
+     ele.style.display = "block";
   }
 
   function showhidealter(showdl) {
