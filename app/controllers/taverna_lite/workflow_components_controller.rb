@@ -130,6 +130,7 @@ module TavernaLite
     # Replace the selected component on the workflow
     def replace
       @workflow = Workflow.find(params[:id])
+      @from_op = 'replace'
       processor_name = params[:processor_name]
       replacement_id = WorkflowComponent.find(params[:component_id])
       # get the workflow file and parse it as an XML document
@@ -144,7 +145,7 @@ module TavernaLite
         f.write doc.root
       end
       respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow componet replaced', :from_op=>'replace'}
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet replaced'}
         format.json { head :no_content }
       end
     end

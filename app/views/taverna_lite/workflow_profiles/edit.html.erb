@@ -60,7 +60,12 @@
 </div>
 <br/>
 <%= javascript_tag do -%>
-
-  $("#tabs_wf_parts").tabs();
+  <% if flash[:notice] == 'componet replaced' || flash[:notice] == 'outputs updated' || flash[:notice] == 'inputs updated' %>
+    $( "#tabs_wf_parts" ).tabs({ active: 1 });
+  <% elsif flash[:notice] == 'errors updated' %>
+    $( "#tabs_wf_parts" ).tabs({ active: 2 });
+  <% else %>
+    $("#tabs_wf_parts").tabs();
+  <% end %>
 <% end -%>
 

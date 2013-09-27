@@ -57,7 +57,9 @@ module TavernaLite
         reset_inputs
       end
       respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow inputs updated'}
+        format.html {
+          redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
+            :notice => 'inputs updated'}
         format.json { head :no_content }
        end
     end
@@ -139,7 +141,7 @@ module TavernaLite
       respond_to do |format|
         format.html {
           redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
-           :notice => 'Workflow outputs updated'}
+           :notice => 'outputs updated'}
         format.json { head :no_content }
       end
     end

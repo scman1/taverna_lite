@@ -59,7 +59,7 @@ module TavernaLite
       end
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
-                        :notice => 'Workflow errors updated '}
+                        :notice => 'errors updated'}
         format.json { head :no_content }
       end
     end
