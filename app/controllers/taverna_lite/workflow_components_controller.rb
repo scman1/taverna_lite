@@ -130,28 +130,47 @@ module TavernaLite
     # Replace the selected component on the workflow
     def replace
       @workflow = Workflow.find(params[:id])
-      @processor = params[:processor_name]
-      @component = WorkflowComponent.find(params[:component_id])
-# need to find the following node and replace the contents of
-# registry, family, name and version
-# <configBean encoding="xstream">
-#   <net.sf.taverna.t2.component.ComponentActivityConfigurationBean xmlns="">
-#     <registryBase>http://www.myexperiment.org</registryBase>
-#     <familyName>POPMOD</familyName>
-#     <componentName>SpreadsheetTableToR</componentName>
-#     <componentVersion>1</componentVersion>
-#   </net.sf.taverna.t2.component.ComponentActivityConfigurationBean>
-# </configBean>
-# The operations are similar to what we did already for getting component data
-# from the t2flow file and to the way we save annotations to the file
-
+      processor_name = params[:processor_name]
+      replacement_id = WorkflowComponent.find(params[:component_id])
+      # get the workflow file and parse it as an XML document
+      xmlFile = @workflow.workflow_filename
+      doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
+      #replace the component
+      replace_workflow_components(doc,processor_name,replacement_id)
+      #label the workflow as produced by taverna lite
+      doc.root["producedBy"]="TavernaLite_v_0.3.8"
+      # save workflow in the host app passing the file
+      File.open(xmlFile, "w:UTF-8") do |f|
+        f.write doc.root
+      end
       respond_to do |format|
-        format.html {
-          redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
-           :notice => 'Workflow outputs updated'}
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow annotations updated'}
         format.json { head :no_content }
       end
     end
 
+    # Get the components for a given workflow
+    def replace_workflow_components(doc,processor_name,replacement_id)
+      replacement_component = WorkflowComponent.find(replacement_id)
+      a=get_node_containing(doc.root,'dataflow/processors/processor/name/', processor_name)
+      b=get_node(a,"activities/activity/configBean")
+      #put component info in the child node
+      b.children[0].each do |cacb|
+        case cacb.name
+          when 'registryBase'
+          # node name: registryBase content
+            cacb.content = replacement_component.registry
+          when 'familyName'
+          # node name: familyName content
+            cacb.content = replacement_component.family
+          when 'componentName'
+          # node name: componentName content
+            cacb.content = replacement_component.name
+          when 'componentVersion'
+          # node name: componentVersion content
+            cacb.content = replacement_component.version.to_s
+        end
+      end
+    end
   end # Class WorkflowComponentsController
 end # Module TavernaLite

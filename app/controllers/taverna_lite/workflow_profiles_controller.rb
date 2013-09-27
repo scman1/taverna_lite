@@ -51,7 +51,7 @@ module TavernaLite
   WORKFLOW_STORE = Rails.root.join('public', 'workflow_store')
     def edit
       @workflow = TavernaLite.workflow_class.find(params[:id])
-      @author = TavernaLite.author_class.find(@workflow.user_id)
+      @author = TavernaLite.author_class.find(@workflow.user_id) # This should be current user
       #find or create the profile
       @workflow_profile = WorkflowProfile.find_by_author_id_and_workflow_id(@author.id,@workflow.id)
       if @workflow_profile == nil

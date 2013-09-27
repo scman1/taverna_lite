@@ -45,9 +45,9 @@
 %>
 <div id="component_details" >
   <% if @processors.count > 0 %>
-    <p id="feedback">
+    <h2>
       <span id="select-result">Select a component to view its description</span>
-    </p>
+    </h2>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs' %>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs' %>
     <% @processors.each do |proc| %>

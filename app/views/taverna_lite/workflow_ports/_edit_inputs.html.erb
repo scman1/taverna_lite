@@ -57,7 +57,7 @@
      <% portname = item.name %>
      <!-- Use sources to get the original sample and descriptio values -->
      <% example_value = @sources[portname].blank? ? "": @sources[portname] -%>
-     <h2> <%= label_tag portname %></h2>
+     <h3> <%= label_tag portname %></h3>
      <dl class='list_any'>
        <dt class='list_title'>Description:</dt>
        <dd class='list_description'>

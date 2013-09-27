@@ -50,8 +50,10 @@
       <%= "output".pluralize(@sinks.count)%>
     </h3>
     <b>
-      To customise an output:
+      The <%= "output".pluralize(@sinks.count) %> can be customised
     </b>
+    <br/>
+    To customise an output:
     <ol>
       <li>
         Select the output (click on the ckeck box)
@@ -72,9 +74,8 @@
         Click "Reset" to use default annotations on workflow file
       </li>
     </ol>
-    <b>
-      The custom values and/or files will be used when the workflow is shown
-    </b>
+    <b>NOTE:</b> The custom values and/or files will be used when the workflow
+    is shown
   <%else %>
     <p>
       <b> This workflow has no outputs </b>

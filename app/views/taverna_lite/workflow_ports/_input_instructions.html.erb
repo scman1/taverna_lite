@@ -47,11 +47,12 @@
   <% if @sources.count>0 %>
     <h3>
       This workflow has <%= @sources.count %>
-      <%= "Input".pluralize(@sources.count)%>
+      <%= "input".pluralize(@sources.count)%>
     </h3>
     <b>
-      To customise an input:
+      The <%= "input".pluralize(@sources.count)%> can be customised.<br/>
     </b>
+      To customise an input:
     <ol>
       <li>
         Select the input (click on the ckeck box)
@@ -72,10 +73,8 @@
         Click "Reset" to use default annotations on workflow file
       </li>
     </ol>
-    <b>
-      The custom values and/or files will be used when the workflow is shown
-      and run
-    </b>
+    <b>NOTE:</b> The custom values and/or files will be used when the workflow
+      is shown and run
   <%else %>
     <p>
       <b> This workflow has no inputs </b>
