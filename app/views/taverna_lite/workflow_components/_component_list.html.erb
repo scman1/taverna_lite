@@ -86,12 +86,16 @@
          <%= image_tag "taverna_lite/taverna-component-05.png", :size => "48x48", :alt => "WS",
              :class=>"componenticon" %>
        <%else%>
-         <b> <%= item.type %> |</b>
+         <b> <%= item.type %> </b>
        <% end %>
      </div>
      <div class="desc_div">
        <b><< <%= label_tag item.type %> >></b><br/>
-       <b><%= label_tag componentname %></b>
+       <b><%= label_tag componentname %></b><br/>
+       <!-- show corresponding icons if editable, swappable or removable -->
+       <%= image_tag "taverna_lite/cross.png", :alt => "Remove"%>
+       <%= image_tag "taverna_lite/arrow_switch.png", :alt => "Swap"%>
+       <%= image_tag "taverna_lite/pencil.png", :alt => "Edit"%>
      </div>
    </li>
  <% end %>
