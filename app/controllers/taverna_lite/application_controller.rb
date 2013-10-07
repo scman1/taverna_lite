@@ -46,6 +46,7 @@
 #  end
 #end
 require 'xml'
+require 'erb'
 class TavernaLite::ApplicationController < ApplicationController
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
@@ -175,12 +176,12 @@ class TavernaLite::ApplicationController < ApplicationController
       annotations.children.each do |ann|
         if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
           new_ann = ann.children[0].children[0].children[0].children[0].children[0]
-          new_ann.content = annotation_text
+          new_ann.content = ERB::Util.html_escape(annotation_text)
           break
         end
       end
       if new_ann.nil?
-        annotations << create_annotation(annotation_bean, annotation_text)
+        annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
       end
     end
 
