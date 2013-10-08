@@ -8,13 +8,13 @@
           var index = $( "#selectable li" ).index( this );
           var namex = $(this).attr('id')
           result.append( namex );
-          showhide(namex+"_component")
-          showhidealter(namex+"_alternatives")
+          showcomp(namex+"_component")
+          showcompalter(namex+"_alternatives")
         });
       }
     });
   });
-  function showhide(showdl) {
+  function showcomp(showdl) {
     var ele = document.getElementById(showdl);
     var all_dls = document.getElementsByClassName("div_component");
     for(var x=0; x<all_dls.length; x++){
@@ -23,7 +23,7 @@
      ele.style.display = "block";
   }
 
-  function showhidealter(showdl) {
+  function showcompalter(showdl) {
     var ele = document.getElementById(showdl);
     if (ele == null) {
       ele = document.getElementById('no_op_alternative');

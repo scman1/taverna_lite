@@ -59,6 +59,7 @@
   <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
   <% @component_alternatives.each do |ca| %>
     <div id="<%=ca[0]%>_alternatives" class="div_alternative" style="display:none;">
+      <%unless ca[1].count==0 %>
       <b>
         The selected component <%=ca[0]%> can be replaced.
       </b>
@@ -75,7 +76,6 @@
       <b>NOTE:</b> The component will be replaced immediately and the changes
       saved into the workflow file.
       <h3>Alternatives to <%=ca[0]%></h3>
-      <%unless ca[1].count==0 %>
       <ol id="replaceable">
       <% ca[1].each do |item| %>
         <% componentname = item[0].name %>
@@ -95,8 +95,8 @@
               <%= hidden_field_tag "processor_name", ca[0] %>
               <%= hidden_field_tag "component_id", item[0].id %>
               <%= hidden_field_tag "workflow_id", @workflow.id %>
-              <div title="Use this to replace the selected component"
-                alt="Use this to replace the selected component"
+              <div title="Click to replace the selected component"
+                alt="Click to replace the selected component"
                 style="float:center; padding:10px;">
                   <%= submit_tag 'Replace' %>
               </div>
