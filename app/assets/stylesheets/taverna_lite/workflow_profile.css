@@ -56,6 +56,6 @@
 
 .edit_components { min-height:300px; height:auto !important; height:300px;}
 #component_list { float: left; width: 24%; }
-#component_details { float: left; width: 49%;  border: solid 1px #3300CC;
+#component_details { float: left; width: 48%;  border: solid 1px #3300CC;
   -moz-border-radius: 16px;-webkit-border-radius: 16px;border-radius: 16px;
   border: solid 3px #3300CC; padding: 0.4em;}

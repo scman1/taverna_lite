@@ -54,9 +54,9 @@
     <%= simple_format(content) %>
   </div>
   <div style="float:left;">
-   <%= link_to "more",
-      "javascript:snip_full('dialog_#{content_label}','snip_#{content_label}',
+   <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+      "javascript:toggle_view('dialog_#{content_label}','snip_#{content_label}',
        'switch_#{content_label}');", :id=>"switch_#{content_label}",
-       :class => "link_img", :title=>"show all", :alt=>"show all" -%>
+        :title=>"show all", :alt=>"show all" -%>
   </div>
 <% end -%>

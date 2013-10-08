@@ -49,12 +49,12 @@
     <p id="feedback">
       <span id="select-op">Select a component to view allowed operations</span>
     </p>
-  </div>
+  </div> <!--id="default_operation"-->
   <div id="no_op_alternative" class="div_alternative" style="display:none;">
     <p id="feedback">
       <span id="select-op">No operations available for selected component</span>
     </p>
-  </div>
+  </div><!--id="no_op_alternative"-->
   <%= render :partial => 'taverna_lite/workflow_ports/input_instructions'%>
   <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
   <% @component_alternatives.each do |ca| %>
@@ -83,7 +83,7 @@
           <div style="float: left;width:20%">
             <%= image_tag "taverna_lite/taverna-component-05.png", :size => "48x48", :alt => "WS",
               :class=>"componenticon" %>
-          </div>
+          </div> <!--image div -->
           <div class="desc_div">
             <b><%= componentname %></b><br/>
             <b>Family: </b><%= item[0].family %><br/>
@@ -99,16 +99,16 @@
                 alt="Click to replace the selected component"
                 style="float:center; padding:10px;">
                   <%= submit_tag 'Replace' %>
-              </div>
+              </div> <!--buton div -->
             <% end -%> <!--form-->
-          </div>
+          </div> <!--description div -->
         </li>
       <% end %>
       </ol>
       <%else%>
         There are no alternatives for the selected component
       <%end%>
-  </div>
+    </div>
 <% end %>
-</div>
+</div> <!-- id="component_list" -->
 <%end %>

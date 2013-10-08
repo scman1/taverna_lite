@@ -34,3 +34,21 @@
     }
     ele.style.display = "block";
   }
+  function toggle_view(full_content, snip_content, toggle_link) {
+	var ele = document.getElementById(full_content);
+        var ele2 = document.getElementById(snip_content);
+	var button = document.getElementById(toggle_link);
+    if(ele.style.display == "block") {
+      ele.style.display = "none";
+      ele2.style.display = "block"
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_down.png' />";
+      button.title = "show all";
+      button.alt = "show all";   	}
+    else {
+      ele.style.display = "block";
+      ele2.style.display = "none"
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_up.png' />";
+      button.title = "show less";
+      button.alt = "show less";
+    }
+  }

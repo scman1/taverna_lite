@@ -2,3 +2,9 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+.div_alternative { float: left; border: solid 1px #3300CC;
+  -moz-border-radius: 16px;-webkit-border-radius: 16px;border-radius: 16px;
+  border: solid 3px #3300CC; padding: 0.9em;
+}
+.div_alternative  ul,ol {margin:0; padding:0; }
+.div_alternative  ol{margin:2em;}
