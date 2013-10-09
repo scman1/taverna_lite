@@ -91,9 +91,9 @@ module TavernaLite
       respond_to do |format|
         if @alternative_component.save
           format.html { redirect_to @alternative_component, :notice => 'Alternative component was successfully created.' }
-          format.json { render :json => @alternative_component, :status =>  :created, location: @alternative_component }
+          format.json { render :json => @alternative_component, :status =>  :created, :location => @alternative_component }
         else
-          format.html { render action: "new" }
+          format.html { render :action => "new" }
           format.json { render :json => @alternative_component.errors, :status =>  :unprocessable_entity }
         end
       end
@@ -109,7 +109,7 @@ module TavernaLite
           format.html { redirect_to @alternative_component, :notice => 'Alternative component was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
+          format.html { render :action => "edit" }
           format.json { render :json => @alternative_component.errors, :status =>  :unprocessable_entity }
         end
       end

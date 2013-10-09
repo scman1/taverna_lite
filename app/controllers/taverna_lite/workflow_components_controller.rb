@@ -91,9 +91,9 @@ module TavernaLite
       respond_to do |format|
         if @workflow_component.save
           format.html { redirect_to @workflow_component, :notice => 'Workflow component was successfully created.' }
-          format.json { render :json => @workflow_component, :status =>  :created, location: @workflow_component }
+          format.json { render :json => @workflow_component, :status =>  :created, :location => @workflow_component }
         else
-          format.html { render action: "new" }
+          format.html { render :action => "new" }
           format.json { render :json => @workflow_component.errors, :status =>  :unprocessable_entity }
         end
       end
@@ -109,7 +109,7 @@ module TavernaLite
           format.html { redirect_to @workflow_component, :notice => 'Workflow component was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
+          format.html { render :action => "edit" }
           format.json { render :json => @workflow_component.errors, :status =>  :unprocessable_entity }
         end
       end

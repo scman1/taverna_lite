@@ -46,7 +46,7 @@ module TavernaLite
     attr_accessible :description, :display_control_id, :display_description,
       :display_name, :name, :order, :port_type_id, :sample_value, :workflow_id
     # Each port will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class
+    belongs_to :workflow, :class_name => TavernaLite.workflow_class
     # Before saving the port, set the workflow to which it has been associated
     before_save :set_workflow
     after_save :store_file

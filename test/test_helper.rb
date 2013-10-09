@@ -30,4 +30,7 @@ module TavernaLite
   end
 end
 
+if ActionDispatch::IntegrationTest.method_defined?(:fixture_path=)
+  ActionDispatch::IntegrationTest.fixture_path = File.expand_path("../fixtures", __FILE__)
+end
 # still not loading dummy fixtures

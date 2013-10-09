@@ -55,7 +55,7 @@ module TavernaLite
       #find or create the profile
       @workflow_profile = WorkflowProfile.find_by_author_id_and_workflow_id(@author.id,@workflow.id)
       if @workflow_profile == nil
-        @workflow_profile = WorkflowProfile.new(author_id: @author.id, workflow_id: @workflow.id)
+        @workflow_profile = WorkflowProfile.new(:author_id => @author.id, :workflow_id => @workflow.id)
         @workflow_profile.save
       end
       # get inputs from the model and any customisation if they exist

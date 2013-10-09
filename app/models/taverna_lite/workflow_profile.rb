@@ -50,10 +50,10 @@ module TavernaLite
       :title, :version, :workflow_id
 
     # Each profile will be mapped to a user in the main application
-    belongs_to :author, class_name: TavernaLite.author_class
+    belongs_to :author, :class_name => TavernaLite.author_class
 
     # Each profile will be mapped to a workflow in the main application
-    belongs_to :workflow, class_name: TavernaLite.workflow_class
+    belongs_to :workflow, :class_name => TavernaLite.workflow_class
 
     def get_inputs
       sources = {}

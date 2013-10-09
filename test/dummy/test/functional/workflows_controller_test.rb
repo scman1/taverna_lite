@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class WorkflowsControllerTest < ActionController::TestCase
-  fixtures :all
+
   setup do
     @workflow = workflows(:one)
   end
