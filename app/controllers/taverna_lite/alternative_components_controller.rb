@@ -52,7 +52,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @alternative_components }
+        format.json { render :json => @alternative_components }
       end
     end
 
@@ -63,7 +63,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # show.html.erb
-        format.json { render json: @alternative_component }
+        format.json { render :json => @alternative_component }
       end
     end
 
@@ -74,7 +74,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # new.html.erb
-        format.json { render json: @alternative_component }
+        format.json { render :json => @alternative_component }
       end
     end
 
@@ -90,11 +90,11 @@ module TavernaLite
 
       respond_to do |format|
         if @alternative_component.save
-          format.html { redirect_to @alternative_component, notice: 'Alternative component was successfully created.' }
-          format.json { render json: @alternative_component, status: :created, location: @alternative_component }
+          format.html { redirect_to @alternative_component, :notice => 'Alternative component was successfully created.' }
+          format.json { render :json => @alternative_component, :status =>  :created, location: @alternative_component }
         else
           format.html { render action: "new" }
-          format.json { render json: @alternative_component.errors, status: :unprocessable_entity }
+          format.json { render :json => @alternative_component.errors, :status =>  :unprocessable_entity }
         end
       end
     end
@@ -106,11 +106,11 @@ module TavernaLite
 
       respond_to do |format|
         if @alternative_component.update_attributes(params[:alternative_component])
-          format.html { redirect_to @alternative_component, notice: 'Alternative component was successfully updated.' }
+          format.html { redirect_to @alternative_component, :notice => 'Alternative component was successfully updated.' }
           format.json { head :no_content }
         else
           format.html { render action: "edit" }
-          format.json { render json: @alternative_component.errors, status: :unprocessable_entity }
+          format.json { render :json => @alternative_component.errors, :status =>  :unprocessable_entity }
         end
       end
     end
