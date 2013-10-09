@@ -14,18 +14,20 @@ if ActiveSupport::TestCase.method_defined?(:fixture_path=)
   ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
 end
 
+
+# Code added from https://github.com/rails/rails/issues/4971
+# to fix non running tests
+
 class ActiveSupport::TestCase
   fixtures :all
 end
 
-if ActionDispatch::IntegrationTest.method_defined?(:fixture_path=)
-  ActionDispatch::IntegrationTest.fixture_path = File.expand_path("../fixtures", __FILE__)
-end
-
-module Taverna_Lite
+module TavernaLite
   class ActionController::TestCase
     setup do
       @routes = Engine.routes
     end
   end
 end
+
+# still not loading dummy fixtures
