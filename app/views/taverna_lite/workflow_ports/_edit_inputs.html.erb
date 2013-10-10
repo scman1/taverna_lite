@@ -54,36 +54,28 @@
   <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'inputs' %>
    <% @custom_inputs.each do |item| %>
+     <!-- Get the original sample and description values from t2flow -->
      <% portname = item.name %>
-     <!-- Use sources to get the original sample and descriptio values -->
      <% example_value = @sources[portname].blank? ? "": @sources[portname] -%>
+     <% descr= @source_descriptions[portname].blank? ? "" : @source_descriptions[portname] -%>
      <h3> <%= label_tag portname %></h3>
      <dl class='list_any'>
-       <dt class='list_title'>Description:</dt>
-       <% descr= @source_descriptions[portname].blank? ? "Not Provided" : @source_descriptions[portname] -%>
+       <dt class='list_title'>Name:</dt>
        <dd class='list_description'>
-         <%= render :partial => 'partials/taverna_lite/toggle_content',
-           :locals => {:content_label => "desc_"+ portname, :content => descr } %>
+         <%= f.text_field "name_for_#{portname}", :value => portname,
+           :onclick => '$(this).select();', :style =>'width:95%'  %>
+       </dd>
+       <dt class='list_title'>Description:</dt>
+       <dd class='list_description'>
+         <%= f.text_area "description_for_#{portname}", :value => descr, :rows => 3,
+           :onclick => '$(this).select();', :style =>'width:95%'  %>
        </dd>
        <dt class='list_title'>Example Value:</dt>
        <dd class='list_description'>
-         <%= render :partial => 'partials/taverna_lite/toggle_content',
-           :locals => {:content_label => "cit_"+ portname, :content => example_value } %>
-       </dd>
-     </dl>
-     <h3>
-       Customise <%= label_tag portname %>
-       <%= f.check_box  "customise_#{portname}", :checked => !item.id.nil? -%>
-     </h3>
-     <% example_value = !item.id.nil? ? item.sample_value : example_value -%>
-     <!-- Use custom_inputs to load saved customisation values -->
-     <dl class='list_any'>
-       <dt class='list_title'>Enter Value:</dt>
-       <dd class='list_description'>
-         <%= f.text_area portname, :value => example_value, :rows => 1,
+         <%= f.text_area portname, :value => example_value, :rows => 3,
            :onclick => '$(this).select();', :style =>'width:95%' %>
        </dd>
-       <dt class='list_title'>Select File:</dt>
+       <dt class='list_title'>Example File:</dt>
        <dd class='list_description'>
          <%= f.file_field  "file_for_#{portname}" %>
          <%= item.sample_file.nil? ? "No sample" : "Current: " + item.sample_file -%>

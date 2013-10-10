@@ -41,57 +41,30 @@
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
+require 'test_helper'
 
-# The classes in the dummy app should not be tested. Maybe we should focus on
-# integration tests. Cannot get these to pass so leave them for now.
-
-#require 'test_helper'
-
-#class WorkflowsControllerTest < ActionController::TestCase
-
-#  setup do
-#    @workflow = workflows(:one)
-#  end
-
-#  test "should get index" do
-#    get :index
-#    assert_response :success
-#    assert_not_nil assigns(:workflows)
-#  end
-
-#  test "should get new" do
-#    get :new
-#    assert_response :success
-#  end
-
-#  test "should create workflow" do
-#    assert_difference('Workflow.count') do
-#      post :create, workflow: { author: @workflow.author, description: @workflow.description, is_shared: @workflow.is_shared, my_experiment_id: @workflow.my_experiment_id, name: @workflow.name, title: @workflow.title, user_id: @workflow.user_id, workflow_file: @workflow.workflow_file }
-#    end
-
-#    assert_redirected_to workflow_path(assigns(:workflow))
-#  end
-
-#  test "should show workflow" do
-#    get :show, id: @workflow
-#    assert_response :success
-#  end
-
-#  test "should get edit" do
-#    get :edit, id: @workflow
-#    assert_response :success
-#  end
-
-#  test "should update workflow" do
-#    put :update, id: @workflow, workflow: { author: @workflow.author, description: @workflow.description, is_shared: @workflow.is_shared, my_experiment_id: @workflow.my_experiment_id, name: @workflow.name, title: @workflow.title, user_id: @workflow.user_id, workflow_file: @workflow.workflow_file }
-#    assert_redirected_to workflow_path(assigns(:workflow))
-#  end
-
-#  test "should destroy workflow" do
-#    assert_difference('Workflow.count', -1) do
-#      delete :destroy, id: @workflow
-#    end
-
-#    assert_redirected_to workflows_path
-#  end
-#end
+module TavernaLite
+  class WorkflowPortsControllerTest < ActionController::TestCase
+    setup do
+      @workflow_port = taverna_lite_workflow_ports(:one)
+    end
+    test "should update workflow_port" do
+      # problem 1: Needs to have a valid workflow even if the workflow is not
+      #            part of taverna_lite
+      # solution:  Add the workflow fixture at test/fixtures not in dummy and
+      #            not in test/fixtures/taverna_lite
+      # problem 2: profile reads from a workflow file so need an actual workflow
+      #            file for tests
+      # solution:  Specify workflow id and add workflow file to that id on dummy
+      #             workflows path under specified id
+      put :save_custom_inputs, id: @workflow_port, workflow_port: {
+        workflow_id: @workflow_port.workflow_id,
+        port_type_id: @workflow_port.port_type_id,
+        display_name: @workflow_port.display_name}, use_route: :taverna_lite
+      # problem 3: redirecting to the edit path, default should be:
+      #        assert_redirected_to workflow_ports_path(assigns(:workflow_port))
+      #            but controller is redirecting back to edit so changed to:
+      assert_redirected_to edit_workflow_profile_path(@workflow_port.workflow_id)
+    end
+  end
+end

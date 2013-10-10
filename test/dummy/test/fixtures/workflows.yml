@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
+  id: 1
   title: MyString
   author: MyString
   description: MyText
@@ -11,6 +12,7 @@ one:
   is_shared: false
 
 two:
+  id: 2
   title: MyString
   author: MyString
   description: MyText

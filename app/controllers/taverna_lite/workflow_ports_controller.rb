@@ -68,10 +68,10 @@ module TavernaLite
       @input_desc.each do |indiv_in|
         i_name = indiv_in[0]
         file_for_i = "file_for_"+i_name
-        customise_i = "customise_"+i_name
         display_i = "display_for_"+i_name
-        if ((params[:file_uploads].include? i_name) &&
-            params[:file_uploads][customise_i] == "1") &&
+        description_i = "description_for_"+i_name
+        new_name_i = "name_for_"+i_name
+        if (params[:file_uploads].include? i_name) &&
             ((params[:file_uploads].include? file_for_i) ||
              (params[:file_uploads][i_name] != ""))
           # verify if customised input exists
@@ -86,6 +86,7 @@ module TavernaLite
           @wfp.port_type_id = 1 # 1 = input
           @wfp.name = i_name
           @wfp.display_control_id = params[:file_uploads][display_i]
+          @wfp.description = params[:file_uploads][description_i]
           if params[:file_uploads].include? file_for_i
             #save file
             @wfp.file_content = params[:file_uploads][file_for_i].tempfile
