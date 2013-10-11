@@ -96,11 +96,9 @@ module TavernaLite
           end
           if params[:file_uploads][i_name] != "" &&
             @wfp.example != params[:file_uploads][i_name]
-            # save example value
             @wfp.old_example = @wfp.example
             @wfp.example = params[:file_uploads][i_name]
           end
-
           @wfp.display_control_id = params[:file_uploads][display_i]
           @wfp.example_type = params[:file_uploads][type_i]
           if params[:file_uploads].include? file_for_i
@@ -111,6 +109,7 @@ module TavernaLite
           end
           #save the customisation
           @wfp.save
+          # now need to save changes to t2flow file
         end
       end
     end

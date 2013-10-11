@@ -86,20 +86,8 @@ module TavernaLite
       @workflow.description = description
       # open the workflow file
       xmlFile = @workflow.workflow_filename
-      document = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
-      # add annotations (title, author, description)
-      insert_annotation(document, "author", author)
-      insert_annotation(document, "description", description)
-      insert_annotation(document, "title", title)
-      # get the name node
-      name_node = get_node(document.root,'dataflow/name')
-      # add name
-      name_node.content = name
-      document.root["producedBy"]="TavernaLite_v_0.3.8"
-      # save workflow in the host app passing the file
-      File.open(xmlFile, "w:UTF-8") do |f|
-        f.write document.root
-      end
+      writer = T2flowWriter.new
+      writer.save_wf_annotations(xmlFile, author, description, title, name)
       @workflow.save
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow annotations updated'}
@@ -201,6 +189,5 @@ module TavernaLite
       end
       return component_alternatives
     end
-
   end #Class: WorkflowProfilesController
 end # Module: TavernaLite
