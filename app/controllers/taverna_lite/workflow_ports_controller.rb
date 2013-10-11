@@ -75,16 +75,20 @@ module TavernaLite
             ((params[:file_uploads].include? file_for_i) ||
              (params[:file_uploads][i_name] != ""))
           # verify if customised input exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", "1", i_name, @workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
             @wfp = wfps[0]
+            # save old values
+            @wfp.old_name = @wfp.name
+            @wfp.old_description = @wfp.description
+            @wfp.old_example = @wfp.example
           end
           #get values for customised input
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 1 # 1 = input
-          @wfp.name = i_name
+          @wfp.name = params[:file_uploads][new_name_i]
           @wfp.display_control_id = params[:file_uploads][display_i]
           @wfp.description = params[:file_uploads][description_i]
           if params[:file_uploads].include? file_for_i
@@ -95,18 +99,10 @@ module TavernaLite
           end
           if params[:file_uploads][i_name] != ""
             #save value
-            @wfp.sample_value = params[:file_uploads][i_name]
+            @wfp.example = params[:file_uploads][i_name]
           end
           #save the customisation
           @wfp.save
-        elsif params[:file_uploads][customise_i] == "0"
-          # reset port customisation
-          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
-          unless wfps.empty?
-            @wfp = wfps[0]
-            @wfp.delete_files
-            @wfp.destroy
-          end
         end
       end
     end

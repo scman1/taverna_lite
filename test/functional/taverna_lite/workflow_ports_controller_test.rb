@@ -48,7 +48,28 @@ module TavernaLite
     setup do
       @workflow_port = taverna_lite_workflow_ports(:one)
     end
-    test "should update workflow_port" do
+    test "just test put" do
+      # test using this hash
+      # {"utf8"=>"✓",
+      #   "authenticity_token"=>"Z4adsGTugcMb3fMCaBr17g/wjmVnzTtwotCGbLJr9w0=",
+      #   "workflow_id"=>"1", "selected_tab"=>"components",
+      #   "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
+      #   "description_for_name"=>"Your name for the greeting","name"=>"World!",
+      #   "display_for_name"=>"1"}, "commit"=>"Save", "id"=>"126"}
+      # try 01: breaks after ["utf8"=>"✓",], remove and retry
+      # try 02: forgot to change id to 1, change and retry
+      # try 03: successful, will try removing non essential vars,
+      #         start with autenticity token and retry
+      # try 04: successful, all remaining vars are used in the method so will
+      #         leave as it is for now
+      put :save_custom_inputs, {"workflow_id"=>"1","selected_tab"=>"components",
+        "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
+        "description_for_name"=>"Your name for the greeting",
+        "name"=>"World!", "display_for_name"=>"1"}, "commit"=>"Save", "id"=>"1"}
+      assert_redirected_to edit_workflow_profile_path(1)
+    end
+    test "should not update workflow_port if no changes" do
+      old_port = @workflow_port
       # problem 1: Needs to have a valid workflow even if the workflow is not
       #            part of taverna_lite
       # solution:  Add the workflow fixture at test/fixtures not in dummy and
@@ -56,15 +77,32 @@ module TavernaLite
       # problem 2: profile reads from a workflow file so need an actual workflow
       #            file for tests
       # solution:  Specify workflow id and add workflow file to that id on dummy
-      #             workflows path under specified id
-      put :save_custom_inputs, id: @workflow_port, workflow_port: {
-        workflow_id: @workflow_port.workflow_id,
-        port_type_id: @workflow_port.port_type_id,
-        display_name: @workflow_port.display_name}, use_route: :taverna_lite
-      # problem 3: redirecting to the edit path, default should be:
+      #            workflows path under specified id
+      # problem 3: the parameters are not being passed correctly so the method
+      #            is not actually working.
+      # solution:  test only using put to see if it works OK, then fix put
+      put :save_custom_inputs, {"workflow_id"=>@workflow_port.workflow_id,
+        "selected_tab"=>"components", "selected_choice"=>"inputs",
+        "file_uploads"=>{"name_for_name"=>@workflow_port.name,
+        "description_for_name"=>@workflow_port.description,
+        @workflow_port.name => @workflow_port.example, "display_for_name"=>"1"},
+        "commit"=>"Save", "id"=>@workflow_port.workflow_id}
+      # problem 4: by default redirecting to the edit path, default should be:
       #        assert_redirected_to workflow_ports_path(assigns(:workflow_port))
-      #            but controller is redirecting back to edit so changed to:
+      #        but controller is redirecting back to edit so changed to:
       assert_redirected_to edit_workflow_profile_path(@workflow_port.workflow_id)
+      # now need to assert that when saving, the previous annotation is saved in
+      # the previous name, description and example fields are saved on the disp
+      # fileds
+      @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
+      puts "\nold_name saved: " + @saved_wfp.old_name + ", old_desription saved: " + @saved_wfp.old_description + ", old_example saved: " + @saved_wfp.old_example
+      puts "\nname saved: " + @saved_wfp.name + ", desription saved: " + @saved_wfp.description + ", example saved: " + @saved_wfp.example
+      assert_equal(@workflow_port.name, @saved_wfp.old_name)
+      assert_equal(@workflow_port.description, @saved_wfp.old_description)
+      assert_equal(@workflow_port.example, @saved_wfp.old_example)
+      assert_equal(@workflow_port.name, @saved_wfp.name)
+      assert_equal(@workflow_port.description, @saved_wfp.description)
+      assert_equal(@workflow_port.example, @saved_wfp.example)
     end
   end
 end

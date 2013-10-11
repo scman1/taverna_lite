@@ -94,9 +94,9 @@ module TavernaLite
           missing_port.display_control_id = 1 # default display control
           example_values = source.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
-            missing_port.sample_value = example_values[0]
+            missing_port.example = example_values[0]
           else
-            missing_port.sample_value = ""
+            missing_port.example = ""
           end
           custom_inputs << missing_port
         end
@@ -144,9 +144,9 @@ module TavernaLite
           missing_port.display_control_id = 1 # default display control
           example_values = sink.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
-            missing_port.sample_value = example_values[0]
+            missing_port.example = example_values[0]
           else
-            missing_port.sample_value = ""
+            missing_port.example = ""
           end
           custom_outputs << missing_port
         end

@@ -44,11 +44,14 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+# One is the input of the Hello Anyone Workflow, workflow 1 points to
+# HelloAnyone.t2flow
 one:
   id: 1
   port_type_id: 1
-  name: "Input Port 1"
-  description: "Provide Input as Text"
+  name: "name"
+  description: "Your name for the greeting"
+  example: "World!"
   order: 1
   workflow_id: 1
 
@@ -57,5 +60,6 @@ two:
   port_type_id: 1
   name: "Input Port 2"
   description: "Provide Input as Text"
+  example: "sample"
   order: 1
   workflow_id: 1
