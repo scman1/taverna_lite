@@ -43,8 +43,9 @@
 # through the grant agreement number 283359.
 module TavernaLite
   class WorkflowPort < ActiveRecord::Base
-    attr_accessible :description, :display_control_id, :name, :old_description,
-      :old_example, :old_name, :order, :port_type_id, :example, :workflow_id
+    attr_accessible :description, :display_control_id, :example, :example_type,
+      :name, :old_description, :old_example, :old_name, :order, :port_type_id,
+      :workflow_id
     # Each port will be mapped to a workflow in the main application
     belongs_to :workflow, :class_name => TavernaLite.workflow_class
     # Before saving the port, set the workflow to which it has been associated

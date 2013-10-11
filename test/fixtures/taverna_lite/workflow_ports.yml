@@ -52,6 +52,9 @@ one:
   name: "name"
   description: "Your name for the greeting"
   example: "World!"
+  old_name: ""
+  old_description: ""
+  old_example: ""
   order: 1
   workflow_id: 1
 
@@ -61,5 +64,8 @@ two:
   name: "Input Port 2"
   description: "Provide Input as Text"
   example: "sample"
+  old_name: ""
+  old_description: ""
+  old_example: ""
   order: 1
   workflow_id: 1

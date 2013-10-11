@@ -68,6 +68,7 @@ module TavernaLite
         "name"=>"World!", "display_for_name"=>"1"}, "commit"=>"Save", "id"=>"1"}
       assert_redirected_to edit_workflow_profile_path(1)
     end
+
     test "should not update workflow_port if no changes" do
       old_port = @workflow_port
       # problem 1: Needs to have a valid workflow even if the workflow is not
@@ -95,14 +96,33 @@ module TavernaLite
       # the previous name, description and example fields are saved on the disp
       # fileds
       @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
-      puts "\nold_name saved: " + @saved_wfp.old_name + ", old_desription saved: " + @saved_wfp.old_description + ", old_example saved: " + @saved_wfp.old_example
-      puts "\nname saved: " + @saved_wfp.name + ", desription saved: " + @saved_wfp.description + ", example saved: " + @saved_wfp.example
-      assert_equal(@workflow_port.name, @saved_wfp.old_name)
-      assert_equal(@workflow_port.description, @saved_wfp.old_description)
-      assert_equal(@workflow_port.example, @saved_wfp.old_example)
+      assert_equal(@workflow_port.old_name, @saved_wfp.old_name)
+      assert_equal(@workflow_port.old_description, @saved_wfp.old_description)
+      assert_equal(@workflow_port.old_example, @saved_wfp.old_example)
       assert_equal(@workflow_port.name, @saved_wfp.name)
       assert_equal(@workflow_port.description, @saved_wfp.description)
       assert_equal(@workflow_port.example, @saved_wfp.example)
+    end
+
+    test "should update workflow_port name description and example" do
+      old_port = @workflow_port
+      # Change description and save
+      put :save_custom_inputs, {"workflow_id"=>@workflow_port.workflow_id,
+        "selected_tab"=>"components", "selected_choice"=>"inputs",
+        "file_uploads"=>{"name_for_name"=>"newname",
+        "description_for_name"=>"New description",
+        @workflow_port.name => "New example", "display_for_name"=>"1"},
+        "commit"=>"Save", "id"=>@workflow_port.workflow_id}
+      # verify that redirects correctly
+      assert_redirected_to edit_workflow_profile_path(@workflow_port.workflow_id)
+      # verify that the new values are aved and old ones are stored
+      @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
+      assert_equal(@workflow_port.name, @saved_wfp.old_name)
+      assert_equal("newname", @saved_wfp.name)
+      assert_equal(@workflow_port.description, @saved_wfp.old_description)
+      assert_equal("New description", @saved_wfp.description)
+      assert_equal(@workflow_port.example, @saved_wfp.old_example)
+      assert_equal("New example", @saved_wfp.example)
     end
   end
 end

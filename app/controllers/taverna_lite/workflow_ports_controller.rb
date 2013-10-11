@@ -69,6 +69,7 @@ module TavernaLite
         i_name = indiv_in[0]
         file_for_i = "file_for_"+i_name
         display_i = "display_for_"+i_name
+        type_i = "type_for_"+i_name
         description_i = "description_for_"+i_name
         new_name_i = "name_for_"+i_name
         if (params[:file_uploads].include? i_name) &&
@@ -80,26 +81,33 @@ module TavernaLite
             @wfp = WorkflowPort.new()
           else
             @wfp = wfps[0]
-            # save old values
-            @wfp.old_name = @wfp.name
-            @wfp.old_description = @wfp.description
-            @wfp.old_example = @wfp.example
           end
           #get values for customised input
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 1 # 1 = input
-          @wfp.name = params[:file_uploads][new_name_i]
+          # save only if there are changes, else leave unchanged
+          if @wfp.name != params[:file_uploads][new_name_i]
+             @wfp.old_name = @wfp.name
+             @wfp.name = params[:file_uploads][new_name_i]
+          end
+          if @wfp.description != params[:file_uploads][description_i]
+            @wfp.old_description = @wfp.description
+            @wfp.description = params[:file_uploads][description_i]
+          end
+          if params[:file_uploads][i_name] != "" &&
+            @wfp.example != params[:file_uploads][i_name]
+            # save example value
+            @wfp.old_example = @wfp.example
+            @wfp.example = params[:file_uploads][i_name]
+          end
+
           @wfp.display_control_id = params[:file_uploads][display_i]
-          @wfp.description = params[:file_uploads][description_i]
+          @wfp.example_type = params[:file_uploads][type_i]
           if params[:file_uploads].include? file_for_i
             #save file
             @wfp.file_content = params[:file_uploads][file_for_i].tempfile
             @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
             @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
-          end
-          if params[:file_uploads][i_name] != ""
-            #save value
-            @wfp.example = params[:file_uploads][i_name]
           end
           #save the customisation
           @wfp.save
