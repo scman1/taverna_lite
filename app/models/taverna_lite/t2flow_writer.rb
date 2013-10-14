@@ -45,7 +45,8 @@
 # A class to handle writing changes to workflow file
 module TavernaLite
   class T2flowWriter
-    def save_wf_annotations(xml_filename, author, description, title, name)
+     TLVersion = "TavernaLite_v_0.3.9"
+     def save_wf_annotations(xml_filename, author, description, title, name)
       document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
       # add annotations (title, author, description)
       insert_annotation(document, "author", author)
@@ -55,12 +56,31 @@ module TavernaLite
       name_node = get_node(document.root,'dataflow/name')
       # add name
       name_node.content = name
-      document.root["producedBy"]="TavernaLite_v_0.3.8"
+      document.root["producedBy"] = TLVersion
       # save workflow in the host app passing the file
       File.open(xml_filename, "w:UTF-8") do |f|
         f.write document.root
       end
     end
+
+    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val)
+      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
+      # find the port node
+      port_node = get_node_containing(document.root,'dataflow/inputPorts/port/name', port_name)
+      # add annotations (description, example)
+      insert_port_annotation(port_node, "description", description)
+      insert_port_annotation(port_node, "example", example_val)
+      # get the name node
+      name_node = get_node(port_node,'name')
+      # add name
+      name_node.content = new_name
+      document.root["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
     #with "prefix" and "prefix_uri" as
@@ -171,6 +191,35 @@ module TavernaLite
     def insert_annotation(xml_doc = nil, annotation_type = "author",
       annotation_text = "Unknown")
       annotations = get_node(xml_doc.root,'dataflow/annotations')
+      annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
+      case annotation_type
+        when "author"
+          annotation_bean += ".Author"
+        when "description"
+          annotation_bean += ".FreeTextDescription"
+        when "title"
+          annotation_bean += ".DescriptiveTitle"
+        when "example"
+          annotation_bean += ".ExampleValue"
+        else
+          annotation_bean += ".FreeTextDescription"
+      end
+      #check if there is already an annotation of this type in the workflow
+      new_ann = nil
+      annotations.children.each do |ann|
+        if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
+          new_ann = ann.children[0].children[0].children[0].children[0].children[0]
+          new_ann.content = ERB::Util.html_escape(annotation_text.to_s)
+          break
+        end
+      end
+      if new_ann.nil?
+        annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
+      end
+    end
+    def insert_port_annotation(node = nil, annotation_type = "decription",
+      annotation_text = "Blank")
+      annotations = get_node(node,'annotations')
       annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
       case annotation_type
         when "author"

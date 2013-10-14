@@ -45,13 +45,10 @@ require 'test_helper'
 
 module TavernaLite
   class T2flowWriterTest < ActiveSupport::TestCase
-    # test saving workflow annotations, need to pass a valid workflow file and
-    # values for name, description, title and author
-    # need to call t2flow to read and validate that saved workflow is t2flow
     setup do
-      # need a set up with the value of the workflow file path
-      # copy the file so that it can be used in different tests
-      #start with HelloAnyone Workflow
+      # need a set up with the value of the workflow file path copy the file so
+      # that it can be used in different tests
+      # using  HelloAnyone Workflow for testing workflow annotation
       @fixture_path = ActiveSupport::TestCase.fixture_path
       from_here = @fixture_path+'/test_workflows/HelloAnyone.t2flow'
       to_there = @fixture_path+'/test_workflows/test_result/HelloAnyone.t2flow'
@@ -63,15 +60,15 @@ module TavernaLite
       description = "Extension to helloworld.t2flow\n\t The workflow takes a input \'name\' called which is combined with the string constant 'Hello'\n\t A local worker processor called 'Concatenate two strings' is used.\n\t The output is the concatenated string 'greeting'"
       name =  "Hello_Anyone"
       title = "Hello Anyone"
-      # modify the file by writing annotations
+      # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
       writer.save_wf_annotations(@workflow_file_path , author, description, title, name)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(model, nil)
-      # verify that the fileannotaions in the file are
-      # the same as those passed as parameters
+      # verify that the file annotaions are the same as those passed as
+      # parameters
       m_name = model.name
       m_author = model.annotations.authors[0].to_s
       m_title = model.annotations.titles[0].to_s
@@ -81,5 +78,34 @@ module TavernaLite
       assert_equal(m_title, title)
       assert_equal(m_description,  ERB::Util.html_escape(description))
     end
+    test "should_uptate_input_annotations" do
+      port_name = "name"
+      new_name = "name"
+      description = "The name that will be concatenated with the 'Hello ' string"
+      example_val= "Wonderful World!"
+      # modify the t2flow file by writing annotations
+      writer = T2flowWriter.new
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      # verify that the file is t2flow
+      file_data = File.open(@workflow_file_path)
+      # verify that the file is t2flow
+      model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(model, nil)
+      # verify that the file annotaions are the same as those passed as
+      # parameters
+      #get the input port name description and example values
+      port_name = ""
+      port_example = ""
+      port_description = ""
+      model.sources.each do |source|
+        port_name = source.name
+        port_example = source.example_values[0]
+        port_description = source.descriptions[0]
+      end
+      assert_equal(port_name,new_name)
+      assert_equal(port_example,example_val)
+      assert_equal(port_description,ERB::Util.html_escape(description))
+    end
+    #Pending test changing the name to the port, this is not trivial needs some work
   end
 end
