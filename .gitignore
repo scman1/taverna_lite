@@ -9,6 +9,7 @@ test/dummy/log/*.log
 test/dummy/tmp/
 test/dummy/.sass-cache
 test/dummy/public/*
+test/fixtures/test_workflows/test_result/*.t2flow
 read_script/*
 anotation_snips.xml
 parsing.rb

@@ -44,21 +44,34 @@
 require 'test_helper'
 
 module TavernaLite
-  class PortTypeTest < ActiveSupport::TestCase
+  class T2flowWriterTest < ActiveSupport::TestCase
     # test saving workflow annotations, need to pass a valid workflow file and
     # values for name, description, title and author
-    # will call t2flow to read and validate that save workflow is t2flow
-    test "the truth" do
+    # need to call t2flow to read and validate that saved workflow is t2flow
+    setup do
       # need a set up with the value of the workflow file path
       # copy the file so that it can be used in different tests
+      #start with HelloAnyone Workflow
+      @fixture_path = ActiveSupport::TestCase.fixture_path
+      from_here = @fixture_path+'/test_workflows/HelloAnyone.t2flow'
+      to_there = @fixture_path+'/test_workflows/test_result/HelloAnyone.t2flow'
+      FileUtils.cp from_here, to_there
+      @workflow_file_path = to_there
+    end
+    test "should update_workflow_annotations" do
+      author = "Jonny A. Notator"
+      description = "Extension to helloworld.t2flow\n\t this workflow takes a workflow input 'name' which is combined with the string constant 'Hello', using the local worker 'Concatenate two strings'.\nThe output is the concatenated string 'greeting'"
+      name =  "Hello_Anyone"
+      title = "Hello Anyone (Hello World V2)"
       # modify the file by writing annotations
+      writer = T2flowWriter.new
+      writer.save_wf_annotations(@workflow_file_path , author, description, title, name)
       # verify that the file is t2flow
-      # verify that the file values for name,author, description and title are
+      file_data = File.open(@workflow_file_path)
+      model = T2Flow::Parser.new.parse(file_data)
+      assert !model.nil?
+      # verify that the fileannotaions in the file are
       # the same as those passed as parameters
-      # writer = T2flowWriter.new
-      # writer.save_wf_annotations(xmlFile, author, description, title, name)
-      assert true
-      assert true
     end
   end
 end
