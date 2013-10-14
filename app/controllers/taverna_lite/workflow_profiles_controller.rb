@@ -136,8 +136,9 @@ module TavernaLite
       processors.each do |proc|
         if proc.type == 'component'
           wfc = WorkflowComponent.new()
-          a=get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name)
-          b=get_node(a,"activities/activity/configBean")
+          writer = T2flowWriter.new
+          a=writer.get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name)
+          b=writer.get_node(a,"activities/activity/configBean")
           #extract component info from the file
           b.children[0].each do |cacb|
             case cacb.name

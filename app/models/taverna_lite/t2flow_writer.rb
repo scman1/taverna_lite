@@ -197,5 +197,43 @@ module TavernaLite
         annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
       end
     end
-  end
-end
+    # replace a component
+    def replace_component(xmlFile,processor_name,replacement_id)
+      # get the workflow file and parse it as an XML document
+      doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
+      #replace the component
+      replace_workflow_components(doc,processor_name,replacement_id)
+      #label the workflow as produced by taverna lite
+      doc.root["producedBy"]="TavernaLite_v_0.3.8"
+      # save workflow in the host app passing the file
+      File.open(xmlFile, "w:UTF-8") do |f|
+        f.write doc.root
+      end
+    end
+
+    # replace a components on a given workflow
+    def replace_workflow_components(doc,processor_name,replacement_id)
+      replacement_component = WorkflowComponent.find(replacement_id)
+      writer = T2flowWriter.new
+      a=writer.get_node_containing(doc.root,'dataflow/processors/processor/name/', processor_name)
+      b=writer.get_node(a,"activities/activity/configBean")
+      #put component info in the child node
+      b.children[0].each do |cacb|
+        case cacb.name
+          when 'registryBase'
+          # node name: registryBase content
+            cacb.content = replacement_component.registry
+          when 'familyName'
+          # node name: familyName content
+            cacb.content = replacement_component.family
+          when 'componentName'
+          # node name: componentName content
+            cacb.content = replacement_component.name
+          when 'componentVersion'
+          # node name: componentVersion content
+            cacb.content = replacement_component.version.to_s
+        end
+      end
+    end # method replace_workflow_components
+  end # class
+end # module
