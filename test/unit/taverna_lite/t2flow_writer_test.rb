@@ -59,19 +59,27 @@ module TavernaLite
       @workflow_file_path = to_there
     end
     test "should update_workflow_annotations" do
-      author = "Jonny A. Notator"
-      description = "Extension to helloworld.t2flow\n\t this workflow takes a workflow input 'name' which is combined with the string constant 'Hello', using the local worker 'Concatenate two strings'.\nThe output is the concatenated string 'greeting'"
+      author = "Stian Soiland Reyes"
+      description = "Extension to helloworld.t2flow\n\t The workflow takes a input \'name\' called which is combined with the string constant 'Hello'\n\t A local worker processor called 'Concatenate two strings' is used.\n\t The output is the concatenated string 'greeting'"
       name =  "Hello_Anyone"
-      title = "Hello Anyone (Hello World V2)"
+      title = "Hello Anyone"
       # modify the file by writing annotations
       writer = T2flowWriter.new
       writer.save_wf_annotations(@workflow_file_path , author, description, title, name)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       model = T2Flow::Parser.new.parse(file_data)
-      assert !model.nil?
+      assert_not_equal(model, nil)
       # verify that the fileannotaions in the file are
       # the same as those passed as parameters
+      m_name = model.name
+      m_author = model.annotations.authors[0].to_s
+      m_title = model.annotations.titles[0].to_s
+      m_description = model.annotations.descriptions[0].to_s
+      assert_equal(m_name,name)
+      assert_equal(m_author, author)
+      assert_equal(m_title, title)
+      assert_equal(m_description,  ERB::Util.html_escape(description))
     end
   end
 end

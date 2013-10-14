@@ -189,7 +189,7 @@ module TavernaLite
       annotations.children.each do |ann|
         if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
           new_ann = ann.children[0].children[0].children[0].children[0].children[0]
-          new_ann.content = ERB::Util.html_escape(annotation_text)
+          new_ann.content = ERB::Util.html_escape(annotation_text.to_s)
           break
         end
       end
