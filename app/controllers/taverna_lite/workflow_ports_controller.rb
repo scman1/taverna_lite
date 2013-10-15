@@ -90,8 +90,8 @@ module TavernaLite
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 1 # 1 = input
           # save only if there are changes, else leave unchanged
-          if @wfp.name != new_name
-             @wfp.old_name = @wfp.name
+          if port_name != new_name
+             @wfp.old_name = port_name
              @wfp.name = new_name
              t2flow_changes = true
           end
@@ -132,6 +132,18 @@ module TavernaLite
         wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", port_name)
         unless wfps.empty?
           @wfp = wfps[0]
+          old_name = @wfp.old_name
+          old_description = @wfp.old_description.to_s
+          old_example = @wfp.old_example.to_s
+          puts "***************************************************************"
+          puts "RESETING PORT:     " + port_name
+          puts "OLD NAME:        " + old_name
+          puts "OLD DESCRIPTION: " + old_description
+          puts "OLD EXAMPLE:     " + old_example
+          puts "***************************************************************"
+          xmlFile = @workflow.workflow_filename
+          writer = T2flowWriter.new
+          writer.save_wf_input_annotations(xmlFile, old_name, port_name, old_description, old_example)
           @wfp.delete_files
           @wfp.destroy
         end
@@ -189,8 +201,8 @@ module TavernaLite
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 2 # 2 = output
           # save only if there are changes, else leave unchanged
-          if @wfp.name != new_name
-             @wfp.old_name = @wfp.name
+          if port_name != new_name
+             @wfp.old_name = port_name
              @wfp.name = new_name
              t2flow_changes = true
           end

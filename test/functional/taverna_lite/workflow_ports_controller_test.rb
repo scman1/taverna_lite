@@ -50,12 +50,11 @@ module TavernaLite
     end
     test "just test put" do
       # test using this hash
-      # {"utf8"=>"✓",
-      #   "authenticity_token"=>"Z4adsGTugcMb3fMCaBr17g/wjmVnzTtwotCGbLJr9w0=",
-      #   "workflow_id"=>"1", "selected_tab"=>"components",
-      #   "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
-      #   "description_for_name"=>"Your name for the greeting","name"=>"World!",
-      #   "display_for_name"=>"1"}, "commit"=>"Save", "id"=>"126"}
+      # {"workflow_id"=>"1", "selected_tab"=>"components",
+      #  "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
+      #  "description_for_name"=>"The name for greeting string",
+      #  "name"=>"Dorothy!", "type_for_name"=>"1", "display_for_name"=>"1"},
+      #  "commit"=>"Save", "id"=>"1"}
       # try 01: breaks after ["utf8"=>"✓",], remove and retry
       # try 02: forgot to change id to 1, change and retry
       # try 03: successful, will try removing non essential vars,
@@ -65,7 +64,8 @@ module TavernaLite
       put :save_custom_inputs, {"workflow_id"=>"1","selected_tab"=>"components",
         "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
         "description_for_name"=>"Your name for the greeting",
-        "name"=>"World!", "display_for_name"=>"1"}, "commit"=>"Save", "id"=>"1"}
+        "name"=>"World!", "type_for_name"=>"1", "display_for_name"=>"1"},
+        "commit"=>"Save", "id"=>"1"}
       assert_redirected_to edit_workflow_profile_path(1)
     end
 
@@ -124,5 +124,6 @@ module TavernaLite
       assert_equal(@workflow_port.example, @saved_wfp.old_example)
       assert_equal("New example", @saved_wfp.example)
     end
+    # need to test resets
   end
 end
