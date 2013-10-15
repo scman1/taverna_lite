@@ -47,25 +47,30 @@
   <% if @sinks.count>0 %>
     <h3>
       This workflow has <%= @sinks.count %>
-      <%= "output".pluralize(@sinks.count)%>
+      <%= "output".pluralize(@sinks.count)%> that can be customised
     </h3>
-    <b>
-      The <%= "output".pluralize(@sinks.count) %> can be customised
-    </b>
-    <br/>
-    To customise an output:
+    Each output can be customised by
     <ol>
       <li>
-        Select the output (click on the check box)
+        Changing the output name
       </li>
       <li>
-        Provide a custom value and/or a file
+        Editing/Adding a description for the output
       </li>
       <li>
-        Select the output type (value, file or both)
+        Providing an example value
       </li>
       <li>
-        Repeat 1 - 3 for every output you want to customise
+        Providing the expected type of the output
+      </li>
+      <li>
+        Providing an example file
+      </li>
+      <li>
+        Selecting which the example will be shown (value or file)
+      </li>
+      <li>
+        Repeat 1 - 6 for every output you want to customise
       </li>
       <li>
         Click "Save" to save customised outputs

@@ -47,28 +47,30 @@
   <% if @sources.count>0 %>
     <h3>
       This workflow has <%= @sources.count %>
-      <%= "input".pluralize(@sources.count)%>
+      <%= "input".pluralize(@sources.count)%> that can be customised
     </h3>
-    <b>
-      The <%= "input".pluralize(@sources.count)%> can be customised.<br/>
-    </b>
-      To customise an input:
+    Each input can be customised by:
     <ol>
       <li>
-        Select the input to edit
-      </li>
-<ol>
-      <li>
-        Edit the port description
+        Changing the input name
       </li>
       <li>
-        Provide a sample valuecustom value and/or a file
+        Editing/Adding a description for the input
       </li>
       <li>
-        Select the input type (value, file or both)
+        Providing an example value
       </li>
-</ol>      <li>
-        Repeat 1 - 3 for every input you want to customise
+      <li>
+        Providing the expected type of the input
+      </li>
+      <li>
+        Providing an example file
+      </li>
+      <li>
+        Selecting how the input will be requested (value, file or both)
+      </li>
+      <li>
+        Repeat 1 - 6 for every input you want to customise
       </li>
       <li>
         Click "Save" to save customised inputs

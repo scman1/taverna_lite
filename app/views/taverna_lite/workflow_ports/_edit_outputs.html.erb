@@ -43,7 +43,9 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
+
 <div id="Outputs_component" class="div_component" style="display:none;">
+
 <% if @sinks.count>0 %>
 <%= form_for :file_uploads,
       :url => {:controller => 'workflow_ports', :action => 'save_custom_outputs'},
@@ -52,38 +54,34 @@
   <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'outputs' %>
    <% @custom_outputs.each do |item| %>
-     <% portname = item.name %>
      <!-- Use sinks to get the original sample and descriptio values -->
+     <% portname = item.name %>
      <% example_value = @sinks[portname].blank? ? "": @sinks[portname] -%>
-     <h3> <%= label_tag portname %></h3>
+     <% descr= @sink_descriptions[portname].blank? ? "" : @sink_descriptions[portname] -%>
+    <h3> <%= label_tag portname %></h3>
      <dl class='list_any'>
+       <dt class='list_title'>Name:</dt>
+       <dd class='list_description'>
+         <%= f.text_field "name_for_#{portname}", :value => portname,
+           :onclick => '$(this).select();', :style =>'width:95%'  %>
+       </dd>
        <dt class='list_title'>Description:</dt>
        <dd class='list_description'>
-         <% descr= @sink_descriptions[portname].blank? ? "Not Provided" : @sink_descriptions[portname] -%>
-       </dd>
-       <dd class='list_description'>
-         <%= render :partial => 'partials/taverna_lite/toggle_content',
-           :locals => {:content_label => "desc_"+ portname, :content => descr } %>
+         <%= f.text_area "description_for_#{portname}", :value => descr, :rows => 3,
+           :onclick => '$(this).select();', :style =>'width:95%'  %>
        </dd>
        <dt class='list_title'>Example Value:</dt>
        <dd class='list_description'>
-         <%= render :partial => 'partials/taverna_lite/toggle_content',
-           :locals => {:content_label => "cit_"+ portname, :content => example_value } %>
-       </dd>
-     </dl>
-     <h3>
-       Customise <%= label_tag portname %>
-       <%= f.check_box  "customise_#{portname}", :checked => !item.id.nil? -%>
-     </h3>
-     <% example_value = !item.id.nil? ? item.sample_value : example_value -%>
-     <!-- Use custom_inputs to load saved customisation values -->
-     <dl class='list_any'>
-       <dt class='list_title'>Enter Value:</dt>
-       <dd class='list_description'>
-         <%= f.text_area portname, :value => example_value, :rows => 1,
+         <%= f.text_area portname, :value => example_value, :rows => 3,
            :onclick => '$(this).select();', :style =>'width:95%' %>
        </dd>
-       <dt class='list_title'>Select File:</dt>
+       <dt class='list_title'>Value Type:</dt>
+       <dd class='list_description'>
+         <%= f.select "type_for_#{portname}",
+           options_for_select([["string", 1],["integer", 2], ["float", 3],
+                               ["census table", 4]], item.example_type_id) %>
+       </dd>
+       <dt class='list_title'>Example File:</dt>
        <dd class='list_description'>
          <%= f.file_field  "file_for_#{portname}" %>
          <%= item.sample_file.nil? ? "No sample" : "Current: " + item.sample_file -%>
