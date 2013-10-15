@@ -75,6 +75,12 @@
          <%= f.text_area portname, :value => example_value, :rows => 3,
            :onclick => '$(this).select();', :style =>'width:95%' %>
        </dd>
+       <dt class='list_title'>Value Type:</dt>
+       <dd class='list_description'>
+         <%= f.select "type_for_#{portname}",
+           options_for_select([["string", 1],["integer", 2], ["float", 3],
+                               ["census table", 4]], item.example_type_id) %>
+       </dd>
        <dt class='list_title'>Example File:</dt>
        <dd class='list_description'>
          <%= f.file_field  "file_for_#{portname}" %>

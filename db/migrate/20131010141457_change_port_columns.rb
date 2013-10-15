@@ -5,7 +5,7 @@ class ChangePortColumns < ActiveRecord::Migration
       t.rename :display_description, :old_description
       t.rename :sample_value, :example
       t.text :old_example
-      t.integer :example_type
+      t.integer :example_type_id
     end
   end
 
@@ -15,7 +15,7 @@ class ChangePortColumns < ActiveRecord::Migration
       t.rename :old_description, :display_description
       t.rename :example, :sample_value
       t.remove :old_example
-      t.remove :example_type
+      t.remove :example_type_id
     end
   end
 end

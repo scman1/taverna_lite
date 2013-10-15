@@ -66,58 +66,70 @@ module TavernaLite
 
     def save_inputs
       @input_desc.each do |indiv_in|
-        i_name = indiv_in[0]
-        file_for_i = "file_for_"+i_name
-        display_i = "display_for_"+i_name
-        type_i = "type_for_"+i_name
-        description_i = "description_for_"+i_name
-        new_name_i = "name_for_"+i_name
-        if (params[:file_uploads].include? i_name) &&
+        port_name = indiv_in[0]
+        file_for_i = "file_for_"+port_name
+        display_i = "display_for_"+port_name
+        type_i = "type_for_"+port_name
+        description_i = "description_for_"+port_name
+        new_name_i = "name_for_"+port_name
+        if (params[:file_uploads].include? port_name) &&
             ((params[:file_uploads].include? file_for_i) ||
-             (params[:file_uploads][i_name] != ""))
+             (params[:file_uploads][port_name] != ""))
           # verify if customised input exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", "1", i_name, @workflow.id)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", "1", port_name, @workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
             @wfp = wfps[0]
           end
+          new_name = params[:file_uploads][new_name_i]
+          new_description = params[:file_uploads][description_i]
+          new_example = params[:file_uploads][port_name]
+          this_changed=false
           #get values for customised input
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 1 # 1 = input
           # save only if there are changes, else leave unchanged
-          if @wfp.name != params[:file_uploads][new_name_i]
+          if @wfp.name != new_name
              @wfp.old_name = @wfp.name
-             @wfp.name = params[:file_uploads][new_name_i]
+             @wfp.name = new_name
+             this_changed = true
           end
-          if @wfp.description != params[:file_uploads][description_i]
+          if @wfp.description != new_description
             @wfp.old_description = @wfp.description
-            @wfp.description = params[:file_uploads][description_i]
+            @wfp.description = new_description
+            this_changed = true
           end
-          if params[:file_uploads][i_name] != "" &&
-            @wfp.example != params[:file_uploads][i_name]
+          if new_example != "" && @wfp.example != new_example
             @wfp.old_example = @wfp.example
-            @wfp.example = params[:file_uploads][i_name]
+            @wfp.example = new_example
+            this_changed = true
           end
           @wfp.display_control_id = params[:file_uploads][display_i]
-          @wfp.example_type = params[:file_uploads][type_i]
+          @wfp.example_type_id = params[:file_uploads][type_i]
           if params[:file_uploads].include? file_for_i
             #save file
             @wfp.file_content = params[:file_uploads][file_for_i].tempfile
             @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
             @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
           end
+          # now need to save changes to t2flow file if t2flow values are changed
+          # open the workflow file
+          if this_changed
+            xmlFile = @workflow.workflow_filename
+            writer = T2flowWriter.new
+            writer.save_wf_input_annotations(xmlFile, port_name, new_name, new_description, new_example)
+          end
           #save the customisation
           @wfp.save
-          # now need to save changes to t2flow file
         end
       end
     end
 
     def reset_inputs
       @input_desc.each do |indiv_in|
-        i_name = indiv_in[0]
-        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", i_name)
+        port_name = indiv_in[0]
+        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", port_name)
         unless wfps.empty?
           @wfp = wfps[0]
           @wfp.delete_files
@@ -152,16 +164,16 @@ module TavernaLite
 
     def save_outputs
       @output_desc.each do |indiv_in|
-        i_name = indiv_in[0]
-        file_for_i = "file_for_"+i_name
-        customise_i = "customise_"+i_name
-        display_i = "display_for_"+i_name
-        if ((params[:file_uploads].include? i_name) &&
+        port_name = indiv_in[0]
+        file_for_i = "file_for_"+port_name
+        customise_i = "customise_"+port_name
+        display_i = "display_for_"+port_name
+        if ((params[:file_uploads].include? port_name) &&
             params[:file_uploads][customise_i] == "1") &&
             ((params[:file_uploads].include? file_for_i) ||
-             (params[:file_uploads][i_name] != ""))
+             (params[:file_uploads][port_name] != ""))
           # verify if customised output exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", port_name)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
@@ -170,7 +182,7 @@ module TavernaLite
           #get values for customised output
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = 2 # 2 = output
-          @wfp.name = i_name
+          @wfp.name = port_name
           @wfp.display_control_id = params[:file_uploads][display_i]
           if params[:file_uploads].include? file_for_i
             # save file
@@ -178,15 +190,15 @@ module TavernaLite
             @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
             @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
           end
-          if params[:file_uploads][i_name] != ""
+          if params[:file_uploads][port_name] != ""
             #save value
-            @wfp.sample_value = params[:file_uploads][i_name]
+            @wfp.sample_value = params[:file_uploads][port_name]
           end
           #save the customisation
           @wfp.save
         elsif params[:file_uploads][customise_i] == "0"
           # reset port customisation
-          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", i_name)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", port_name)
           unless wfps.empty?
             @wfp = wfps[0]
             @wfp.delete_files

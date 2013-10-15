@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(:version => 20131010141457) do
     t.string   "sample_file_type"
     t.boolean  "show"
     t.text     "old_example"
-    t.integer  "example_type"
+    t.integer  "example_type_id"
   end
 
   create_table "taverna_lite_workflow_profiles", :force => true do |t|
