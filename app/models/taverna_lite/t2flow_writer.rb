@@ -63,7 +63,7 @@ module TavernaLite
       end
     end
 
-    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val)
+    def save_wf_input_annotations(xml_filename, port_name, new_name, description, example_val)
       document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
       port_node = get_node_containing(document.root,'dataflow/inputPorts/port/name', port_name)
@@ -85,6 +85,27 @@ module TavernaLite
       end
     end
 
+    def save_wf_output_annotations(xml_filename, port_name, new_name, description, example_val)
+      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
+      # find the port node
+      port_node = get_node_containing(document.root,'dataflow/outputPorts/port/name', port_name)
+      # add annotations (description, example)
+      insert_port_annotation(port_node, "description", description)
+      insert_port_annotation(port_node, "example", example_val)
+      # get the name node
+      name_node = get_node(port_node,'name')
+      # change the port name
+      if new_name != port_name
+        name_node.content = new_name
+        # need to change datalinks too
+        change_datalinks_for_output(document, port_name, new_name)
+      end
+      document.root["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
     #with "prefix" and "prefix_uri" as
@@ -279,6 +300,20 @@ module TavernaLite
       end while !data_link.nil?
     end # change_datalinks_for_input
 
+    # replace all datalinks referencing an output port on a workflow
+    def change_datalinks_for_output(doc, port_name, new_name)
+      writer = T2flowWriter.new
+      # loop through all datalinks containing port_name as sink
+      begin
+        # at least one data link should be found
+        data_link=writer.get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
+        unless data_link.nil?
+          data_link.children.each do |dl_part|
+            dl_part.content = new_name
+          end
+        end
+      end while !data_link.nil?
+    end # change_datalinks_for_output
     # replace a component on a workflow
     def replace_workflow_components(doc,processor_name,replacement_id)
       replacement_component = WorkflowComponent.find(replacement_id)
