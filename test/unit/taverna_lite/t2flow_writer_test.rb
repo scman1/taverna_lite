@@ -102,10 +102,41 @@ module TavernaLite
         port_example = source.example_values[0]
         port_description = source.descriptions[0]
       end
-      assert_equal(port_name,new_name)
       assert_equal(port_example,example_val)
       assert_equal(port_description,ERB::Util.html_escape(description))
     end
-    #Pending test changing the name to the port, this is not trivial needs some work
+    # Pending test changing the name to the port, not trivial needs some work
+    # need to also replace all refernces to the port for instance in datalinks
+    test "should_uptate_input_name" do
+      port_name = "name"
+      new_name = "greeting_name"
+      description = "The name that will be concatenated with the 'Hello ' string"
+      example_val= "Wonderful World!"
+      # modify the t2flow file by writing annotations
+      writer = T2flowWriter.new
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      # verify that the file is t2flow
+      file_data = File.open(@workflow_file_path)
+      # verify that the file is t2flow
+      model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(model, nil)
+      # verify that the file annotaions are the same as those passed as
+      # parameters
+      #get the input port name and verify it was changed
+      port_name = ""
+      model.sources.each do |source|
+        port_name = source.name
+      end
+      assert_equal(port_name,new_name)
+      # get the datalinks and verify they have been updated
+      found = ""
+      model.datalinks.each do |dl|
+        if dl.source == new_name
+          found = dl.source
+        end
+      end
+      assert_equal(found, new_name)
+    end
+    # Pending test of swap component
   end
 end

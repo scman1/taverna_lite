@@ -72,8 +72,12 @@ module TavernaLite
       insert_port_annotation(port_node, "example", example_val)
       # get the name node
       name_node = get_node(port_node,'name')
-      # add name
-      name_node.content = new_name
+      # change the port name
+      if new_name != port_name
+        name_node.content = new_name
+        # need to change datalinks too
+        change_datalinks_for_input(document, port_name, new_name)
+      end
       document.root["producedBy"] = TLVersion
       # save workflow in the host app passing the file
       File.open(xml_filename, "w:UTF-8") do |f|
@@ -260,7 +264,22 @@ module TavernaLite
       end
     end
 
-    # replace a components on a given workflow
+    # replace all datalinks referencing an input port on a workflow
+    def change_datalinks_for_input(doc, port_name, new_name)
+      writer = T2flowWriter.new
+      # loop through all datalinks containing port_name as source
+      begin
+        # at least one data link should be found
+        data_link=writer.get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
+        unless data_link.nil?
+          data_link.children.each do |dl_part|
+            dl_part.content = new_name
+          end
+        end
+      end while !data_link.nil?
+    end # change_datalinks_for_input
+
+    # replace a component on a workflow
     def replace_workflow_components(doc,processor_name,replacement_id)
       replacement_component = WorkflowComponent.find(replacement_id)
       writer = T2flowWriter.new
