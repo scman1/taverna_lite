@@ -63,10 +63,14 @@ module TavernaLite
       end
     end
 
-    def save_wf_input_annotations(xml_filename, port_name, new_name, description, example_val)
+    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val,port_type=1)
       document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
-      port_node = get_node_containing(document.root,'dataflow/inputPorts/port/name', port_name)
+      path_to_port = 'dataflow/inputPorts/port/name'
+      unless port_type == 1
+        path_to_port = 'dataflow/outputPorts/port/name'
+      end
+      port_node = get_node_containing(document.root,path_to_port, port_name)
       # add annotations (description, example)
       insert_port_annotation(port_node, "description", description)
       insert_port_annotation(port_node, "example", example_val)
@@ -76,7 +80,11 @@ module TavernaLite
       if new_name != port_name
         name_node.content = new_name
         # need to change datalinks too
-        change_datalinks_for_input(document, port_name, new_name)
+        if  port_type == 1
+          change_datalinks_for_input(document, port_name, new_name)
+        else
+          change_datalinks_for_output(document, port_name, new_name)
+        end
       end
       document.root["producedBy"] = TLVersion
       # save workflow in the host app passing the file
@@ -85,27 +93,6 @@ module TavernaLite
       end
     end
 
-    def save_wf_output_annotations(xml_filename, port_name, new_name, description, example_val)
-      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
-      # find the port node
-      port_node = get_node_containing(document.root,'dataflow/outputPorts/port/name', port_name)
-      # add annotations (description, example)
-      insert_port_annotation(port_node, "description", description)
-      insert_port_annotation(port_node, "example", example_val)
-      # get the name node
-      name_node = get_node(port_node,'name')
-      # change the port name
-      if new_name != port_name
-        name_node.content = new_name
-        # need to change datalinks too
-        change_datalinks_for_output(document, port_name, new_name)
-      end
-      document.root["producedBy"] = TLVersion
-      # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
-        f.write document.root
-      end
-    end
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
     #with "prefix" and "prefix_uri" as

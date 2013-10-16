@@ -85,7 +85,7 @@ module TavernaLite
       example_val= "Wonderful World!"
       # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
-      writer.save_wf_input_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val,1)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       # verify that the file is t2flow
@@ -114,7 +114,7 @@ module TavernaLite
       example_val= "Wonderful World!"
       # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
-      writer.save_wf_input_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val,1)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       # verify that the file is t2flow
@@ -152,7 +152,7 @@ module TavernaLite
       example_val= "Hello Wonderful World!"
       # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
-      writer.save_wf_output_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val,2)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       # verify that the file is t2flow
@@ -181,7 +181,7 @@ module TavernaLite
       example_val= "Hello Wonderful World!"
       # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
-      writer.save_wf_output_annotations(@workflow_file_path , port_name, new_name, description, example_val)
+      writer.save_wf_port_annotations(@workflow_file_path , port_name, new_name, description, example_val,2)
       # verify that the file is t2flow
       file_data = File.open(@workflow_file_path)
       # verify that the file is t2flow

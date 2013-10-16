@@ -50,7 +50,7 @@ module TavernaLite
       @workflow = Workflow.find(params[:id])
       @workflow_profile = WorkflowProfile.new()
       @workflow_profile.workflow_id = @workflow.id
-      @inputs, @input_desc = @workflow_profile.get_inputs
+      @ports_list, @port_desc_list = @workflow_profile.get_inputs
       if action == 'Save'
         save_ports
       elsif action == 'Reset'
@@ -70,7 +70,7 @@ module TavernaLite
       @workflow_profile = WorkflowProfile.new()
       @workflow_profile.workflow_id = @workflow.id
       # get outputs from the model and any customisation if they exist
-      @outputs, @output_desc = @workflow_profile.get_outputs
+      @ports_list, @port_desc_list = @workflow_profile.get_outputs
 
       selected_tab = params[:selected_tab]
       selected_choice = params[:selected_choice]
@@ -88,7 +88,7 @@ module TavernaLite
     end
 
     def save_ports(port_type=1)
-      @input_desc.each do |indiv_in|
+      @port_desc_list.each do |indiv_in|
         port_name = indiv_in[0]
         file_for_i = "file_for_"+port_name
         display_i = "display_for_"+port_name
@@ -117,9 +117,6 @@ module TavernaLite
              @wfp.old_name = port_name
              @wfp.name = new_name
              t2flow_changes = true
-          puts "\n*************************************************************"
-          puts "the name"
-          puts "*************************************************************"
           end
           if @wfp.description != new_description
             @wfp.old_description = @wfp.description
@@ -144,7 +141,7 @@ module TavernaLite
           if t2flow_changes
             xmlFile = @workflow.workflow_filename
             writer = T2flowWriter.new
-            writer.save_wf_input_annotations(xmlFile, port_name, new_name, new_description, new_example)
+            writer.save_wf_port_annotations(xmlFile, port_name, new_name, new_description, new_example,port_type)
           end
           #save the customisation
           @wfp.save
@@ -153,7 +150,7 @@ module TavernaLite
     end
 
     def reset_ports(port_type=1)
-      @input_desc.each do |indiv_in|
+      @port_desc_list.each do |indiv_in|
         port_name = indiv_in[0]
         wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
         unless wfps.empty?
@@ -163,16 +160,16 @@ module TavernaLite
           old_example = @wfp.old_example.to_s
           xmlFile = @workflow.workflow_filename
           writer = T2flowWriter.new
-          writer.save_wf_input_annotations(xmlFile, old_name, port_name, old_description, old_example)
+          writer.save_wf_port_annotations(xmlFile, port_name, old_name, old_description, old_example,port_type)
           @wfp.delete_files
           @wfp.sample_file = ""
           @wfp.sample_file_type = ""
           @wfp.old_name = ""
           @wfp.old_description = ""
           @wfp.old_example = ""
-          @wfp.name = @wfp.old_name
-          @wfp.description = @wfp.old_description.to_s
-          @wfp.example = @wfp.old_example.to_s
+          @wfp.name = old_name
+          @wfp.description = old_description
+          @wfp.example = old_example
           @wfp.save
         end
       end
