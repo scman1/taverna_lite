@@ -113,17 +113,51 @@ module TavernaLite
         "description_for_name"=>"New description",
         @workflow_port.name => "New example", "display_for_name"=>"1"},
         "commit"=>"Save", "id"=>@workflow_port.workflow_id}
+      @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
       # verify that redirects correctly
       assert_redirected_to edit_workflow_profile_path(@workflow_port.workflow_id)
-      # verify that the new values are aved and old ones are stored
-      @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
-      assert_equal(@workflow_port.name, @saved_wfp.old_name)
-      assert_equal("newname", @saved_wfp.name)
-      assert_equal(@workflow_port.description, @saved_wfp.old_description)
-      assert_equal("New description", @saved_wfp.description)
-      assert_equal(@workflow_port.example, @saved_wfp.old_example)
-      assert_equal("New example", @saved_wfp.example)
+      # verify that the new values are saved and old ones are stored
+      assert_equal(@saved_wfp.old_name, @workflow_port.name)
+      assert_equal(@saved_wfp.name, "newname")
+      assert_equal(@saved_wfp.old_description, @workflow_port.description)
+      assert_equal(@saved_wfp.description, "New description")
+      assert_equal(@saved_wfp.old_example, @workflow_port.example)
+      assert_equal(@saved_wfp.example, "New example")
     end
     # need to test resets
+    test "should reset workflow_port name description and example" do
+      old_port = @workflow_port
+      # First change description and save
+      put :save_custom_inputs, {"workflow_id"=>@workflow_port.workflow_id,
+        "selected_tab"=>"components", "selected_choice"=>"inputs",
+        "file_uploads"=>{"name_for_name"=>"newname",
+        "description_for_name"=>"New description",
+        @workflow_port.name => "New example", "display_for_name"=>"1"},
+        "commit"=>"Save", "id"=>@workflow_port.workflow_id}
+      # get backed-up values for name, description and example
+      @saved_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
+      restored_name = @saved_wfp.old_name
+      restored_description = @saved_wfp.old_description
+      restored_example = @saved_wfp.old_example
+      # now should reset the port
+      put :save_custom_inputs, {"workflow_id"=>@workflow_port.workflow_id,
+        "selected_tab"=>"components", "selected_choice"=>"inputs",
+        "file_uploads"=>{"name_for_name"=>"newname",
+        "description_for_name"=>"New description",
+        @workflow_port.name => "New example", "display_for_name"=>"1"},
+        "commit"=>"Reset", "id"=>@workflow_port.workflow_id}
+      # verify that redirects correctly
+      assert_redirected_to edit_workflow_profile_path(@saved_wfp.workflow_id)
+      # verify that the new values are the same as those previously stored
+      @restored_wfp = TavernaLite::WorkflowPort.find(@workflow_port.id)
+      assert_equal(@restored_wfp.name, restored_name)
+      assert_equal(@restored_wfp.old_name, "")
+      assert_equal(@restored_wfp.description,restored_description)
+      assert_equal(@restored_wfp.old_description,"")
+      assert_equal(@restored_wfp.example, restored_example)
+      assert_equal(@restored_wfp.old_example,"")
+    end
+    # need same set of tests for outputs
+
   end
 end

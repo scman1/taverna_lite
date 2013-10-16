@@ -52,9 +52,9 @@ module TavernaLite
       @workflow_profile.workflow_id = @workflow.id
       @inputs, @input_desc = @workflow_profile.get_inputs
       if action == 'Save'
-        save_inputs
+        save_ports
       elsif action == 'Reset'
-        reset_inputs
+        reset_ports
       end
       respond_to do |format|
         format.html {
@@ -64,7 +64,30 @@ module TavernaLite
        end
     end
 
-    def save_inputs
+    def save_custom_outputs
+      action = params[:commit]
+      @workflow = Workflow.find(params[:id])
+      @workflow_profile = WorkflowProfile.new()
+      @workflow_profile.workflow_id = @workflow.id
+      # get outputs from the model and any customisation if they exist
+      @outputs, @output_desc = @workflow_profile.get_outputs
+
+      selected_tab = params[:selected_tab]
+      selected_choice = params[:selected_choice]
+      if action == 'Save'
+        save_ports(2)
+      elsif action == 'Reset'
+        reset_ports(2)
+      end
+      respond_to do |format|
+        format.html {
+          redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
+           :notice => 'outputs updated'}
+        format.json { head :no_content }
+      end
+    end
+
+    def save_ports(port_type=1)
       @input_desc.each do |indiv_in|
         port_name = indiv_in[0]
         file_for_i = "file_for_"+port_name
@@ -76,7 +99,7 @@ module TavernaLite
             ((params[:file_uploads].include? file_for_i) ||
              (params[:file_uploads][port_name] != ""))
           # verify if customised input exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", "1", port_name, @workflow.id)
+          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
@@ -88,12 +111,15 @@ module TavernaLite
           t2flow_changes=false
           #get values for customised input
           @wfp.workflow_id = @workflow.id
-          @wfp.port_type_id = 1 # 1 = input
+          @wfp.port_type_id = port_type # 1 = input
           # save only if there are changes, else leave unchanged
           if port_name != new_name
              @wfp.old_name = port_name
              @wfp.name = new_name
              t2flow_changes = true
+          puts "\n*************************************************************"
+          puts "the name"
+          puts "*************************************************************"
           end
           if @wfp.description != new_description
             @wfp.old_description = @wfp.description
@@ -126,128 +152,30 @@ module TavernaLite
       end
     end
 
-    def reset_inputs
+    def reset_ports(port_type=1)
       @input_desc.each do |indiv_in|
         port_name = indiv_in[0]
-        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "1", port_name)
+        wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
         unless wfps.empty?
           @wfp = wfps[0]
           old_name = @wfp.old_name
           old_description = @wfp.old_description.to_s
           old_example = @wfp.old_example.to_s
-          puts "***************************************************************"
-          puts "RESETING PORT:     " + port_name
-          puts "OLD NAME:        " + old_name
-          puts "OLD DESCRIPTION: " + old_description
-          puts "OLD EXAMPLE:     " + old_example
-          puts "***************************************************************"
           xmlFile = @workflow.workflow_filename
           writer = T2flowWriter.new
           writer.save_wf_input_annotations(xmlFile, old_name, port_name, old_description, old_example)
           @wfp.delete_files
-          @wfp.destroy
-        end
-      end
-    end
-
-    def save_custom_outputs
-      action = params[:commit]
-      @workflow = Workflow.find(params[:id])
-      @workflow_profile = WorkflowProfile.new()
-      @workflow_profile.workflow_id = @workflow.id
-      # get outputs from the model and any customisation if they exist
-      @outputs, @output_desc = @workflow_profile.get_outputs
-
-      selected_tab = params[:selected_tab]
-      selected_choice = params[:selected_choice]
-      if action == 'Save'
-        save_outputs
-      elsif action == 'Reset'
-        reset_outputs
-      end
-      respond_to do |format|
-        format.html {
-          redirect_to taverna_lite.edit_workflow_profile_path(@workflow),
-           :notice => 'outputs updated'}
-        format.json { head :no_content }
-      end
-    end
-
-    def save_outputs
-      @output_desc.each do |indiv_in|
-        port_name = indiv_in[0]
-        file_for_i = "file_for_"+port_name
-        customise_i = "customise_"+port_name
-        display_i = "display_for_"+port_name
-        type_i = "type_for_"+port_name
-        new_name_i = "name_for_"+port_name
-        description_i = "description_for_"+port_name
-        if (params[:file_uploads].include? port_name) &&
-            ((params[:file_uploads].include? file_for_i) ||
-             (params[:file_uploads][port_name] != ""))
-          # verify if customised output exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", port_name)
-          if wfps.empty?
-            @wfp = WorkflowPort.new()
-          else
-            @wfp = wfps[0]
-          end
-          new_name = params[:file_uploads][new_name_i]
-          new_description = params[:file_uploads][description_i]
-          new_example = params[:file_uploads][port_name]
-          t2flow_changes=false
-
-          #get values for customised output
-          @wfp.workflow_id = @workflow.id
-          @wfp.port_type_id = 2 # 2 = output
-          # save only if there are changes, else leave unchanged
-          if port_name != new_name
-             @wfp.old_name = port_name
-             @wfp.name = new_name
-             t2flow_changes = true
-          end
-          if @wfp.description != new_description
-            @wfp.old_description = @wfp.description
-            @wfp.description = new_description
-            t2flow_changes = true
-          end
-          if new_example != "" && @wfp.example != new_example
-            @wfp.old_example = @wfp.example
-            @wfp.example = new_example
-            t2flow_changes = true
-          end
-          @wfp.display_control_id = params[:file_uploads][display_i]
-          @wfp.example_type_id = params[:file_uploads][type_i]
-          # save file sample file if provided
-          if params[:file_uploads].include? file_for_i
-            @wfp.file_content = params[:file_uploads][file_for_i].tempfile
-            @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
-            @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
-          end
-          # now need to save changes to t2flow file if t2flow values are changed
-          # open the workflow file
-          if t2flow_changes
-            xmlFile = @workflow.workflow_filename
-            writer = T2flowWriter.new
-            writer.save_wf_output_annotations(xmlFile, port_name, new_name, new_description, new_example)
-          end
-          #save the customisation
+          @wfp.sample_file = ""
+          @wfp.sample_file_type = ""
+          @wfp.old_name = ""
+          @wfp.old_description = ""
+          @wfp.old_example = ""
+          @wfp.name = @wfp.old_name
+          @wfp.description = @wfp.old_description.to_s
+          @wfp.example = @wfp.old_example.to_s
           @wfp.save
         end
       end
     end
-
-    def reset_outputs
-      @output_desc.each do |indiv_out|
-        o_name = indiv_out[0]
-        wfps = WorkflowPort.where("port_type_id = ? and name = ?", "2", o_name)
-        unless wfps.empty?
-          @wfp = wfps[0]
-          @wfp.delete_files
-          @wfp.destroy
-        end
-      end
-    end
-
   end
 end

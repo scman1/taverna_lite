@@ -61,11 +61,11 @@ one:
 two:
   id: 2
   port_type_id: 1
-  name: "Input Port 2"
+  name: "Input Port"
   description: "Provide Input as Text"
   example: "sample"
-  old_name: ""
-  old_description: ""
-  old_example: ""
+  old_name: "name"
+  old_description: "Your name for the greeting"
+  old_example: "World!"
   order: 1
   workflow_id: 1
