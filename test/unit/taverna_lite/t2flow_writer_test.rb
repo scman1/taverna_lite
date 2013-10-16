@@ -172,8 +172,8 @@ module TavernaLite
       assert_equal(port_example,example_val)
       assert_equal(port_description,ERB::Util.html_escape(description))
     end
-    # Pending test changing the name to the port, not trivial needs some work
-    # need to also replace all refernces to the port for instance in datalinks
+    # Changing the name to the port is not trivial since it requires replacing
+    #  all references to the port in datalinks
     test "should_uptate_output_name" do
       port_name = "greeting"
       new_name = "greeting_message"
@@ -203,6 +203,26 @@ module TavernaLite
         end
       end
       assert_equal(found, new_name)
+    end
+    test "should_update_processor_description" do
+      processor_name = 'hello'
+      new_name = 'hello'
+      description = "A constant string to build the greeting sentence"
+      writer = T2flowWriter.new
+      writer.save_wf_processor_annotations(@workflow_file_path , processor_name, new_name, description)
+      # verify that the file is t2flow
+      file_data = File.open(@workflow_file_path)
+      # verify that the file is t2flow
+      model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(model, nil)
+      #verify that the processor description is the same as the one set
+      saved_desc = ""
+      model.processors.each do |proc|
+        if proc.name == processor_name
+          saved_desc = proc.description
+        end
+      end
+      assert_equal(description,saved_desc)
     end
     # Pending test of swap component
   end

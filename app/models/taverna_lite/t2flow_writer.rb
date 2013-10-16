@@ -45,7 +45,7 @@
 # A class to handle writing changes to workflow file
 module TavernaLite
   class T2flowWriter
-     TLVersion = "TavernaLite_v_0.3.9"
+     TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
      def save_wf_annotations(xml_filename, author, description, title, name)
       document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
       # add annotations (title, author, description)
@@ -93,6 +93,27 @@ module TavernaLite
       end
     end
 
+    def save_wf_processor_annotations(xmlfile, processor_name, new_name, description)
+      document = XML::Parser.file(xmlfile, :options => XML::Parser::Options::NOBLANKS).parse
+      # find the port node
+      path_to_procesor = 'dataflow/processors/processor/name'
+      processor_node = get_node_containing(document.root,path_to_procesor, processor_name)
+      # add annotations (description, example)
+      insert_port_annotation(processor_node, "description", description)
+      # change the port name
+      if new_name != processor_name
+        # get the name node
+        name_node = get_node(processor_node,'name')
+        name_node.content = new_name
+        # need to change datalinks too
+        change_datalinks_for_input(document, port_name, processor_name)
+      end
+      document.root["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xmlfile, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
     #add a list of namespaces to the node
     #the namespaces formal parameter is a hash
     #with "prefix" and "prefix_uri" as
