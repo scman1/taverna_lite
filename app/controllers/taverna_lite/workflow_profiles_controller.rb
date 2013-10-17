@@ -193,10 +193,12 @@ module TavernaLite
     # Save processor annotations and name changes to workflow file
     def annotate_processor
       @workflow = TavernaLite.workflow_class.find(params[:id])
+      action = params[:commit]
       #works for now but will need changes if saving all at once is enabled
       processor_name =  params[:processor_annotations][:processor_name]
       new_name =  params[:processor_annotations]["name_for_#{processor_name}"]
       description = params[:processor_annotations]["description_for_#{processor_name}"]
+      if action == "Reset" then description = "" end
       xmlFile = @workflow.workflow_filename
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
