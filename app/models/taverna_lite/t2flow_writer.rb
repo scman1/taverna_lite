@@ -106,7 +106,7 @@ module TavernaLite
         name_node = get_node(processor_node,'name')
         name_node.content = new_name
         # need to change datalinks too
-        change_datalinks_for_input(document, port_name, processor_name)
+        change_datalinks_for_processor(document, processor_name, new_name)
       end
       document.root["producedBy"] = TLVersion
       # save workflow in the host app passing the file
@@ -295,11 +295,10 @@ module TavernaLite
 
     # replace all datalinks referencing an input port on a workflow
     def change_datalinks_for_input(doc, port_name, new_name)
-      writer = T2flowWriter.new
       # loop through all datalinks containing port_name as source
       begin
         # at least one data link should be found
-        data_link=writer.get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
+        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
         unless data_link.nil?
           data_link.children.each do |dl_part|
             dl_part.content = new_name
@@ -310,11 +309,10 @@ module TavernaLite
 
     # replace all datalinks referencing an output port on a workflow
     def change_datalinks_for_output(doc, port_name, new_name)
-      writer = T2flowWriter.new
       # loop through all datalinks containing port_name as sink
       begin
         # at least one data link should be found
-        data_link=writer.get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
+        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
         unless data_link.nil?
           data_link.children.each do |dl_part|
             dl_part.content = new_name
@@ -322,6 +320,26 @@ module TavernaLite
         end
       end while !data_link.nil?
     end # change_datalinks_for_output
+
+    # change all datalinks referencing the processors input and/or output ports
+    def change_datalinks_for_processor(doc, processor_name, new_name)
+      # loop through all datalinks containing port_name as sink or source
+      begin
+        # at least one data link should be found
+        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/processor', processor_name)
+        if data_link.nil?
+          data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/processor', processor_name)
+        end
+        unless data_link.nil?
+          data_link.children.each do |dl_part|
+            if dl_part.name == 'processor'
+              dl_part.content = new_name
+            end
+          end
+        end
+      end while !data_link.nil?
+    end # change_datalinks_for_processor
+
     # replace a component on a workflow
     def replace_workflow_components(doc,processor_name,replacement_id)
       replacement_component = WorkflowComponent.find(replacement_id)

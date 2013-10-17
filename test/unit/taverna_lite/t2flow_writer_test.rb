@@ -224,6 +224,66 @@ module TavernaLite
       end
       assert_equal(description,saved_desc)
     end
+    test "should update processor name and datalink" do
+      processor_name = 'hello'
+      new_name = 'hello_constant'
+      description = "A constant string to build the greeting sentence"
+      writer = T2flowWriter.new
+      writer.save_wf_processor_annotations(@workflow_file_path , processor_name, new_name, description)
+      # verify that the file is t2flow
+      file_data = File.open(@workflow_file_path)
+      # verify that the file is t2flow
+      model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(model, nil)
+      #verify that the processor description is the same as the one set
+      saved_desc = ""
+      model.processors.each do |proc|
+        if proc.name == processor_name
+          saved_desc = proc.description
+        end
+      end
+      proc_name = ""
+      proc_desc = ""
+      #first verify that the name exists and has the desired description
+      model.processors.each do |proc|
+        if proc.name == new_name
+          proc_name = proc.name
+          proc_desc = proc.description
+        end
+      end
+      assert_equal(proc_name,new_name)
+      assert_equal(description,proc_desc)
+    end
+    test "x should update processor name and all datalinks" do
+      processor_name = 'Concatenate_two_strings'
+      new_name = 'Join_Strings'
+      description = "Local sercvice for joining two strings"
+      writer = T2flowWriter.new
+      writer.save_wf_processor_annotations(@workflow_file_path , processor_name, new_name, description)
+      # verify that the file is t2flow
+      file_data = File.open(@workflow_file_path)
+      # verify that the file is t2flow
+      model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(model, nil)
+      #verify that the processor description is the same as the one set
+      saved_desc = ""
+      model.processors.each do |proc|
+        if proc.name == processor_name
+          saved_desc = proc.description
+        end
+      end
+      proc_name = ""
+      proc_desc = ""
+      #first verify that the name exists and has the desired description
+      model.processors.each do |proc|
+        if proc.name == new_name
+          proc_name = proc.name
+          proc_desc = proc.description
+        end
+      end
+      assert_equal(proc_name,new_name)
+      assert_equal(description,proc_desc)
+    end
     # Pending test of swap component
   end
 end
