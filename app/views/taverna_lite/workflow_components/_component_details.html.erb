@@ -55,11 +55,12 @@
       style="display: none;">
       <dl >
         <%= render :partial=>'taverna_lite/workflow_components/annotate', :locals => {:processor => proc} %>
-        <dt> Note:</dt>
-        <dd> Changes to these values will be saved to workflow file and DB  </dd>
+        <dt> </dt>
+        <dd> <b>NOTE:</b> Changes to these values will be saved to workflow file only, reset will only delete the description</dd>
       </dl>
-      <dl class='list_any'>
-        <% if @wf_components.count > 0 %>
+      <% if @wf_components.count > 0 %>
+        <h4>COMPONENT DETAILS</h4>
+        <dl class='list_any'>
           <% wfc = @wf_components[proc.name][0] -%>
           <dt class='list_title'>Component Name:</dt>
           <dd class='list_description'><%= wfc.name%></dd>
@@ -78,8 +79,8 @@
             <dt class='list_title'>Registry ID:</dt>
             <dd class='list_description'><%= cwf.my_experiment_id %></dd>
           <% end%>
-        <% end -%>
-      </dl>
+        </dl>
+      <% end -%>
     </div>
     <% end %>
   <% end %>
