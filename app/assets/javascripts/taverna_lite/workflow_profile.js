@@ -7,7 +7,7 @@
         $( ".ui-selected", this ).each(function() {
           var index = $( "#selectable li" ).index( this );
           var namex = $(this).attr('id')
-          result.append( namex );
+          result.append('Edit ').append( namex );
           showcomp(namex+"_component")
           showcompalter(namex+"_alternatives")
         });

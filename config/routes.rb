@@ -53,6 +53,7 @@ TavernaLite::Engine.routes.draw do
 
   resources :workflow_profiles do
     member do
+      put "annotate_processor"
       put "update_profile"
       post "save_as"
       get "copy"

@@ -45,79 +45,38 @@
 %>
 <div id="component_details" >
   <% if @processors.count > 0 %>
-    <h2>
+    <h3>
       <span id="select-result">Select a component to view its description</span>
-    </h2>
+    </h3>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs' %>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs' %>
     <% @processors.each do |proc| %>
     <div id="<%= proc.name %>_component" class="div_component"
       style="display: none;">
-      <dl>
-        <dt>
-          Processor Name:
-        </dt>
-        <dd>
-          <%= proc.name%>
-        </dd>
-        <dt>
-          Type:
-        </dt>
-        <dd>
-          <%= proc.type%>
-        </dd>
-        <dt>
-          Description:
-        </dt>
-        <dd>
-          <%= proc.description%>
-        </dd>
+      <dl >
+        <%= render :partial=>'taverna_lite/workflow_components/annotate', :locals => {:processor => proc} %>
+        <dt> Note:</dt>
+        <dd> Changes to these values will be saved to workflow file and DB  </dd>
+      </dl>
+      <dl class='list_any'>
         <% if @wf_components.count > 0 %>
           <% wfc = @wf_components[proc.name][0] -%>
-          <dt>
-            Component Name:
-          </dt>
-          <dd>
-            <%= wfc.name%>
-          </dd>
-          <dt>
-            Family:
-          </dt>
-          <dd>
-            <%= wfc.family%>
-          </dd>
-          <dt>
-            Registry:
-          </dt>
-          <dd>
-            <%= wfc.registry%>
-          </dd>
-          <dt>
-            Version:
-          </dt>
-          <dd>
-            <%= wfc.version%>
-          </dd>
+          <dt class='list_title'>Component Name:</dt>
+          <dd class='list_description'><%= wfc.name%></dd>
+          <dt class='list_title'>Family:</dt>
+          <dd class='list_description'><%= wfc.family%></dd>
+          <dt class='list_title' >Registry:</dt>
+          <dd class='list_description'><%= wfc.registry%></dd>
+          <dt class='list_title'>Version:</dt>
+          <dd class='list_description'><%= wfc.version%></dd>
           <% unless @wf_components[proc.name][1].nil? -%>
             <% cwf = @wf_components[proc.name][1] -%>
-            <dt>
-              Description:
-            </dt>
-            <dd>
-              <%= cwf.description %>
-            </dd>
-            <dt>
-              Author:
-            </dt>
-            <dd>
-              <%= cwf.author%>
-            </dd>
-            <dt>
-              Registry ID:
-            </dt>
-            <dd>
-              <%= cwf.my_experiment_id %>
-            </dd>
+            <dt class='list_title'>Description:</dt>
+            <dd class='list_description'><%= cwf.description %></dd>
+            <dt class='list_title'>Author:</dt>
+            <dd class='list_description'><%= cwf.author%></dd>
+            <dt class='list_title'>Registry ID:</dt>
+            <dd class='list_description'><%= cwf.my_experiment_id %></dd>
           <% end%>
         <% end -%>
       </dl>
