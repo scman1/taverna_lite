@@ -85,18 +85,18 @@
               :class=>"componenticon" %>
           </div> <!--image div -->
           <div class="desc_div">
-            <b><%= componentname %></b><br/>
-            <b>Family: </b><%= item[0].family %><br/>
-            <b>Version: </b><%= item[0].version %><br/>
+            <b><%= componentname %>(V.<%= item[0].version %>)</b><br/>
+            <b>Family:</b><%= item[0].family %><br/>
             <b>Registry: </b><%= item[0].registry %><br/>
+            <b>Description: </b><%= item[1].description %><br/>
             <%= form_for :file_uploads,
               :url => {:controller => 'workflow_components', :action => 'replace'},
               :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
               <%= hidden_field_tag "processor_name", ca[0] %>
               <%= hidden_field_tag "component_id", item[0].id %>
               <%= hidden_field_tag "workflow_id", @workflow.id %>
-              <div title="Click to replace the selected component"
-                alt="Click to replace the selected component"
+              <div title="Replace selected component"
+                alt="Replace selected component"
                 style="float:center; padding:10px;">
                   <%= submit_tag 'Replace' %>
               </div> <!--buton div -->
