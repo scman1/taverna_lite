@@ -61,6 +61,7 @@ TavernaLite::Engine.routes.draw do
   end
   resources :workflow_ports do
     member do
+      post "download"
       post "save_custom_inputs"
       post "save_custom_outputs"
     end

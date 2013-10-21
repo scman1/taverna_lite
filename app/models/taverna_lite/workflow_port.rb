@@ -47,11 +47,12 @@ module TavernaLite
       :example_type_id, :name, :old_description, :old_example, :old_name,
       :order, :port_type_id, :workflow_id
     # Each port will be mapped to a workflow in the main application
+    validate name
     belongs_to :workflow, :class_name => TavernaLite.workflow_class
     # Before saving the port, set the workflow to which it has been associated
     before_save :set_workflow
     after_save :store_file
-
+    validates :name, presence: true
     # get a list of all worflow ports
     # type:
     #      1 Inputs
@@ -93,7 +94,7 @@ module TavernaLite
     def set_workflow
       self.workflow = TavernaLite.workflow_class.find(self.workflow_id)
     end
-    # ****************************************************************************
+    # **************************************************************************
     # verify if there is actually a file to be saved
     def store_file
       if @file_data

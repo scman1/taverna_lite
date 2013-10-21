@@ -89,8 +89,8 @@ module TavernaLite
           # missing input
           missing_port = WorkflowPort.new()
           missing_port.name = source.name
-          missing_port.workflow_id = id
-          missing_port.port_type_id = 1          # id of inputs
+          missing_port.workflow_id = workflow.id
+          missing_port.port_type_id = 1       # id of inputs
           missing_port.display_control_id = 1 # default display control
           example_values = source.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
@@ -98,6 +98,16 @@ module TavernaLite
           else
             missing_port.example = ""
           end
+          descriptions = source.descriptions
+          if ((!descriptions.nil?) && (descriptions.size == 1)) then
+            missing_port.description = descriptions[0]
+          else
+            missing_port.description = ""
+          end
+          missing_port.old_name = ""
+          missing_port.old_description = ""
+          missing_port.old_example = ""
+          missing_port.save
           custom_inputs << missing_port
         end
       }
@@ -139,7 +149,7 @@ module TavernaLite
           # missing output
           missing_port = TavernaLite::WorkflowPort.new()
           missing_port.name = sink.name
-          missing_port.workflow_id = id
+          missing_port.workflow_id = workflow.id
           missing_port.port_type_id = 2       # id of outputs
           missing_port.display_control_id = 1 # default display control
           example_values = sink.example_values
@@ -148,6 +158,13 @@ module TavernaLite
           else
             missing_port.example = ""
           end
+          descriptions = sink.descriptions
+          if ((!descriptions.nil?) && (descriptions.size == 1)) then
+            missing_port.description = descriptions[0]
+          else
+            missing_port.description = ""
+          end
+          missing_port.save
           custom_outputs << missing_port
         end
       }

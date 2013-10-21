@@ -63,17 +63,17 @@
        <dt class='list_title'>Name:</dt>
        <dd class='list_description'>
          <%= f.text_field "name_for_#{portname}", :value => portname,
-           :onclick => '$(this).select();', :style =>'width:95%'  %>
+           :style =>'width:95%'  %>
        </dd>
        <dt class='list_title'>Description:</dt>
        <dd class='list_description'>
          <%= f.text_area "description_for_#{portname}", :value => descr, :rows => 3,
-           :onclick => '$(this).select();', :style =>'width:95%'  %>
+           :style =>'width:95%'  %>
        </dd>
        <dt class='list_title'>Example Value:</dt>
        <dd class='list_description'>
          <%= f.text_area portname, :value => example_value, :rows => 3,
-           :onclick => '$(this).select();', :style =>'width:95%' %>
+           :style =>'width:95%' %>
        </dd>
        <dt class='list_title'>Value Type:</dt>
        <dd class='list_description'>
@@ -101,12 +101,7 @@
    <div title="Save Input Changes" alt="Save Input Changes" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>
    </div>
-   <div title="Revert workflow annotation" alt="Revert workflow annotation" style="float:right; padding:10px;">
-     <%= submit_tag 'Reset' %>
-   </div>
-
-   <div style="clear:both;"/>
-   </div>
+   <div style="clear:both;"></div>
   <% end -%> <!--form-->
 <% else %>
   <p>

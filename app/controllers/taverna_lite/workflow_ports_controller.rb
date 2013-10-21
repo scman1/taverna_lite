@@ -105,6 +105,7 @@ module TavernaLite
           else
             @wfp = wfps[0]
           end
+
           new_name = params[:file_uploads][new_name_i]
           new_description = params[:file_uploads][description_i]
           new_example = params[:file_uploads][port_name]
@@ -112,22 +113,13 @@ module TavernaLite
           #get values for customised input
           @wfp.workflow_id = @workflow.id
           @wfp.port_type_id = port_type # 1 = input
-          # save only if there are changes, else leave unchanged
-          if port_name != new_name
-             @wfp.old_name = port_name
-             @wfp.name = new_name
-             t2flow_changes = true
-          end
-          if @wfp.description != new_description
-            @wfp.old_description = @wfp.description
-            @wfp.description = new_description
-            t2flow_changes = true
-          end
-          if new_example != "" && @wfp.example != new_example
-            @wfp.old_example = @wfp.example
-            @wfp.example = new_example
-            t2flow_changes = true
-          end
+          # always save even if there are no changes
+          @wfp.old_name = port_name
+          @wfp.name = new_name
+          @wfp.old_description = @wfp.description
+          @wfp.description = new_description
+          @wfp.old_example = @wfp.example
+          @wfp.example = new_example
           @wfp.display_control_id = params[:file_uploads][display_i]
           @wfp.example_type_id = params[:file_uploads][type_i]
           if params[:file_uploads].include? file_for_i
@@ -136,13 +128,10 @@ module TavernaLite
             @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
             @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
           end
-          # now need to save changes to t2flow file if t2flow values are changed
-          # open the workflow file
-          if t2flow_changes
-            xmlFile = @workflow.workflow_filename
-            writer = T2flowWriter.new
-            writer.save_wf_port_annotations(xmlFile, port_name, new_name, new_description, new_example,port_type)
-          end
+          # now need to save changes to t2flow file
+          xmlFile = @workflow.workflow_filename
+          writer = T2flowWriter.new
+          writer.save_wf_port_annotations(xmlFile, port_name, new_name, new_description, new_example,port_type)
           #save the customisation
           @wfp.save
         end
@@ -155,9 +144,16 @@ module TavernaLite
         wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
         unless wfps.empty?
           @wfp = wfps[0]
-          old_name = @wfp.old_name
-          old_description = @wfp.old_description.to_s
-          old_example = @wfp.old_example.to_s
+          unless @wfp.old_name.nil?
+            old_name = @wfp.old_name
+          end
+          unless @wfp.old_description.nil?
+            old_description = @wfp.old_description
+          end
+          unless @wfp.old_example.nil?
+            old_example = @wfp.old_example
+          end
+
           xmlFile = @workflow.workflow_filename
           writer = T2flowWriter.new
           writer.save_wf_port_annotations(xmlFile, port_name, old_name, old_description, old_example,port_type)
@@ -170,9 +166,21 @@ module TavernaLite
           @wfp.name = old_name
           @wfp.description = old_description
           @wfp.example = old_example
+          if port_type==1
+            @wfp.display_control_id = 1 #default to value or file
+          else
+            @wfp.display_control_id = 2 #default to value or file
+          end
           @wfp.save
         end
       end
+    end
+    # download a sample file
+    def download
+      @workflow_port = WorkflowPort.find(params[:id])
+      path = @workflow_port.sample_file_actual_path
+      filetype = MIME::Types.type_for(path)
+      send_file path, :type=> filetype, :name => @workflow_port.sample_file
     end
   end
 end
