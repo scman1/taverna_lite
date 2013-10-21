@@ -95,9 +95,7 @@ module TavernaLite
         type_i = "type_for_"+port_name
         description_i = "description_for_"+port_name
         new_name_i = "name_for_"+port_name
-        if (params[:file_uploads].include? port_name) &&
-            ((params[:file_uploads].include? file_for_i) ||
-             (params[:file_uploads][port_name] != ""))
+        show_i = "show_"+port_name
           # verify if customised input exists
           wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
           if wfps.empty?
@@ -122,6 +120,14 @@ module TavernaLite
           @wfp.example = new_example
           @wfp.display_control_id = params[:file_uploads][display_i]
           @wfp.example_type_id = params[:file_uploads][type_i]
+
+puts "*************************************************************************"
+puts "*************************************************************************"
+puts "*  SHOW THIS #{new_name}: " + params[:file_uploads][display_i].to_s
+puts "*************************************************************************"
+puts "*************************************************************************"
+
+          @wfp.show = params[:file_uploads][show_i]
           if params[:file_uploads].include? file_for_i
             #save file
             @wfp.file_content = params[:file_uploads][file_for_i].tempfile
@@ -134,7 +140,6 @@ module TavernaLite
           writer.save_wf_port_annotations(xmlFile, port_name, new_name, new_description, new_example,port_type)
           #save the customisation
           @wfp.save
-        end
       end
     end
 

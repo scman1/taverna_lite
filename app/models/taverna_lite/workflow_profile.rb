@@ -79,26 +79,37 @@ module TavernaLite
     end
 
     def get_custom_inputs
+      get_customised_ports(1)
+    end
+    def get_custom_outputs
+      get_customised_ports(2)
+    end
+    def get_customised_ports(port_type = 1)
       # 1 Get custom inputs
-      custom_inputs = WorkflowPort.get_custom_ports(workflow.id, 1)
+      custom_ports = WorkflowPort.get_custom_ports(workflow.id, port_type)
       # 2 Get all inputs
       model = get_model
       # 3 Add missing ports (if any) to the list
-      model.sources().each{|source|
-        if (custom_inputs).where("name='#{source.name}'").count() == 0 then
+      if port_type == 1
+        ports_list = model.sources()
+      else
+        ports_list = model.sinks()
+      end
+      ports_list.each{|port_x|
+        if (custom_ports).where("name='#{port_x.name}'").count() == 0 then
           # missing input
           missing_port = WorkflowPort.new()
-          missing_port.name = source.name
+          missing_port.name = port_x.name
           missing_port.workflow_id = workflow.id
-          missing_port.port_type_id = 1       # id of inputs
-          missing_port.display_control_id = 1 # default display control
-          example_values = source.example_values
+          missing_port.port_type_id = port_type       # id of inputs
+          missing_port.display_control_id = 1         # default display control
+          example_values = port_x.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
             missing_port.example = example_values[0]
           else
             missing_port.example = ""
           end
-          descriptions = source.descriptions
+          descriptions = port_x.descriptions
           if ((!descriptions.nil?) && (descriptions.size == 1)) then
             missing_port.description = descriptions[0]
           else
@@ -107,12 +118,13 @@ module TavernaLite
           missing_port.old_name = ""
           missing_port.old_description = ""
           missing_port.old_example = ""
+          missing_port.show = true
           missing_port.save
-          custom_inputs << missing_port
+          custom_ports << missing_port
         end
       }
       # 4 Return the list of custom inputs
-      return custom_inputs
+      return custom_ports
     end
 
     def get_outputs
@@ -136,40 +148,6 @@ module TavernaLite
         end
       }
       return [sinks,descriptions]
-    end
-
-    def get_custom_outputs
-      # 1 Get custom inputs
-      custom_outputs = WorkflowPort.get_custom_ports(workflow.id, 2)
-      # 2 Get all inputs
-      model = get_model
-      # 3 Add missing ports (if any) to the list
-      model.sinks().each{|sink|
-        if (custom_outputs).where("name='#{sink.name}'").count() == 0 then
-          # missing output
-          missing_port = TavernaLite::WorkflowPort.new()
-          missing_port.name = sink.name
-          missing_port.workflow_id = workflow.id
-          missing_port.port_type_id = 2       # id of outputs
-          missing_port.display_control_id = 1 # default display control
-          example_values = sink.example_values
-          if ((!example_values.nil?) && (example_values.size == 1)) then
-            missing_port.example = example_values[0]
-          else
-            missing_port.example = ""
-          end
-          descriptions = sink.descriptions
-          if ((!descriptions.nil?) && (descriptions.size == 1)) then
-            missing_port.description = descriptions[0]
-          else
-            missing_port.description = ""
-          end
-          missing_port.save
-          custom_outputs << missing_port
-        end
-      }
-      # 4 Return the list of custom inputs
-      return custom_outputs
     end
 
     # get the workflow model
