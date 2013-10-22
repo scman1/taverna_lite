@@ -93,6 +93,36 @@ module TavernaLite
       end
     end
 
+    def remove_wf_port(xml_filename, port_name, new_name, description, example_val,port_type=1)
+      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
+      # find the port node
+      path_to_port = 'dataflow/inputPorts/port/name'
+      unless port_type == 1
+        path_to_port = 'dataflow/outputPorts/port/name'
+      end
+      port_node = get_node_containing(document.root,path_to_port, port_name)
+      # add annotations (description, example)
+      insert_port_annotation(port_node, "description", description)
+      insert_port_annotation(port_node, "example", example_val)
+      # get the name node
+      name_node = get_node(port_node,'name')
+      # change the port name
+      if new_name != port_name
+        name_node.content = new_name
+        # need to change datalinks too
+        if  port_type == 1
+          remove_datalinks_for_input(document, port_name, new_name)
+        else
+          remove_datalinks_for_output(document, port_name, new_name)
+        end
+      end
+      document.root["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+
     def save_wf_processor_annotations(xmlfile, processor_name, new_name, description)
       document = XML::Parser.file(xmlfile, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
@@ -320,6 +350,34 @@ module TavernaLite
         end
       end while !data_link.nil?
     end # change_datalinks_for_output
+
+    # remove all datalinks referencing an input port on a workflow
+    def remove_datalinks_for_input(doc, port_name, new_name)
+      # loop through all datalinks containing port_name as source
+      begin
+        # at least one data link should be found
+        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
+        unless data_link.nil?
+          data_link.children.each do |dl_part|
+            dl_part.content = new_name
+          end
+        end
+      end while !data_link.nil?
+    end # remove_datalinks_for_input
+
+    # remove all datalinks referencing an output port on a workflow
+    def remove_datalinks_for_output(doc, port_name, new_name)
+      # loop through all datalinks containing port_name as sink
+      begin
+        # at least one data link should be found
+        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
+        unless data_link.nil?
+          data_link.children.each do |dl_part|
+            dl_part.content = new_name
+          end
+        end
+      end while !data_link.nil?
+    end # remove_datalinks_for_output
 
     # change all datalinks referencing the processors input and/or output ports
     def change_datalinks_for_processor(doc, processor_name, new_name)

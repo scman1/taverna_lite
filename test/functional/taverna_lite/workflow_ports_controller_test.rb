@@ -61,6 +61,8 @@ module TavernaLite
       #         start with autenticity token and retry
       # try 04: successful, all remaining vars are used in the method so will
       #         leave as it is for now
+      # THIS TEST IS TOO FLAKY, IT DEPENDS ON THE STATE OF THE DUMMY APP.
+      # DO NOT DEPEND ON IT
       put :save_custom_inputs, {"workflow_id"=>"1","selected_tab"=>"components",
         "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
         "description_for_name"=>"Your name for the greeting",
