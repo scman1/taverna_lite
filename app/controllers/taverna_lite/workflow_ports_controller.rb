@@ -120,13 +120,6 @@ module TavernaLite
           @wfp.example = new_example
           @wfp.display_control_id = params[:file_uploads][display_i]
           @wfp.example_type_id = params[:file_uploads][type_i]
-
-puts "*************************************************************************"
-puts "*************************************************************************"
-puts "*  SHOW THIS #{new_name}: " + params[:file_uploads][display_i].to_s
-puts "*************************************************************************"
-puts "*************************************************************************"
-
           @wfp.show = params[:file_uploads][show_i]
           if params[:file_uploads].include? file_for_i
             #save file

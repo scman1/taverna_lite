@@ -47,12 +47,11 @@ module TavernaLite
       :example_type_id, :name, :old_description, :old_example, :old_name,
       :order, :port_type_id, :workflow_id
     # Each port will be mapped to a workflow in the main application
-    validate name
     belongs_to :workflow, :class_name => TavernaLite.workflow_class
     # Before saving the port, set the workflow to which it has been associated
     before_save :set_workflow
     after_save :store_file
-    validates :name, presence: true
+    validates :name, :presence => true
     # get a list of all worflow ports
     # type:
     #      1 Inputs
