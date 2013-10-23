@@ -120,7 +120,6 @@ module TavernaLite
           missing_port.old_example = ""
           missing_port.show = true
           missing_port.save
-          custom_ports << missing_port
         end
       }
       # 4 Return the list of custom inputs

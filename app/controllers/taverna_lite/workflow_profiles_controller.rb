@@ -198,12 +198,14 @@ module TavernaLite
       processor_name =  params[:processor_annotations][:processor_name]
       new_name =  params[:processor_annotations]["name_for_#{processor_name}"]
       description = params[:processor_annotations]["description_for_#{processor_name}"]
+      selected_tab = params[:selected_tab]
+      selected_choice = params[:selected_choice]
       if action == "Reset" then description = "" end
       xmlFile = @workflow.workflow_filename
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
       respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'Workflow processor updated'}
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
         format.json { head :no_content }
       end
     end

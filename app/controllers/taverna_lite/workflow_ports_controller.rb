@@ -51,6 +51,7 @@ module TavernaLite
       @workflow_profile = WorkflowProfile.new()
       @workflow_profile.workflow_id = @workflow.id
       @ports_list, @port_desc_list = @workflow_profile.get_inputs
+
       if action == 'Save'
         save_ports
       elsif action == 'Reset'
