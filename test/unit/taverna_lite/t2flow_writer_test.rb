@@ -326,29 +326,29 @@ module TavernaLite
       example_val= "Hola Wonderful World!"
       # modify the t2flow file by writing annotations
       writer = T2flowWriter.new
-      writer.remove_wf_port(@workflow_02 , port_name, new_name, description, example_val,2)
+      writer.remove_wf_port(@workflow_02 , port_name, 2)
       # verify that the file is t2flow
       file_data = File.open(@workflow_02)
       model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(model, nil)
       # verify that the file annotaions are the same as those passed as
       # parameters
-      # get the input port name and verify it was changed
-      port_name = ""
+      # get the input port name and verify it was removed
+      found_name = ""
       model.sinks.each do |sink|
-        if (sink.name == new_name)
-          port_name = sink.name
+        if (sink.name == port_name)
+          found_name = sink.name
         end
       end
-      assert_equal(port_name,new_name)
+      assert_equal(found_name,"")
       # get the datalinks and verify they have been updated
-      found = ""
+      found_link = ""
       model.datalinks.each do |dl|
-        if dl.sink == new_name
-          found = dl.sink
+        if dl.sink == port_name
+          found_link = dl.sink
         end
       end
-      assert_equal(found, new_name)
+      assert_equal(found_link, "")
     end
     # Pending test of swap component
   end
