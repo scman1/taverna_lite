@@ -54,10 +54,10 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
-//= require jquery_ujs
 //= require jquery.ui.selectable
 //= require jquery.ui.button
 //= require jquery.ui.tabs
 //= require jquery.ui.accordion
 //= require_tree .
+//= require jquery_ujs
+//= require dataTables/jquery.dataTables
