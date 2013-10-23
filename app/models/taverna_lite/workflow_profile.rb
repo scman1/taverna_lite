@@ -317,8 +317,8 @@ module TavernaLite
           end
         end
       end
-      # TO FIX PROBLEM WITH TSORT BELOW, NEED TO ADD A HASH KEY POINTING TO
-      # EMPTY ARRAY WHEN PROCESSOR OUTPUT IS NOT LINKED
+      # NEED TO ADD A HASH KEY POINTING TO EMPTY ARRAY WHEN A PROCESSOR OUTPUT
+      # IS NOT LINKED TO ANYTHING. OTHERWISE TSORT WILL NOT WORK
       keys = []
       nodes = []
       nodes_hash.each do |k,node|
@@ -347,8 +347,6 @@ class Hash
   include TSort
   alias tsort_each_node each_key
   def tsort_each_child(node, &block)
-    # WARNING. WHEN ALL PORTS ARE DELETED THE TSORT METHOD DOES NOT WORK AND THROWS
-    # AN ERROR THE COMENTED CODE DOES NOT FIX THE PROBLEM. ALTERNATIVE NEEDED...
       fetch(node).each(&block)
   end
 end
