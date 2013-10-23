@@ -96,6 +96,10 @@
        <dd class='list_description'>
          <%= f.check_box "show_#{portname}", :checked => item.show %>
        </dd>
+       <dt class='list_title'>Delete <%=label_tag portname%>:</dt>
+       <dd class='list_description'>
+         <%= f.check_box "delete_#{portname}", :checked => false %>
+       </dd>
        <!-- Add a preview that shows how data will be displayed according with
             the selected input control-->
        <!-- Create a control for displaying file contents on demand -->

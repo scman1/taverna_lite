@@ -96,6 +96,9 @@ module TavernaLite
         description_i = "description_for_"+port_name
         new_name_i = "name_for_"+port_name
         show_i = "show_"+port_name
+        delete_i = "delete_"+port_name
+        delete_port = params[:file_uploads][delete_i] == '1'
+        unless delete_port then
           # verify if customised input exists
           wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
           if wfps.empty?
@@ -133,6 +136,18 @@ module TavernaLite
           writer.save_wf_port_annotations(xmlFile, port_name, new_name, new_description, new_example,port_type)
           #save the customisation
           @wfp.save
+        else
+          # delete the port from the file
+          xmlFile = @workflow.workflow_filename
+          writer = T2flowWriter.new
+          writer.remove_wf_port(xmlFile, port_name,port_type)
+          # delete the port from the db
+          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
+          unless wfps.empty?
+           @wfp = wfps[0]
+           @wfp.destroy
+          end
+        end
       end
     end
 

@@ -57,7 +57,7 @@ module TavernaLite
       # now need a new workflow with two outputs so one can be removed.
       # created hello bilingual english & spanish
       from_here = fixtures_path+'/test_workflows/HelloBilingual.t2flow'
-      to_there = fixtures_path+'/test_workflows/test_result/HelloBilingual.t2flow'
+      to_there = fixtures_path+'/test_workflows/test_result/HelloBilingual2.t2flow'
       FileUtils.cp from_here, to_there
       @workflow_02 = to_there
     end

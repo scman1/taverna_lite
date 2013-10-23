@@ -290,6 +290,7 @@ module TavernaLite
       #  'parse_table'=>['generate_matrix','getstages'],
       #  'SelectRecruitmentStages'=>['Interaction_2']
       #  }
+
       wf_model.datalinks.each do |dl|
         proc_s = ""
         input = ""
@@ -316,6 +317,18 @@ module TavernaLite
           end
         end
       end
+      # TO FIX PROBLEM WITH TSORT BELOW, NEED TO ADD A HASH KEY POINTING TO
+      # EMPTY ARRAY WHEN PROCESSOR OUTPUT IS NOT LINKED
+      keys = []
+      nodes = []
+      nodes_hash.each do |k,node|
+        keys << k
+        nodes = nodes + node
+      end
+      missing_keys = nodes - keys
+      missing_keys.each do |miss|
+        nodes_hash[miss] = []
+      end
       # tsort returns a topologically sorted array of nodes. The array is sorted from
       # children to parents, i.e. the first element has no child and the last node has
       # no parent.
@@ -334,6 +347,8 @@ class Hash
   include TSort
   alias tsort_each_node each_key
   def tsort_each_child(node, &block)
-    fetch(node).each(&block)
+    # WARNING. WHEN ALL PORTS ARE DELETED THE TSORT METHOD DOES NOT WORK AND THROWS
+    # AN ERROR THE COMENTED CODE DOES NOT FIX THE PROBLEM. ALTERNATIVE NEEDED...
+      fetch(node).each(&block)
   end
 end
