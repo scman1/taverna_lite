@@ -88,7 +88,7 @@
             <b><%= componentname %>(V.<%= item[0].version %>)</b><br/>
             <b>Family:</b><%= item[0].family %><br/>
             <b>Registry: </b><%= item[0].registry %><br/>
-            <b>Description: </b><%= item[1].description %><br/>
+            <b>Description: </b><%= item[1].title %><br/>
             <%= form_for :file_uploads,
               :url => {:controller => 'workflow_components', :action => 'replace'},
               :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
