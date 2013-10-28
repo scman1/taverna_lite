@@ -20,7 +20,7 @@
     for(var x=0; x<all_dls.length; x++){
       all_dls[x].style.display = 'none';
     }
-     ele.style.display = "block";
+    if (ele != null)  ele.style.display = "block";
   }
 
   function showcompalter(showdl) {
@@ -32,7 +32,7 @@
     for(var x=0; x<all_dls.length; x++){
       all_dls[x].style.display = 'none';
     }
-    ele.style.display = "block";
+    if (ele != null) ele.style.display = "block";
   }
   function toggle_view(full_content, snip_content, toggle_link) {
 	var ele = document.getElementById(full_content);
@@ -50,5 +50,20 @@
       button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_up.png' />";
       button.title = "show less";
       button.alt = "show less";
+    }
+  }
+  function hide_show_div(div_content, toggle_link) {
+    var ele = document.getElementById(div_content);
+    var button = document.getElementById(toggle_link);
+    if(ele.style.display == "block") {
+      ele.style.display = "none";
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_down.png' />";
+      button.title = "show advanced options";
+      button.alt = "show advanced options";   	}
+    else {
+      ele.style.display = "block"
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_up.png' />";
+      button.title = "hide advanced options";
+      button.alt = "hide advanced options";
     }
   }

@@ -64,25 +64,26 @@ workflow file and the database.
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+  <div class='basic', style ='width:95%'>
+  <dl class='list_any'>
+    <dt class='list_title'><%= f.label :name  %></dt>
+    <dd class='list_description'><%= f.text_field :name, :style =>'width:95%'%></dd>
+    <dt class='list_title'><%= f.label :title %></dt>
+    <dd class='list_description'><%= f.text_field :title, :style =>'width:95%' %></dd>
+    <dt class='list_title'><%= f.label :author %></dt>
+    <dd class='list_description'><%= f.text_field :author, :style =>'width:95%' %></dd>
+    <dt class='list_title'><%= f.label :description %></dt>
+    <dd class='list_description'><%= f.text_area :description, :rows => 8, :style =>'width:95%' %></dd>
+    <dt class='list_title'><%= f.label :workflow_file %>:</dt>
+    <dd class='list_description'><%= @workflow.workflow_file %></dd>
+  </dl>
   </div>
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :author %>
-    <%= f.text_field :author %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description, :rows => 8 %>
-  </div>
-
-  <div class="field">
-    <%= f.label :workflow_file %>:  <%= @workflow.workflow_file %><br />
+  Advanced Annotations <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+        "javascript:hide_show_div('advanced_options', 'switch_advanced');",
+        :id=>"switch_advanced",
+        :title=>"show advanced options", :alt=>"show advanced options" -%>
+  <div id="advanced_options" class='advanced_customisation' style="display:none">
+    Reserved for Semantic annotation of the workflows, for adding a logo, links to authors pages, etc.
   </div>
    <div title="Save Workflow" alt="Save Workflow" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>

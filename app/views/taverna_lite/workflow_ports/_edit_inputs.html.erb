@@ -60,6 +60,7 @@
      <% descr= @source_descriptions[portname].blank? ? "" : @source_descriptions[portname] -%>
      <div class="port_details">
      <h3> <%= portname %> </h3>
+     <div class='basic_annotation'>
      <dl class='list_any'>
        <dt class='list_title'>Name:</dt>
        <dd class='list_description'>
@@ -76,6 +77,15 @@
          <%= f.text_area portname, :value => example_value, :rows => 3,
            :style =>'width:95%' %>
        </dd>
+       </dl>
+       </div><!--Basic Anotations div-->
+       Advanced customisation
+       <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+        "javascript:hide_show_div('advanced_#{portname}', 'switch_#{portname}');",
+        :id=>"switch_#{portname}",
+        :title=>"show advanced options", :alt=>"show advanced options" -%>
+       <div id="advanced_<%= portname %>" class='advanced_annotation' style="display:none">
+       <dl class='list_any'>
        <dt class='list_title'>Value Type:</dt>
        <dd class='list_description'>
          <%= f.select "type_for_#{portname}",
@@ -104,7 +114,8 @@
        <!-- Create a control for displaying file contents on demand -->
        <!-- If file is present add a button link to it -->
      </dl>
-     </div>
+     </div><!--Advanced Anotations div-->
+     </div><!--Port div-->
    <% end %>
    <div title="Save Input Changes" alt="Save Input Changes" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>
