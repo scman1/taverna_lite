@@ -60,4 +60,3 @@
 //= require jquery.ui.accordion
 //= require_tree .
 //= require jquery_ujs
-//= require dataTables/jquery.dataTables

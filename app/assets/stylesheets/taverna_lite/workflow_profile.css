@@ -58,3 +58,49 @@
 #component_details { float: left; width: 48%;  border: solid 1px #3300CC;
   -moz-border-radius: 16px;-webkit-border-radius: 16px;border-radius: 16px;
   border: solid 1px #3300CC; padding: 0.4em;}
+
+dl.list_any, dt.list_title, dd.list_description,dt.list_title_chk, dd.list_description_chk  {
+ padding:0;
+  margin:0
+}
+
+dl.list_any {
+ width:100%;
+ overflow:hidden;
+}
+dt.list_title  {
+ font-weight: bold;
+ font-size: 12px;
+ float:left;
+ width:20%; /* adjust the width; make sure the total of both is 100% */
+}
+dd.list_description  {
+ font-size: 12px;
+ float:left;
+ width:80%; /* adjust the width; make sure the total of both is 100% */
+}
+dt.list_title_chk  {
+ text-align: right;
+ font-size: 12px;
+ float:left;
+ width:20%; /* adjust the width; make sure the total of both is 100% */
+}
+dd.list_description_chk  {
+ font-weight: bold;
+ font-size: 12px;
+ float:left;
+ width:80%; /* adjust the width; make sure the total of both is 100% */
+}
+.port_details {
+  float: left;
+  width: 100%;
+  background: transparent;
+  border: solid 1px #999;
+  padding: 0px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}

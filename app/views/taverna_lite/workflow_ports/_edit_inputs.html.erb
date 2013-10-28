@@ -58,7 +58,8 @@
      <% portname = item.name %>
      <% example_value = @sources[portname].blank? ? "": @sources[portname] -%>
      <% descr= @source_descriptions[portname].blank? ? "" : @source_descriptions[portname] -%>
-     <h3> <%= label_tag portname %></h3>
+     <div class="port_details">
+     <h3> <%= portname %> </h3>
      <dl class='list_any'>
        <dt class='list_title'>Name:</dt>
        <dd class='list_description'>
@@ -92,15 +93,18 @@
            options_for_select([["value or file (Default)", 1],
                                ["value", 2], ["file", 3]], item.display_control_id) %>
        </dd>
-       <dt class='list_title'>Show <%=portname%>:</dt>
-       <dd class='list_description'>
+       <dt class='list_title_chk'>
+         <%= image_tag "taverna_lite/eye.png", :alt => "Show/Hide"%></dt>
+       <dd class='list_description_chk'>
          <%= f.check_box "show_#{portname}", :checked => item.show %>
+         Show <%= portname%>
        </dd>
        <!-- Add a preview that shows how data will be displayed according with
             the selected input control-->
        <!-- Create a control for displaying file contents on demand -->
        <!-- If file is present add a button link to it -->
      </dl>
+     </div>
    <% end %>
    <div title="Save Input Changes" alt="Save Input Changes" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>
