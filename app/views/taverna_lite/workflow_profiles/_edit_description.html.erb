@@ -78,12 +78,23 @@ workflow file and the database.
     <dd class='list_description'><%= @workflow.workflow_file %></dd>
   </dl>
   </div>
-  Advanced Annotations <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+  <span class="more_options"> Advanced Annotations </span><%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
         "javascript:hide_show_div('advanced_options', 'switch_advanced');",
         :id=>"switch_advanced",
         :title=>"show advanced options", :alt=>"show advanced options" -%>
   <div id="advanced_options" class='advanced_customisation' style="display:none">
-    Reserved for Semantic annotation of the workflows, for adding a logo, links to authors pages, etc.
+  <dl class='list_any'>
+    <dt class='list_title'>Note:</dt>
+    <dd class='list_description'>
+      This is a placeholder for the semantic annotation of the workflow.<br/>
+      The semantic annotations can include:
+      logo, author(s), refererence(s), procedure descritption science
+      area, service set, etc.
+      </br>
+      The information will be saved into the workflow profile, separated from
+      the t2flow file.
+    </dd>
+  </dl>
   </div>
    <div title="Save Workflow" alt="Save Workflow" style="float:right; padding:10px;">
      <%= submit_tag 'Save' %>

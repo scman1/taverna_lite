@@ -49,7 +49,7 @@
       This workflow has <%= @sources.count %>
       <%= "input".pluralize(@sources.count)%> that can be customised
     </h3>
-    Each input can be customised by:
+    Basic Annotation:
     <ol>
       <li>
         Changing the input name
@@ -59,6 +59,12 @@
       </li>
       <li>
         Providing an example value
+      </li>
+    </ol>
+    Advanced Customisation:
+    <ol>
+      <li>
+        Click on the arrow button to show advanced customisation alternatives
       </li>
       <li>
         Providing the expected type of the input
@@ -72,13 +78,15 @@
       <li>
         Selecting if the input will be shown (hiden inputs will use their example value by default, acting as constants)
       </li>
+    </ol>
+    <ul>
       <li>
-        Repeat 1 - 7 for every input you want to customise
+        Repeat steps for every input you want to customise
       </li>
       <li>
         Click "Save" to save customised inputs
       </li>
-    </ol>
+    </ul>
     <b>NOTE:</b> The custom values and/or files can be used when the workflow
       is shown and run
   <%else %>
