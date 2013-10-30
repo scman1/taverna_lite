@@ -2,37 +2,16 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
-#filmstrip{
-  width: 99%;
-  overflow-x:auto;
-  white-space: nowrap;
-  border: solid 1px #999;
-  padding: 5px
-}
-
-.componentcontainer {
-  width: 250px;
-  white-space:nowrap;
-  background-color: #FFFFFF;
-  border: solid 2px #3300CC;
-  padding: 5px 10px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  position: relative;
-  display: inline-block;
-  margin-right: 10px;
-}
 
 .componenticon{
   width:auto;
   height:48px;
 }
 .componentoutput{border: 1px solid hsla(80, 90%, 40%, 0.7);
-                 padding: 5px;width:40%;
+                 padding: 2px;width:40%;
                  float:left;}
 .componentinput{  border: 1px solid hsla(80, 90%, 40%, 0.7);
-                  padding: 5px;
+                  padding: 2px;
                   width:40%;
                    }
 
@@ -40,14 +19,14 @@
 #selectable .ui-selecting { background: #4074FE; }
 #selectable .ui-selected { background: #146FF3; color: white; }
 #selectable { list-style-type: none; margin: 0; padding: 0; }
-#selectable li { margin: 6px; padding: 0.4em; height: 60px;
+#selectable li { margin: 2px; padding: 0.4em; height: 60px;
   -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
   border: solid 1px #3300CC;}
 
 #replaceable .ui-selecting { background: #4074FE; }
 #replaceable .ui-selected { background: #146FF3; color: white; }
 #replaceable { list-style-type: none; margin: 0; padding: 0; }
-#replaceable li { margin: 6px; padding: 0.4em;  height: 140px;
+#replaceable li { margin: 2px; padding: 0.4em;  height: 140px;
   -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
   border: solid 1px #3300CC;}
 .desc_div {float: left;text-align: center;width:80%}
@@ -55,10 +34,10 @@
 
 .edit_components { min-height:300px; height:auto !important; height:300px;}
 #component_list { float: left; width: 24%; }
-#component_details { float: left; width: 48%;  border: solid 1px #3300CC;
+#component_details { float: left; width: 46%;  border: solid 1px #3300CC;
   -moz-border-radius: 16px;-webkit-border-radius: 16px;border-radius: 16px;
   border: solid 1px #3300CC; padding: 0.4em;}
-
+#component_operations {float: left; width: 24%; margin: 1px; padding: 1px; }
 dl.list_any, dt.list_title, dd.list_description,dt.list_title_chk, dd.list_description_chk  {
  padding:0;
   margin:0
@@ -104,4 +83,4 @@ dd.list_description_chk  {
   margin-top: 5px;
   margin-bottom: 10px;
 }
-span.more_options {font-weight: bold;font-size: 12px;padding: 4px;}
+span.more_options {font-weight: bold;font-size: 12px;padding: 2px;}
