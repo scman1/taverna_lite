@@ -210,6 +210,8 @@ D   0.0000  0.0300  0.0180  0.0000  0.0232</text>
             <depth>1</depth>
             <granularDepth>1</granularDepth>
           </port>
+          <port><name>reproductiveStages</name><depth>1</depth><granularDepth>1</granularDepth></port>
+          <port><name>report</name><depth>1</depth><granularDepth>1</granularDepth></port>
         </outputPorts>
         <annotations>
           <annotation_chain encoding="xstream">

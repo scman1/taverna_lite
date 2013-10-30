@@ -53,6 +53,14 @@ module TavernaLite
       model = T2Flow::Parser.new.parse(file_data)
       processors = model.processors
       outputs = {}
+      # this does not work beacaus t2flow gem only returns used ports
+      # reading the workflow does not help either since only ports used are
+      # included in main dataflow. Need to read each of the actual components,
+      # get their ports and present them.
+      # So need to mix with going to the repository and getting the workflow and
+      # then getting the outputs list from each component.
+      # for nested ones need to read the nested ones and get ports from them
+      # rscripts and other do actually
       processors.each do |pr|
         name = pr.name
         pr.outputs.each do |out|
