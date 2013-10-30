@@ -55,6 +55,7 @@
       <span id="select-op">No operations available for selected component</span>
     </p>
   </div><!--id="no_op_alternative"-->
+  <%= render :partial => 'taverna_lite/workflow_components/annotation_instructions'%>
   <%= render :partial => 'taverna_lite/workflow_ports/input_instructions'%>
   <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
   <% @component_alternatives.each do |ca| %>
