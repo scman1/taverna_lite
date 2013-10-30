@@ -58,7 +58,7 @@
         <dt> </dt>
         <dd> <b>NOTE:</b> Changes to the values above will be saved to workflow file.</dd>
       </dl>
-      <% if @wf_components.count > 0 %>
+      <% if @wf_components.count > 0 && @wf_components.has_key?(proc.name) %>
         <h4>COMPONENT DETAILS</h4>
         <dl class='list_any'>
           <% wfc = @wf_components[proc.name][0] -%>
