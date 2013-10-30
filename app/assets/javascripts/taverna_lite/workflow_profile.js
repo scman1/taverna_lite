@@ -7,14 +7,21 @@
         $( ".ui-selected:first", this ).each(function() {
           $(this).siblings().removeClass("ui-selected");
           var index = $( "#selectable li" ).index( this );
-          var namex = $(this).attr('id')
+          var namex = $(this).attr('id');
           result.append('Edit ').append( namex );
-          showcomp(namex+"_component")
-          showcompalter(namex+"_alternatives")
+          showcomp(namex+"_component");
+          showcompalter(namex+"_alternatives");
         });
       }
     });
   });
+//  $("#selectable li").click(function() {
+//    $(this).addClass("ui-selected").siblings().removeClass("ui-selected");
+//    var namex = $(this).attr('id');
+//    result.append('Edit ').append( namex );
+//    showcomp(namex+"_component");
+//    showcompalter(namex+"_alternatives");
+//  });
   function showcomp(showdl) {
     var ele = document.getElementById(showdl);
     var all_dls = document.getElementsByClassName("div_component");
