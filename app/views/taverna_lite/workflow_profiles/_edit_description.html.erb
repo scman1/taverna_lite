@@ -56,27 +56,34 @@ workflow file and the database.
   :method =>:put}) do |f| %>
   <% if @workflow.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@workflow.errors.count, "error") %> prohibited this workflow from being saved:</h2>
+      <h2>
+        <%= pluralize(@workflow.errors.count, "error") %>
+        prohibited this workflow from being saved:
+      </h2>
       <ul>
-      <% @workflow.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @workflow.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
-  <div class='basic', style ='width:95%'>
-  <dl class='list_any'>
-    <dt class='list_title'><%= f.label :name  %></dt>
-    <dd class='list_description'><%= f.text_field :name, :style =>'width:95%'%></dd>
-    <dt class='list_title'><%= f.label :title %></dt>
-    <dd class='list_description'><%= f.text_field :title, :style =>'width:95%' %></dd>
-    <dt class='list_title'><%= f.label :author %></dt>
-    <dd class='list_description'><%= f.text_field :author, :style =>'width:95%' %></dd>
-    <dt class='list_title'><%= f.label :description %></dt>
-    <dd class='list_description'><%= f.text_area :description, :rows => 8, :style =>'width:95%' %></dd>
-    <dt class='list_title'><%= f.label :workflow_file %>:</dt>
-    <dd class='list_description'><%= @workflow.workflow_file %></dd>
-  </dl>
+  <div class='basic', style ='width:95%;'>
+    <dl class='list_any'>
+      <dt class='list_title'><%= f.label :name  %></dt>
+      <dd class='list_description'><%= f.text_field :name,
+        :style =>'width:95%'%></dd>
+      <dt class='list_title'><%= f.label :title %></dt>
+      <dd class='list_description'><%= f.text_field :title,
+       :style =>'width:95%' %></dd>
+      <dt class='list_title'><%= f.label :author %></dt>
+      <dd class='list_description'><%= f.text_field :author,
+       :style =>'width:95%' %></dd>
+      <dt class='list_title'><%= f.label :description %></dt>
+      <dd class='list_description'><%= f.text_area :description, :rows => 8,
+        :style =>'width:95%' %></dd>
+      <dt class='list_title'><%= f.label :workflow_file %>:</dt>
+      <dd class='list_description'><%= @workflow.workflow_file %></dd>
+    </dl>
   </div>
   <span class="more_options"> Advanced Annotations </span><%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
         "javascript:hide_show_div('advanced_options', 'switch_advanced');",
@@ -90,7 +97,7 @@ workflow file and the database.
       The semantic annotations can include:
       logo, author(s), refererence(s), procedure descritption science
       area, service set, etc.
-      </br>
+      <br/>
       The information will be saved into the workflow profile, separated from
       the t2flow file.
     </dd>
@@ -101,4 +108,4 @@ workflow file and the database.
    </div>
 <% end %>
 </div>
-<br />
+<br/>

@@ -45,7 +45,7 @@
 %>
 <% if @processors.count>0 %>
 <div id="component_operations">
-  <div id="default_operation" class="div_alternative" >
+  <div id="default_operation" class="div_alternative"style="width:95%; >
     <p id="feedback">
       <span id="select-op">Select a component to view allowed operations</span>
     </p>
@@ -54,7 +54,8 @@
   <%= render :partial => 'taverna_lite/workflow_ports/input_instructions'%>
   <%= render :partial => 'taverna_lite/workflow_ports/output_instructions'%>
   <% @component_alternatives.each do |ca| %>
-    <div id="<%=ca[0]%>_alternatives" class="div_alternative" style="display:none;">
+    <div id="<%=ca[0]%>_alternatives" class="div_alternative"
+      style="display:none; width:95%;">
       <%unless ca[1].count==0 %>
       <b>
         The selected component <%=ca[0]%> can be replaced.
@@ -69,9 +70,8 @@
           Click on the "Replace" button of one of the alternative components.
         </li>
       </ol>
-      <b>NOTE:</b> The component will be replaced immediately and the changes
-      saved into the workflow file.
-      <h3>Alternatives to <%=ca[0]%></h3>
+
+      <h3>Alternatives for <%=ca[0]%>:</h3>
       <ol id="replaceable">
       <% ca[1].each do |item| %>
         <% componentname = item[0].name %>
@@ -101,6 +101,8 @@
         </li>
       <% end %>
       </ol>
+      <b>NOTE:</b> The component will be replaced immediately and the changes
+      saved into the workflow file.
       <%else%>
         <h3>
           Processor can be annotated
