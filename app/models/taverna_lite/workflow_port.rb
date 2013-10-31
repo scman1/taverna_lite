@@ -73,14 +73,20 @@ module TavernaLite
     end
 
     def sample_file_relative_path
-      port_dir = File.join '/workflow_store', "#{workflow_id}/#{name}"
-      port_filename = File.join port_dir, "#{sample_file}"
+      port_filename = nil
+      unless sample_file.nil? then
+        port_dir = File.join '/workflow_store', "#{workflow_id}/#{name}"
+        port_filename = File.join port_dir, "#{sample_file}"
+      end
       return port_filename
     end
 
     def sample_file_actual_path
-      port_dir = File.join WORKFLOW_STORE, "#{workflow_id}/#{name}"
-      port_filename = File.join port_dir, "#{sample_file}"
+      port_filename = nil
+      unless sample_file.nil? then
+        port_dir = File.join WORKFLOW_STORE, "#{workflow_id}/#{name}"
+        port_filename = File.join port_dir, "#{sample_file}"
+      end
       return port_filename
     end
 

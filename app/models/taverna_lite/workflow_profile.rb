@@ -107,13 +107,13 @@ module TavernaLite
           if ((!example_values.nil?) && (example_values.size == 1)) then
             missing_port.example = example_values[0]
           else
-            missing_port.example = ""
+            missing_port.example = "Not Provided"
           end
           descriptions = port_x.descriptions
           if ((!descriptions.nil?) && (descriptions.size == 1)) then
             missing_port.description = descriptions[0]
           else
-            missing_port.description = ""
+            missing_port.description = "Not Provided"
           end
           missing_port.old_name = ""
           missing_port.old_description = ""
