@@ -23,13 +23,12 @@
   -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
   border: solid 1px #3300CC;}
 
-#replaceable .ui-selecting { background: #4074FE; }
-#replaceable .ui-selected { background: #146FF3; color: white; }
-#replaceable { list-style-type: none; margin: 0; padding: 0; }
-#replaceable li { margin: 2px; padding: 0.4em;  height: 140px;
-  -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
-  border: solid 1px #3300CC;}
-.desc_div {float: left;text-align: center;width:80%}
+.desc_div {float: left;text-align: center;width:80%;}
+.action_div {float: center;text-align: center;width:80%; margin: 2px;
+  padding: 0.4em;}
+.replaceable  { margin: 1px; padding: 0.1em; font-size: 12px;
+  height:auto !important; max-height:250px; -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;border-radius: 8px; border: solid 1px #3300CC;}
 
 
 .edit_components { min-height:300px; height:auto !important; height:300px;}
@@ -51,24 +50,24 @@ dt.list_title  {
  font-weight: bold;
  font-size: 12px;
  float:left;
- width:20%; /* adjust the width; make sure the total of both is 100% */
+ width:25%; /* adjust the width; make sure the total of both is 100% */
 }
 dd.list_description  {
  font-size: 12px;
  float:left;
- width:80%; /* adjust the width; make sure the total of both is 100% */
+ width:75%; /* adjust the width; make sure the total of both is 100% */
 }
 dt.list_title_chk  {
  text-align: right;
  font-size: 12px;
  float:left;
- width:20%; /* adjust the width; make sure the total of both is 100% */
+ width:25%; /* adjust the width; make sure the total of both is 100% */
 }
 dd.list_description_chk  {
  font-weight: bold;
  font-size: 12px;
  float:left;
- width:80%; /* adjust the width; make sure the total of both is 100% */
+ width:75%; /* adjust the width; make sure the total of both is 100% */
 }
 .port_details {
   float: left;

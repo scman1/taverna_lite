@@ -46,15 +46,11 @@
 <div id="edit_description" style="min-height:300px;
      				height:auto !important;
                                 height:300px; ">
-<p>
-This tab allows editing the workflow annotations. Changes will be saved to the
-workflow file and the database.
-</p>
 <%= form_for(@workflow,
   :url => {:action => "update_profile"},
   :html => { :multipart => true,
   :method =>:put}) do |f| %>
-  <% if @workflow.errors.any? %>
+  <% if @workflow.errors.any? then -%>
     <div id="error_explanation">
       <h2>
         <%= pluralize(@workflow.errors.count, "error") %>
@@ -63,10 +59,10 @@ workflow file and the database.
       <ul>
         <% @workflow.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
-        <% end %>
+        <% end -%>
       </ul>
     </div>
-  <% end %>
+  <% end -%>
   <div class='basic', style ='width:95%;'>
     <dl class='list_any'>
       <dt class='list_title'><%= f.label :name  %></dt>
