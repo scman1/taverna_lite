@@ -52,6 +52,7 @@ module TavernaLite
       file_data = File.open(xml_filename)
       model = T2Flow::Parser.new.parse(file_data)
       processors = model.processors
+      sinks = model.all_sinks
       outputs = {}
       # this does not work beacaus t2flow gem only returns used ports
       # reading the workflow does not help either since only ports used are

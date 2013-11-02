@@ -43,13 +43,10 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="edit_description" style="min-height:300px;
-     				height:auto !important;
-                                height:300px; ">
-<%= form_for(@workflow,
-  :url => {:action => "update_profile"},
-  :html => { :multipart => true,
-  :method =>:put}) do |f| %>
+<div id="edit_description" style="min-height:300px; height:auto !important;
+  height:300px; ">
+<%= form_for(@workflow, :url => {:action => "update_profile"},
+  :html => { :multipart => true, :method =>:put}) do |f| %>
   <% if @workflow.errors.any? then -%>
     <div id="error_explanation">
       <h2>
@@ -63,7 +60,7 @@
       </ul>
     </div>
   <% end -%>
-  <div class='basic', style ='width:95%;'>
+  <div class='basic' style ='width:95%;'>
     <dl class='list_any'>
       <dt class='list_title'><%= f.label :name  %></dt>
       <dd class='list_description'><%= f.text_field :name,
@@ -99,9 +96,9 @@
     </dd>
   </dl>
   </div>
-   <div title="Save Workflow" alt="Save Workflow" style="float:right; padding:10px;">
-     <%= submit_tag 'Save' %>
-   </div>
+  <div title="Save Workflow" alt="Save Workflow" style="float:right; padding:10px;">
+    <%= submit_tag 'Save' %>
+  </div>
 <% end %>
 </div>
 <br/>

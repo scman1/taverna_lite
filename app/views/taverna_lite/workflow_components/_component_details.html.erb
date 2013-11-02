@@ -53,11 +53,7 @@
     <% @processors.each do |proc| %>
     <div id="<%= proc.name %>_component" class="div_component"
       style="display: none;">
-      <dl >
-        <%= render :partial=>'taverna_lite/workflow_components/annotate', :locals => {:processor => proc} %>
-        <dt> </dt>
-        <dd> <b>NOTE:</b> Changes to the values above will be saved to workflow file.</dd>
-      </dl>
+      <%= render :partial=>'taverna_lite/workflow_components/annotate', :locals => {:processor => proc} %>
       <% if @wf_components.count > 0 && @wf_components.has_key?(proc.name) %>
         <h4>COMPONENT DETAILS</h4>
         <dl class='list_any'>
@@ -84,4 +80,4 @@
     </div>
     <% end %>
   <% end %>
-</div>
+</div><!--component details-->

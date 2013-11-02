@@ -49,14 +49,16 @@
      wf_title = @workflow.title
    end
  %>
-<% content_for :title, "BioVeL Portal - Workflow: " + wf_title %>
 
-<h1><%= "Editing : " + wf_title%></h1>
-<h2>Name: <%= @workflow.name %></h2>
+<% content_for :title, "BioVeL Portal -Edit Workflow: " + wf_title %>
+
+<h1><%= "Edit: " + wf_title%></h1>
 
 <%= render :partial => 'workflow_tabs', :locals => {:workflow => @workflow} %>
+
+<br/>
 <div title="Show workflow details" alt="Show workflow details" style="float:right">
-  <%= link_to '<Back', main_app.workflow_path(@workflow), :class => "link_img" %>
+  <%= link_to 'Back', main_app.workflow_path(@workflow), :class => "link_img" %>
 </div>
 <br/>
 <br/>
