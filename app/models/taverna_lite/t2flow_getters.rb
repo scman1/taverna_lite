@@ -43,6 +43,8 @@
 # through the grant agreement number 283359.
 
 # A class to handle writing changes to workflow file
+require 'rexml/document'
+include REXML
 module TavernaLite
   class T2flowGetters
      TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
@@ -78,5 +80,58 @@ module TavernaLite
       end
       return outputs
     end # method get_all_outputs
+
+    # Constants for Paths
+    ActivityConfigBeanPath="processors/processor/activities/activity/configBean"
+    # Configuration Bean constants for activities
+    ComponentBean = "net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
+    DataflowBean ="dataflow"
+
+    # get the outputs ports from a nested workflow based on its ID
+    def get_df_out_ports_info(document, id)
+      ports = []
+      XPath.match(document, "/workflow/dataflow[@id='#{id}']").map {|x|
+        x.elements.each('outputPorts/port'){ |opt|
+          ports << opt.elements[1].text
+        }
+      }
+      return ports
+    end
+
+    # get the outputs ports from a component based on its signature
+    def get_component_output_ports_info(component)
+      ports = []
+    end
+
+    def get_processor_outputs(xml_filename)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      all_ports=[]
+      document.elements.each("workflow/dataflow"){ |e|
+        if e.attributes["role"] =="top" then
+        # go trough each processor and get the set of outputs associated to it
+        # if dataflow, use dataflow ref attribute to identify the corresponding
+        # nested workflow
+        # if component, use registry, Family, name and version to find the
+        # its ports references to port
+          e.elements.each(ActivityConfigBeanPath){ |cb|
+            x={}
+            case cb.elements[1].name
+              when ComponentBean
+                cb.elements[1].elements.each { |el|
+                  x[el.name]=el.text
+                }
+                x["ports"] = get_component_output_ports_info(x)
+              when DataflowBean
+                x[DataflowBean] = cb.elements[1].attributes['ref']
+                x["ports"] = get_df_out_ports_info(document, x[DataflowBean])
+            end
+            all_ports<<x
+          }
+          break
+        end
+      }
+      return all_ports
+    end
   end # class
 end # module
