@@ -48,38 +48,7 @@ include REXML
 module TavernaLite
   class T2flowGetters
      TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
-    # get a list of all the processor outputs in the workflow and indicate
-    # if they are used (conncted to some port)
-    def get_all_outputs(xml_filename)
-      file_data = File.open(xml_filename)
-      model = T2Flow::Parser.new.parse(file_data)
-      processors = model.processors
-      sinks = model.all_sinks
-      outputs = {}
-      # this does not work beacaus t2flow gem only returns used ports
-      # reading the workflow does not help either since only ports used are
-      # included in main dataflow. Need to read each of the actual components,
-      # get their ports and present them.
-      # So need to mix with going to the repository and getting the workflow and
-      # then getting the outputs list from each component.
-      # for nested ones need to read the nested ones and get ports from them
-      # rscripts and other do actually
-      processors.each do |pr|
-        name = pr.name
-        pr.outputs.each do |out|
-          port_name = name+':'+out
-          outputs[port_name]={:used=>false,:connected_to=>nil}
-        end
-      end
-      datalinks = model.datalinks
-      datalinks.each do |dl|
-        if outputs.has_key?(dl.source)
-          outputs[dl.source][:used] = true
-          outputs[dl.source][:connected_to] = dl.sink
-        end
-      end
-      return outputs
-    end # method get_all_outputs
+
 
     # Constants for Paths
     DataFlowPath = "workflow/dataflow"
@@ -89,62 +58,8 @@ module TavernaLite
     ComponentBean = "net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
     DataflowBean ="dataflow"
 
-    # get the outputs ports from a nested workflow based on its ID
-#    def get_dataflow_outputs(document, id)
-#      ports = {}
-#      XPath.match(document, "/workflow/dataflow[@id='#{id}']").map {|x|
-#        x.elements.each('outputPorts/port'){ |opt|
-#          ports[opt.elements[1].text] = []
-#        }
-#      }
-#      return ports
-#    end # method get_df_out_ports_info
-
-    def get_dataflow_outputs(xml_file, id)
-      ports = {}
-      dataflows = T2Flow::Parser.new.parse(xml_file).dataflows
-      dataflows.each{ |df|
-        if df.dataflow_id == id then
-            df.sinks.each { |a_sink|
-              description = ""
-              unless a_sink.descriptions.nil?
-                description = a_sink.descriptions.join.to_s
-              end
-              example = ""
-              unless a_sink.example_values.nil?
-                example = a_sink.example_values.join.to_s
-              end
-              ports[a_sink.name] = {:description=>description,
-                :example=>example, :workflow_port => nil}
-            }
-          break
-        end
-      }
-      ports
-    end
-    # get the outputs ports from a component based on its signature
-    def get_component_outputs(component)
-      ports = {}
-      #should read from the repository but for the moment get it from local copy
-      component = TavernaLite::WorkflowComponent.find(:all,
-                     :conditions=>{
-                       :family=>component["familyName"],
-                       :registry=>component["registryBase"],
-                       :version=>component["componentVersion"],
-                       :name=>component["componentName"]})
-
-      unless component.empty? then
-        component = component[0]
-        wf=TavernaLite::WorkflowProfile.new(:workflow_id=>component.workflow_id)
-        component_ports = wf.get_custom_outputs
-        component_ports.each { |cpt|
-          ports[cpt.name] = {:description=>cpt.description,
-            :example=> cpt.example, :workflow_port=>cpt}
-        }
-      end
-      ports
-    end # method get_component_output_ports_info
-
+    # get a list of all the processor outputs in the workflow and indicate
+    # if they are used (conncted to some port)
     def get_processors_outputs(xml_filename)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
@@ -183,6 +98,54 @@ module TavernaLite
       return all_processor_outputs
     end # method get_processor_outputs
 
+    # get the outputs ports from a nested workflow using nested workflow ID
+    def get_dataflow_outputs(xml_file, id)
+      ports = {}
+      dataflows = T2Flow::Parser.new.parse(xml_file).dataflows
+      dataflows.each{ |df|
+        if df.dataflow_id == id then
+            df.sinks.each { |a_sink|
+              description = ""
+              unless a_sink.descriptions.nil?
+                description = a_sink.descriptions.join.to_s
+              end
+              example = ""
+              unless a_sink.example_values.nil?
+                example = a_sink.example_values.join.to_s
+              end
+              ports[a_sink.name] = {:description=>description,
+                :example=>example, :workflow_port => nil}
+            }
+          break
+        end
+      }
+      ports
+    end
+
+    # get the outputs ports from a component based on its signature
+    def get_component_outputs(component)
+      ports = {}
+      #should read from the repository but for the moment get it from local copy
+      component = TavernaLite::WorkflowComponent.find(:all,
+                     :conditions=>{
+                       :family=>component["familyName"],
+                       :registry=>component["registryBase"],
+                       :version=>component["componentVersion"],
+                       :name=>component["componentName"]})
+
+      unless component.empty? then
+        component = component[0]
+        wf=TavernaLite::WorkflowProfile.new(:workflow_id=>component.workflow_id)
+        component_ports = wf.get_custom_outputs
+        component_ports.each { |cpt|
+          ports[cpt.name] = {:description=>cpt.description,
+            :example=> cpt.example, :workflow_port=>cpt}
+        }
+      end
+      ports
+    end # method get_component_output_ports_info
+
+    # get information about a ports connections within the workflow
     def get_ports_links(all_processor_outputs, xml_file)
       datalinks = T2Flow::Parser.new.parse(xml_file).datalinks
       all_processor_outputs.each { |processor_key, a_processor|
