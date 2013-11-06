@@ -43,6 +43,8 @@
 # through the grant agreement number 283359.
 
 # A class to handle writing changes to workflow file
+require 'rexml/document'
+include REXML
 module TavernaLite
   class T2flowWriter
      TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
@@ -93,6 +95,7 @@ module TavernaLite
       end
     end
 
+    # remove a workflow port
     def remove_wf_port(xml_filename, port_name,port_type=1)
       document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
@@ -113,6 +116,84 @@ module TavernaLite
       # save workflow in the host app passing the file
       File.open(xml_filename, "w:UTF-8") do |f|
         f.write document.root
+      end
+    end
+
+    # add a workflow port
+    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", description="", example="", port_type=2)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      root = document.root
+      # 01 Add the port
+      outputs = root.elements["dataflow[@role='top']"].elements["outputPorts"]
+      portname = Element.new("name")
+      portname.text = port_name
+      new_port = Element.new("port")
+      new_port.add_element(portname)
+      new_port.add_element(Element.new("annotations"))
+      outputs.add_element(new_port)
+
+      # 02 Add a datalink for the port
+      datalinks = root.elements["dataflow[@role='top']"].elements["datalinks"]
+      sink_port = Element.new("port")
+      sink_port.text = port_name
+
+      new_sink = Element.new("sink")
+      new_sink.add_element(sink_port)
+      new_sink.attributes["type"] = "dataflow"
+
+      source_processor = Element.new("processor")
+      source_processor.text = "StageMatrixFromCensus"
+
+      source_port = Element.new("port")
+      source_port.text = "report"
+
+      new_source = Element.new("source")
+      new_source.add_element(source_processor)
+      new_source.add_element(source_port)
+
+      new_source.attributes["type"] = "processor"
+
+      new_datalink = Element.new("datalink")
+      new_datalink.add_element(new_sink)
+      new_datalink.add_element(new_source)
+
+      datalinks.add_element(new_datalink)
+
+      #03 add the output map to the processor
+      #04 add port to processor (expose it)
+      processors = root.elements["dataflow[@role='top']"].elements["processors"]
+      processors.elements.each("processor/name") { |prn|
+        if prn.text == "StageMatrixFromCensus" then
+          the_processor = prn.parent
+          output_maps = the_processor.elements["activities/activity/outputMap"]
+          new_map = Element.new("map")
+          new_map.attributes["from"] = "report"
+          new_map.attributes["to"] = "report"
+          output_maps.add_element(new_map)
+          output_ports = the_processor.elements["outputPorts"]
+          new_outport = Element.new("port")
+          new_outname = Element.new("name")
+          new_outname.text = "report"
+          new_depth = Element.new("depth")
+          new_depth.text = "1"
+          new_granular = Element.new("granularDepth")
+          new_granular.text = "1"
+          new_outport.add_element(new_outname)
+          new_outport.add_element(new_depth)
+          new_outport.add_element(new_granular)
+          output_ports.add_element(new_outport)
+        end
+      }
+      # pending:
+      #   - add annotations (description and example)
+      #   - how to calculate depth and granular depth if required
+      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
+      document.root.attributes["producedBy"] = TLVersion
+
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        document.write f
       end
     end
 
@@ -411,5 +492,6 @@ module TavernaLite
         end
       end
     end # method replace_workflow_components
+
   end # class
 end # module

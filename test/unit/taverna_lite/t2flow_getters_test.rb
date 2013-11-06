@@ -94,6 +94,61 @@ module TavernaLite
         }
       }
       # @worklfow_01 has 12 inner connections
+      assert_equal(12, connection_count)
+      # expect less links than those reported by t2flow
+      assert_operator(connection_count,:<=,t2f_links_count)
+      # @worklfow_01 has 15 ports
+      assert_equal(15,outs_count)
+      # expect less outputs than those reported reported by t2flow
+      assert_operator(outs_count,:<=,t2f_outs_count)
+
+      #puts "FROM GETTERS: " + connection_count.to_s
+      #puts "FROM T2FLOW:  " + outputs02.count.to_s
+      #outputs02.each do |sink|
+      #  puts sink.name
+      #end
+      # puts "*****************************************************************\n"
+    end
+    test "02 test adding link and output to StageMatrixFromCensus:report" do
+      processor = "StageMatrixFromCensus"
+      port = "report"
+      # first get processor outputs
+      wf_reader = T2flowGetters.new
+      proc_outs = wf_reader.get_processors_outputs(@workflow_01)
+      # get t2flow model to check things returned from t2flow_getter
+      file_data = File.open(@workflow_01)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      t2f_outs_count = t2_model.all_sinks.count
+      t2f_links_count = t2_model.datalinks.count
+      t2f_links = t2_model.datalinks
+      # the number of outputs should be the same
+      #puts "\n*****************************************************************"
+      #puts "PROCESSORS: " + proc_outs.count.to_s
+      connection_count = 0
+      outs_count = 0
+      #puts proc_outs
+      proc_outs.each { |port_k,port_v|
+        port_k
+        proc_outs[port_k]["ports"].each { |k,v|
+          outs_count += 1
+          unless v[:connections].nil? then
+            connection_count += v[:connections].count
+            source = port_k + ":" + k
+            connection_exists = false
+            # assert that each connection reported is real
+            v[:connections].each {|sink|
+              t2f_links.each{|t2_link|
+                if (t2_link.sink == sink && t2_link.source == source)
+                  connection_exists = true
+                  break
+                end
+              }
+              assert connection_exists
+            }
+          end
+        }
+      }
+      # @worklfow_01 has 12 inner connections
       assert_equal(connection_count,12)
       # expect less links than those reported by t2flow
       assert_operator(connection_count,:<=,t2f_links_count)

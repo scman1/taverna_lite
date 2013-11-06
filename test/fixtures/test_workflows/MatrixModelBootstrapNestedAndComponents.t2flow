@@ -84,34 +84,60 @@ plant	 year	stage 	reprstr	recruitment&#xD;
       <curationEventList />
     </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
   </annotationAssertions>
-</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port></inputPorts><outputPorts><port><name>stage_matrix</name><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
-  <annotationAssertions>
-    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
-      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
-        <text>A stage matrix contains transitions probabilities from each stage to the next. In the example, the selected species, Gentiana pneumonanthe, has a matrix of 5 x 5 stages (Oostermeijer et al., 1996).</text>
-      </annotationBean>
-      <date>2012-11-01 10:14:42.968 UTC</date>
-      <creators />
-      <curationEventList />
-    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
-  </annotationAssertions>
-</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
-  <annotationAssertions>
-    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
-      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
-        <text>    S       J       V       G       D  &#xD;
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port></inputPorts>
+  <outputPorts>
+    <port>
+      <name>stage_matrix</name>
+      <annotations>
+        <annotation_chain encoding="xstream">
+          <net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+            <annotationAssertions>
+              <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+                <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+                  <text>A stage matrix contains transitions probabilities from each stage to the next. In the example, the selected species, Gentiana pneumonanthe, has a matrix of 5 x 5 stages (Oostermeijer et al., 1996).</text>
+                </annotationBean>
+                <date>2012-11-01 10:14:42.968 UTC</date>
+                <creators />
+                <curationEventList />
+              </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+            </annotationAssertions>
+          </net.sf.taverna.t2.annotation.AnnotationChainImpl>
+        </annotation_chain>
+        <annotation_chain encoding="xstream">
+          <net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+            <annotationAssertions>
+              <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+                <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+                  <text>    S       J       V       G       D  &#xD;
 S   0.0000  0.0000  0.0000  7.6660  0.0000&#xD;
 J   0.0579  0.0100  0.0000  8.5238  0.0000&#xD;
 V   0.4637  0.8300  0.9009  0.2857  0.8604&#xD;
 G   0.0000  0.0400  0.0090  0.6190  0.1162&#xD;
 D   0.0000  0.0300  0.0180  0.0000  0.0232</text>
-      </annotationBean>
-      <date>2012-11-01 10:16:15.78 UTC</date>
-      <creators />
-      <curationEventList />
-    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
-  </annotationAssertions>
-</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port><port><name>Stage_Matrix_CSV</name><annotations /></port><port><name>Bootstrap_Histogram</name><annotations /></port><port><name>Confidence_Interval</name><annotations /></port></outputPorts><processors><processor><name>Read_Census_Data_From_CSV_File</name><inputPorts><port><name>table_file</name><depth>0</depth></port></inputPorts><outputPorts><port><name>r_expression</name><depth>1</depth><granularDepth>1</granularDepth></port></outputPorts><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+                </annotationBean>
+                <date>2012-11-01 10:16:15.78 UTC</date>
+                <creators />
+                <curationEventList />
+              </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+            </annotationAssertions>
+          </net.sf.taverna.t2.annotation.AnnotationChainImpl>
+        </annotation_chain>
+      </annotations>
+    </port>
+    <port>
+      <name>Stage_Matrix_CSV</name>
+      <annotations />
+    </port>
+    <port>
+      <name>Bootstrap_Histogram</name>
+      <annotations />
+    </port>
+    <port>
+      <name>Confidence_Interval</name>
+      <annotations />
+    </port>
+  </outputPorts>
+  <processors><processor><name>Read_Census_Data_From_CSV_File</name><inputPorts><port><name>table_file</name><depth>0</depth></port></inputPorts><outputPorts><port><name>r_expression</name><depth>1</depth><granularDepth>1</granularDepth></port></outputPorts><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
   <annotationAssertions>
     <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
       <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
