@@ -56,32 +56,58 @@ module TavernaLite
       FileUtils.cp from_here, to_there
       @workflow_01 = to_there
     end
-    test "01 should get all processor ports from workflow" do
-      # modify the t2flow file by writing annotations
+    test "01 get processor ports and connections from workflow" do
+      # first get processor outputs
       wf_reader = T2flowGetters.new
-      outputs01 = wf_reader.get_processors_outputs(@workflow_01)
+      proc_outs = wf_reader.get_processors_outputs(@workflow_01)
+      # get t2flow model to check things returned from t2flow_getter
+      file_data = File.open(@workflow_01)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      t2f_outs_count = t2_model.all_sinks.count
+      t2f_links_count = t2_model.datalinks.count
+      t2f_links = t2_model.datalinks
       # the number of outputs should be the same
-      puts "\n*****************************************************************"
-      puts "PROCESSORS: " + outputs01.count.to_s
-      out_count = 0
-      puts outputs01
-      outputs01.each { |port_k,port_v|
-        outputs01[port_k]["ports"].each { |k,v|
-          unless v[:connections].nil? then out_count += v[:connections].count end
+      #puts "\n*****************************************************************"
+      #puts "PROCESSORS: " + proc_outs.count.to_s
+      connection_count = 0
+      outs_count = 0
+      #puts proc_outs
+      proc_outs.each { |port_k,port_v|
+        port_k
+        proc_outs[port_k]["ports"].each { |k,v|
+          outs_count += 1
+          unless v[:connections].nil? then
+            connection_count += v[:connections].count
+            source = port_k + ":" + k
+            connection_exists = false
+            # assert that each connection reported is real
+            v[:connections].each {|sink|
+              t2f_links.each{|t2_link|
+                if (t2_link.sink == sink && t2_link.source == source)
+                  connection_exists = true
+                  break
+                end
+              }
+              assert connection_exists
+            }
+          end
         }
       }
-      #need to check why the sum is not working
-      file_data = File.open(@workflow_01)
-      model = T2Flow::Parser.new.parse(file_data)
-      outputs02 = model.all_sinks
-      # could try to assert that each node reported as used is actually used
-      puts "FROM GETTERS: " + out_count.to_s
-      puts "FROM T2FLOW:  " + outputs02.count.to_s
-      outputs02.each do |sink|
-        puts sink.name
-      end
-      puts "*****************************************************************\n"
-      assert_equal(out_count,outputs02.count)
+      # @worklfow_01 has 12 inner connections
+      assert_equal(connection_count,12)
+      # expect less links than those reported by t2flow
+      assert_operator(connection_count,:<=,t2f_links_count)
+      # @worklfow_01 has 15 ports
+      assert_equal(outs_count,15)
+      # expect less outputs than those reported reported by t2flow
+      assert_operator(outs_count,:<=,t2f_outs_count)
+
+      #puts "FROM GETTERS: " + connection_count.to_s
+      #puts "FROM T2FLOW:  " + outputs02.count.to_s
+      #outputs02.each do |sink|
+      #  puts sink.name
+      #end
+      # puts "*****************************************************************\n"
     end
     # Pending test of swap component
   end

@@ -95,7 +95,7 @@ tl_workflowcomponent_03:
   created_at: "2013-09-24 14:56:54"
   updated_at: "2013-09-27 16:00:34"
 
-  tl_workflowcomponent_04:
+tl_workflowcomponent_04:
   id: 4
   workflow_id: 11
   license_id: 1
@@ -106,7 +106,7 @@ tl_workflowcomponent_03:
   created_at: "2013-09-25 13:22:51"
   updated_at: "2013-11-04 12:09:43"
 
-  tl_workflowcomponent_05:
+tl_workflowcomponent_05:
   id: 5
   workflow_id: 12
   license_id: 1
@@ -117,7 +117,7 @@ tl_workflowcomponent_03:
   created_at: "2013-09-25 13:26:00"
   updated_at: "2013-09-25 13:26:00"
 
-  tl_workflowcomponent_06:
+tl_workflowcomponent_06:
   id: 6
   workflow_id: 21
   license_id: 1

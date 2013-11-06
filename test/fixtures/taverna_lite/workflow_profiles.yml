@@ -69,12 +69,12 @@ tl_workflowprofile_01:
   title: "No title provided"
   description: nil
   author_id: 1
-    version: nil
+  version: nil
   created_at: "2013-09-02 13:24:43"
   updated_at: "2013-09-02 13:24:43"
   workflow_id: nil
 
-  tl_workflowprofile_1:
+tl_workflowprofile_1:
   id: 2
   title: nil
   description: nil
@@ -84,7 +84,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 09:46:33"
   workflow_id: 6
 
-  tl_workflowprofile_02:
+tl_workflowprofile_02:
   id: 3
   title: nil
   description: nil
@@ -94,7 +94,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 14:20:00"
   workflow_id: 7
 
-  tl_workflowprofile_03:
+tl_workflowprofile_03:
   id: 4
   title: nil
   description: nil
@@ -104,7 +104,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 14:33:14"
   workflow_id: 1
 
-  tl_workflowprofile_04:
+tl_workflowprofile_04:
   id: 5
   title: nil
   description: nil
@@ -114,7 +114,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 14:33:20"
   workflow_id: 3
 
-  tl_workflowprofile_05:
+tl_workflowprofile_05:
   id: 6
   title: nil
   description: nil
@@ -124,7 +124,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 14:46:17"
   workflow_id: 8
 
-  tl_workflowprofile_06:
+tl_workflowprofile_06:
   id: 7
   title: nil
   description: nil
@@ -134,7 +134,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-24 16:04:31"
   workflow_id: 4
 
-  tl_workflowprofile_07:
+tl_workflowprofile_07:
   id: 8
   title: nil
   description: nil
@@ -144,7 +144,7 @@ tl_workflowprofile_01:
   updated_at: "2013-09-26 14:30:01"
   workflow_id: 2
 
-  tl_workflowprofile_08:
+tl_workflowprofile_08:
   id: 9
   title: nil
   description: nil
@@ -154,7 +154,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-23 10:20:15"
   workflow_id: 13
 
-  tl_workflowprofile_09:
+tl_workflowprofile_09:
   id: 10
   title: nil
   description: nil
@@ -164,7 +164,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-23 10:54:23"
   workflow_id: 14
 
-  tl_workflowprofile_10:
+tl_workflowprofile_10:
   id: 11
   title: nil
   description: nil
@@ -174,7 +174,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-23 11:00:09"
   workflow_id: 15
 
-  tl_workflowprofile_11:
+tl_workflowprofile_11:
   id: 12
   title: nil
   description: nil
@@ -184,7 +184,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-23 11:10:08"
   workflow_id: 16
 
-  tl_workflowprofile_12:
+tl_workflowprofile_12:
   id: 13
   title: nil
   description: nil
@@ -194,7 +194,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-23 11:17:41"
   workflow_id: 17
 
-  tl_workflowprofile_13:
+tl_workflowprofile_13:
   id: 14
   title: nil
   description: nil
@@ -204,7 +204,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-30 15:06:01"
   workflow_id: 19
 
-  tl_workflowprofile_14:
+tl_workflowprofile_14:
   id: 15
   title: nil
   description: nil
@@ -214,7 +214,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-30 15:20:46"
   workflow_id: 20
 
-  tl_workflowprofile_15:
+tl_workflowprofile_15:
   id: 16
   title: nil
   description: nil
@@ -224,7 +224,7 @@ tl_workflowprofile_01:
   updated_at: "2013-10-31 10:07:13"
   workflow_id: 18
 
-  tl_workflowprofile_16:
+tl_workflowprofile_16:
   id: 17
   title: nil
   description: nil
