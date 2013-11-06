@@ -41,35 +41,48 @@
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
+require 'test_helper'
 
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-one:
-  workflow_id: 1
-  error_code: MyString
-  name: MyString
-  pattern: MyString
-  message: MyString
-  run_count: 1
-  port_count: 1
-
-two:
-  workflow_id: 1
-  error_code: MyString
-  name: MyString
-  pattern: MyString
-  message: MyString
-  run_count: 1
-  port_count: 1
-
-tl_workflowerror_01:
-  id: 2
-  workflow_id: 3
-  error_code: "E_100001_RServerConnect"
-  name: "Unable to Connect to R server"
-  pattern: "Could not establish connection to.*using port 6311"
-  message: "The connection to the specified R Server failed verify credentials"
-  run_count: nil
-  port_count: nil
-  created_at: "2013-09-04 11:57:39"
-  updated_at: "2013-09-04 11:57:39"
+module TavernaLite
+  class T2flowGettersTest < ActiveSupport::TestCase
+    setup do
+      # Set up the workflow file path so it can be used in different tests.
+      # Using MatrixModelBootstrapNestedAndComponents.t2flow
+      # this file mixes components and nested workflows
+      fixtures_path = ActiveSupport::TestCase.fixture_path
+      filename ='MatrixModelBootstrapNestedAndComponents.t2flow'
+      from_here =fixtures_path+'/test_workflows/'+filename
+      to_there = fixtures_path+'/test_workflows/test_result/'+filename
+      FileUtils.cp from_here, to_there
+      @workflow_01 = to_there
+    end
+    test "01 should get all processor ports from workflow" do
+      # modify the t2flow file by writing annotations
+      wf_reader = T2flowGetters.new
+      outputs01 = wf_reader.get_processors_outputs(@workflow_01)
+      # the number of outputs should be the same
+      puts "\n*****************************************************************"
+      puts "PROCESSORS: " + outputs01.count.to_s
+      out_count = 0
+      puts outputs01
+      outputs01.each { |port_k,port_v|
+        outputs01[port_k]["ports"].each { |k,v|
+          unless v[:connections].nil? then out_count += v[:connections].count end
+        }
+      }
+      #need to check why the sum is not working
+      file_data = File.open(@workflow_01)
+      model = T2Flow::Parser.new.parse(file_data)
+      outputs02 = model.all_sinks
+      # could try to assert that each node reported as used is actually used
+      puts "FROM GETTERS: " + out_count.to_s
+      puts "FROM T2FLOW:  " + outputs02.count.to_s
+      outputs02.each do |sink|
+        puts sink.name
+      end
+      puts "*****************************************************************\n"
+      assert_equal(out_count,outputs02.count)
+    end
+    # Pending test of swap component
+  end
+end

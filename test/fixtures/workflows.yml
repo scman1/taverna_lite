@@ -1,3 +1,47 @@
+# Copyright (c) 2012-2013 Cardiff University, UK.
+# Copyright (c) 2012-2013 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the names of The University of Manchester nor Cardiff University nor
+#   the names of its contributors may be used to endorse or promote products
+#   derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Authors
+#     Abraham Nieva de la Hidalga
+#
+# Synopsis
+#
+# BioVeL Taverna Lite is a prototype interface provided to support web-based
+# inspection and modification of workflows.
+#
+# For more details see http://www.biovel.eu
+#
+# BioVeL is funded by the European Commission 7th Framework Programme (FP7),
+# through the grant agreement number 283359.
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
@@ -21,3 +65,228 @@ two:
   my_experiment_id: 2
   user_id: 1
   is_shared: false
+
+# need to seed the DB with the details of the component workflows,
+  # so need workflows here, plus corresponding records on profiles, components and
+# ports tables
+
+workflow_01:
+  id:  23
+  title: "Hello Anyone"
+  author: "Stian Soiland-Reyes"
+  description: "An extension to helloworld.t2flow"
+  name: "Hello_Anyone"
+  workflow_file: "HelloAnyone.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-08-30 13:54:42"
+  updated_at: "2013-10-29 10:36:17"
+
+  workflow_02:
+  id:  22
+  title: "IntegratedWorkflow1-3"
+  author: "Undefined"
+  description: ""
+  name: "IntegratedWorkflow1_"
+  workflow_file: "Integrated-01.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-08-30 13:54:57"
+  updated_at: "2013-09-02 12:49:44"
+
+  workflow_03:
+  id:  3
+  title: "Creation of a stage matrix model"
+  author: "Maria Paula Balcázar-Vargas"
+  description: "This workflow was created based on Package ‘popbio’..."
+  name: "creation_of_a_stage_matrix_model"
+  workflow_file: "creation_of_a_stage_matrix_model_from_demographic_m..."
+  my_experiment_id: 3276
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-08-30 13:55:24"
+  updated_at: "2013-10-23 11:09:41"
+
+  workflow_04:
+  id:  4
+  title: "No title provided"
+  author: "Undefined"
+  description: ""
+  name: "Workflow6"
+  workflow_file: "popmodmatrix.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-08-30 14:00:54"
+  updated_at: "2013-09-02 12:49:45"
+
+  workflow_05:
+  id:  5
+  title: "IntegratedWorkflow1-3"
+  author: "Undefined"
+  description: ""
+  name: "IntegratedWorkflow1_"
+  workflow_file: "Integrated-02.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-02 13:52:40"
+  updated_at: "2013-09-20 08:31:45"
+
+  workflow_06:
+  id:  6
+  title: "Build Stage Matrix"
+  author: "Maria Paula Balcázar-Vargas, Jonathan Giddy and Ger..."
+  description: "Extracted from: Matrix Population Model constructio..."
+  name: "Build_Stage_Matrix"
+  workflow_file: "BuildStageMatrix_txt.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-20 07:48:11"
+  updated_at: "2013-10-23 11:08:42"
+
+  workflow_07:
+  id:  7
+  title: "Stage Matrix Population Model Construction"
+  author: "Maria Paula Balcázar-Vargas, Jonathan Giddy and Ger..."
+  description: "The Workflow provides an environment to create a st..."
+  name: "Stage_Matrix_Populat"
+  workflow_file: "short_01.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-20 15:53:18"
+  updated_at: "2013-10-23 11:09:06"
+
+  workflow_08:
+  id:  8
+  title: "Convert Text Table into R expression"
+  author: "Jonathan Giddy"
+  description: "Takes a text table as input and produces an R expre..."
+  name: "Convert_Text_Table_i"
+  workflow_file: "convert_text_table_into_r_expression_143336.t2flow"
+  my_experiment_id: 3819
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-23 12:12:52"
+  updated_at: "2013-09-23 13:31:35"
+
+  workflow_09:
+  id:  9
+  title: "Stage Matrix From Census Data Interactive"
+  author: "Jonathan Giddy"
+  description: "This workflow component will take an r-expression c..."
+  name: "Stage_Matrix_From_Ce"
+  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2..."
+  my_experiment_id: 3820
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-23 12:14:17"
+  updated_at: "2013-09-23 13:32:17"
+
+  workflow_10:
+  id:  10
+  title: "Plain Text from R exp"
+  author: "Jonathan Giddy"
+  description: "Takes an R expression (matrix) as input and produce..."
+  name: "Plain_Text_from_R_ex"
+  workflow_file: "display_text_from_r_expression_961358.t2flow"
+  my_experiment_id: 3815
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-23 12:16:07"
+  updated_at: "2013-09-23 13:34:09"
+
+  workflow_11:
+  id:  11
+  title: "Convert CSV Table into R expression"
+  author: "Jonathan Giddy"
+  description: "Takes a csv table as input and produces a matrix (R..."
+  name: "Convert_CSV_Table_in"
+  workflow_file: "convert_csv_table_into_r_expression_158272.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-25 13:21:21"
+  updated_at: "2013-09-25 13:21:21"
+
+  workflow_12:
+  id:  12
+  title: "Convert spreadsheet Table into R expression"
+  author: "Abraham Nieva"
+  description: "Takes a spreasheet as input and produces a matrix (..."
+  name: "Convert_spreadsheet_"
+  workflow_file: "convert_spreadsheet_table_into_r_expression_533564...."
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-09-25 13:21:40"
+  updated_at: "2013-09-25 13:21:40"
+
+  workflow_13:
+  id:  16
+  title: "Hello Bilingual - English and Spanish"
+  author: "Stian Soiland Reyes"
+  description: "An extension to helloanyone.t2flow - this workflow ..."
+  name: "Hello_Bilingual_ES"
+  workflow_file: "HelloBilingual2.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-10-23 11:10:00"
+  updated_at: "2013-10-23 11:10:00"
+
+  workflow_14:
+  id:  18
+  title: "Hello Bilingual - English and Spanish"
+  author: "Stian Soiland Reyes"
+  description: "An extension to helloanyone.t2flow - this workflow ..."
+  name: "Hello_Bilingual_ES"
+  workflow_file: "HelloBilingual3.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-10-23 12:13:45"
+  updated_at: "2013-10-23 12:13:45"
+
+  workflow_15:
+  id:  19
+  title: "Build Matrix w Bootstrap Nested and Components"
+  author: "M. P. Balcázar-Vargas, J. Giddy and G. Oostermeijer..."
+  description: "The Workflow provides an environment to create a st..."
+  name: "Build_Matrix_w_Boots"
+  workflow_file: "Build_Matrix_w_Bootstrap_nested_and_components.t2fl..."
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-10-30 15:05:51"
+  updated_at: "2013-10-30 15:05:51"
+
+  workflow_16:
+  id:  20
+  title: "Bootstrap of observed census transitions."
+  author: "This Workflow was created by:\nMaria Paula Balcázar-..."
+  description: "The goal of a demographic analysis is very often to..."
+  name: "Bootstrap_of_observe"
+  workflow_file: "Bootstrap_of_Observations.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-10-30 15:20:37"
+  updated_at: "2013-10-30 15:20:37"
+
+  workflow_17:
+  id:  21
+  title: "R Expression to CSV"
+  author: "ANH"
+  description: "Takes an R Expression as input and produces a CSV f..."
+  name: "R_Expression_to_CSV"
+  workflow_file: "R_Expression_to_CSV.t2flow"
+  my_experiment_id: nil
+  user_id: 1
+  is_shared: nil
+  created_at: "2013-11-04 12:15:28"
+  updated_at: "2013-11-04 12:15:28"

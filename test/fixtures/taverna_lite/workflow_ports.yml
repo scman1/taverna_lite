@@ -34,7 +34,7 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface provided to support the
+# BioVeL Taverna Lite  is a prototype interface provided to support web-based
 # inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
@@ -69,3 +69,1221 @@ two:
   old_example: "World!"
   order: 1
   workflow_id: 1
+
+# Not needed now but may be needed later
+
+tl_workflowport_01:
+  id: 8
+  workflow_id: 6
+  port_type_id: 1
+  name: "censusDataFile"
+  old_name: nil
+  description: nil
+  old_description: nil
+  order: nil
+  created_at: "2013-09-24 17:10:11"
+  updated_at: "2013-09-24 17:10:11"
+  display_control_id: 3
+  example: nil
+  sample_file: "Dt1.txt"
+  sample_file_type: "text/plain"
+  show: nil
+  old_example: nil
+  example_type_id: nil
+
+  tl_workflowport_02:
+  id: 9
+  workflow_id: 1
+  port_type_id: 1
+  name: "name"
+  old_name: "newname"
+  description: "name for greeting"
+  old_description: "New description"
+  order: nil
+  created_at: "2013-10-22 14:51:23"
+  updated_at: "2013-10-22 14:53:06"
+  display_control_id: 1
+  example: "World"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: "New example"
+  example_type_id: 1
+
+  tl_workflowport_03:
+  id: 10
+  workflow_id: 1
+  port_type_id: 2
+  name: "greeting"
+  old_name: "greeting"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-22 14:51:23"
+  updated_at: "2013-10-30 10:02:28"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_04:
+  id: 11
+  workflow_id: 13
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 10:20:15"
+  updated_at: "2013-10-23 10:20:15"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_05:
+  id: 12
+  workflow_id: 13
+  port_type_id: 2
+  name: "greeting"
+  old_name: "greeting"
+  description: "English greeting"
+  old_description: "English greeting"
+  order: nil
+  created_at: "2013-10-23 10:20:16"
+  updated_at: "2013-10-23 10:35:37"
+  display_control_id: 2
+  example: "Hello World"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: "Hello World"
+  example_type_id: 1
+
+  tl_workflowport_06:
+  id: 14
+  workflow_id: 14
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 10:54:23"
+  updated_at: "2013-10-23 10:54:23"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_07:
+  id: 15
+  workflow_id: 14
+  port_type_id: 2
+  name: "greeting"
+  old_name: "greeting"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 10:54:23"
+  updated_at: "2013-10-23 10:54:48"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_08:
+  id: 17
+  workflow_id: 15
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:00:09"
+  updated_at: "2013-10-23 11:00:09"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_09:
+  id: 18
+  workflow_id: 15
+  port_type_id: 2
+  name: "greeting"
+  old_name: "greeting"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:00:09"
+  updated_at: "2013-10-23 11:00:28"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_12:
+  id: 21
+  workflow_id: 7
+  port_type_id: 1
+  name: "censusDataFile"
+  old_name: ""
+  description: "The input data file must have the format of a table..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:06:55"
+  updated_at: "2013-10-23 11:06:55"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_13:
+  id: 22
+  workflow_id: 7
+  port_type_id: 2
+  name: "stage_matrix"
+  old_name: ""
+  description: "A stage matrix contains transitions probabilities f..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:06:55"
+  updated_at: "2013-10-23 11:06:55"
+  display_control_id: 1
+  example: "    S       J       V       G       D  \nS   0.0000 ..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_14:
+  id: 23
+  workflow_id: 2
+  port_type_id: 1
+  name: "censusDataFile"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-23 11:07:29"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_15:
+  id: 24
+  workflow_id: 2
+  port_type_id: 1
+  name: "speciesName"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-23 11:07:29"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_16:
+  id: 25
+  workflow_id: 2
+  port_type_id: 2
+  name: "barPlot"
+  old_name: "barPlot"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-28 15:51:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_17:
+  id: 26
+  workflow_id: 2
+  port_type_id: 2
+  name: "projectionMatrix"
+  old_name: "projectionMatrix"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-28 15:51:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_18:
+  id: 27
+  workflow_id: 2
+  port_type_id: 2
+  name: "elasticityMatrix"
+  old_name: "elasticityMatrix"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-28 15:51:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_19:
+  id: 28
+  workflow_id: 2
+  port_type_id: 2
+  name: "sensitivityMatrix1"
+  old_name: "sensitivityMatrix1"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:29"
+  updated_at: "2013-10-28 15:51:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 29
+  workflow_id: 2
+  port_type_id: 2
+  name: "sensitivityMatrix2"
+  old_name: "this_is_the_sensitivity_Matrix_2"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:30"
+  updated_at: "2013-10-28 16:03:37"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 30
+  workflow_id: 3
+  port_type_id: 1
+  name: "StartYear"
+  old_name: ""
+  description: "It is the first cesus year"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:38"
+  updated_at: "2013-10-23 11:07:38"
+  display_control_id: 1
+  example: "1987"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 31
+  workflow_id: 3
+  port_type_id: 1
+  name: "TableFile"
+  old_name: ""
+  description: "Table containing demographic data of individuals in..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:38"
+  updated_at: "2013-10-23 11:07:38"
+  display_control_id: 1
+  example: "Input data\nplant\t year\tstage \treprstr\trecruitment\n2..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 32
+  workflow_id: 3
+  port_type_id: 2
+  name: "MatrixOut"
+  old_name: ""
+  description: "It is the stage matrix in CSV format."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:38"
+  updated_at: "2013-10-23 11:07:38"
+  display_control_id: 1
+  example: "             S    J           V         G          ..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 33
+  workflow_id: 3
+  port_type_id: 2
+  name: "MatrixCSV"
+  old_name: ""
+  description: "It is the stage matrix in plane text."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:39"
+  updated_at: "2013-10-23 11:07:39"
+  display_control_id: 1
+  example: "\"\",\"S\",\"J\",\"V\",\"G\",\"D\"\n\"S\",0,0,0,7.66666666666667,0..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 34
+  workflow_id: 3
+  port_type_id: 2
+  name: "trans"
+  old_name: ""
+  description: "Each row containts an Individual, and each column d..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:39"
+  updated_at: "2013-10-23 11:07:39"
+  display_control_id: 1
+  example: "    plant year stage reprstr recruitment year2 fate..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 35
+  workflow_id: 3
+  port_type_id: 2
+  name: "trans01"
+  old_name: ""
+  description: "Adding fertility rates\nFor certain types of life cy..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:07:39"
+  updated_at: "2013-10-23 11:07:39"
+  display_control_id: 1
+  example: "    plant stage reprstr fate recruitment         S ..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 36
+  workflow_id: 6
+  port_type_id: 2
+  name: "stage_matrix"
+  old_name: ""
+  description: "A stage matrix contains transitions probabilities f..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:08:35"
+  updated_at: "2013-10-23 11:08:35"
+  display_control_id: 1
+  example: "    S       J       V       G       D  \nS   0.0000 ..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 37
+  workflow_id: 16
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:10:09"
+  updated_at: "2013-10-23 11:10:09"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 41
+  workflow_id: 17
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-23 11:17:42"
+  updated_at: "2013-10-23 11:17:42"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 43
+  workflow_id: 19
+  port_type_id: 1
+  name: "censusDataFile"
+  old_name: ""
+  description: "The input data file must have the format of a table..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:06:01"
+  display_control_id: 1
+  example: "Example:\r\nplant\t year\tstage \treprstr\trecruitment\r\n2..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 44
+  workflow_id: 19
+  port_type_id: 1
+  name: "Label"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:06:01"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 45
+  workflow_id: 19
+  port_type_id: 1
+  name: "Iterations"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:06:01"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 46
+  workflow_id: 19
+  port_type_id: 2
+  name: "stage_matrix"
+  old_name: "stage_matrix"
+  description: "A stage matrix contains transitions probabilities f..."
+  old_description: "A stage matrix contains transitions probabilities f..."
+  order: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:11:11"
+  display_control_id: 2
+  example: "    S       J       V       G       D  \r\nS   0.0000..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: "    S       J       V       G       D  \r\nS   0.0000..."
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 47
+  workflow_id: 19
+  port_type_id: 2
+  name: "Stage_Matrix_CSV"
+  old_name: "Stage_Matrix_CSV"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:11:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 48
+  workflow_id: 19
+  port_type_id: 2
+  name: "Bootstrap_Histogram"
+  old_name: "Bootstrap_Histogram"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:02"
+  updated_at: "2013-10-30 15:11:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 49
+  workflow_id: 19
+  port_type_id: 2
+  name: "Confidence_Interval"
+  old_name: "Confidence_Interval"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:06:02"
+  updated_at: "2013-10-30 15:11:11"
+  display_control_id: 2
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 50
+  workflow_id: 20
+  port_type_id: 1
+  name: "census_data"
+  old_name: "census_data"
+  description: "Table containing demographic data of individuals in..."
+  old_description: "Table containing demographic data of individuals in..."
+  order: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:22:02"
+  display_control_id: 1
+  example: "plant\t year\tstage \treprstr\trecruitment\r\n2\t1987 \tD \t..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: "plant\t year\tstage \treprstr\trecruitment\n2\t1987 \tD \t0..."
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 51
+  workflow_id: 20
+  port_type_id: 1
+  name: "stages"
+  old_name: "stages"
+  description: "Stage input port:\r\n\r\nHere come the names of the sta..."
+  old_description: "Stage input port:\n\nHere come the names of the stage..."
+  order: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:22:03"
+  display_control_id: 1
+  example: "S\r\nJ \r\nV \r\nG \r\nD "
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: "S\nJ \nV \nG \nD "
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 52
+  workflow_id: 20
+  port_type_id: 1
+  name: "recruitedStages"
+  old_name: "recruitedStages"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:22:03"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 53
+  workflow_id: 20
+  port_type_id: 1
+  name: "startYear"
+  old_name: "startYear"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:22:03"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 54
+  workflow_id: 20
+  port_type_id: 1
+  name: "plotTitle"
+  old_name: "plotTitle"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:22:03"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 55
+  workflow_id: 20
+  port_type_id: 1
+  name: "bootstrapIterations"
+  old_name: "bootstrapIterations"
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:22:03"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: 1
+
+  tl_workflowport_20:
+  id: 56
+  workflow_id: 20
+  port_type_id: 2
+  name: "projection_matrix"
+  old_name: ""
+  description: "Projection matrix Output port:\n\nCreates a stage mat..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:20:47"
+  display_control_id: 1
+  example: "            S           \t      J          \t       V..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 57
+  workflow_id: 20
+  port_type_id: 2
+  name: "confidence_interval"
+  old_name: ""
+  description: "95% Confidence interval of Lambda\n\nIn statistics, a..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:20:47"
+  display_control_id: 1
+  example: "    2.5%    97.5% \n0.954955 1.468701 "
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 58
+  workflow_id: 20
+  port_type_id: 2
+  name: "histogram"
+  old_name: ""
+  description: "Histogram plotting the frecuencies of the lambda va..."
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:20:47"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 59
+  workflow_id: 20
+  port_type_id: 2
+  name: "trans1"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:20:47"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 60
+  workflow_id: 20
+  port_type_id: 2
+  name: "log"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-30 15:20:47"
+  updated_at: "2013-10-30 15:20:47"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 61
+  workflow_id: 18
+  port_type_id: 1
+  name: "name"
+  old_name: ""
+  description: "Your name for the greeting"
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:13"
+  updated_at: "2013-10-31 10:07:13"
+  display_control_id: 1
+  example: "World!"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 62
+  workflow_id: 18
+  port_type_id: 2
+  name: "greeting"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:13"
+  updated_at: "2013-10-31 10:07:13"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 63
+  workflow_id: 5
+  port_type_id: 1
+  name: "censusDataFile"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:33"
+  updated_at: "2013-10-31 10:07:33"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 64
+  workflow_id: 5
+  port_type_id: 1
+  name: "speciesName"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 65
+  workflow_id: 5
+  port_type_id: 2
+  name: "barPlot"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 66
+  workflow_id: 5
+  port_type_id: 2
+  name: "projectionMatrix"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 67
+  workflow_id: 5
+  port_type_id: 2
+  name: "elasticityMatrix"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 68
+  workflow_id: 5
+  port_type_id: 2
+  name: "sensitivityMatrix1"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 69
+  workflow_id: 5
+  port_type_id: 2
+  name: "sensitivityMatrix2"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 70
+  workflow_id: 5
+  port_type_id: 2
+  name: "stage_matrix"
+  old_name: ""
+  description: ""
+  old_description: ""
+  order: nil
+  created_at: "2013-10-31 10:07:34"
+  updated_at: "2013-10-31 10:07:34"
+  display_control_id: 1
+  example: ""
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 71
+  workflow_id: 9
+  port_type_id: 2
+  name: "stage_matrix"
+  old_name: ""
+  description: "An R-expression representing the population stage m..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:29"
+  updated_at: "2013-11-04 11:33:29"
+  display_control_id: 1
+  example: "structure(c(0, 0.5, 0.5, 0, 0, 0, 0.666666666666667..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 72
+  workflow_id: 9
+  port_type_id: 2
+  name: "initialYears"
+  old_name: ""
+  description: "R Expression (vector) representing the starting yea..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:29"
+  updated_at: "2013-11-04 11:33:29"
+  display_control_id: 1
+  example: "[1987]"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 73
+  workflow_id: 9
+  port_type_id: 2
+  name: "matrixStages"
+  old_name: ""
+  description: "R Expression (vector) representing the development ..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:29"
+  updated_at: "2013-11-04 11:33:29"
+  display_control_id: 1
+  example: "[S,J,V,G,D]"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 74
+  workflow_id: 9
+  port_type_id: 2
+  name: "reproductiveStages"
+  old_name: ""
+  description: "R Expression (vector) representing the reproductive..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:29"
+  updated_at: "2013-11-04 11:33:29"
+  display_control_id: 1
+  example: "[G]"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 75
+  workflow_id: 9
+  port_type_id: 2
+  name: "recruitedStages"
+  old_name: ""
+  description: "R Expression (vector) representing the stages in wh..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:29"
+  updated_at: "2013-11-04 11:33:29"
+  display_control_id: 1
+  example: "[S,J]"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 76
+  workflow_id: 9
+  port_type_id: 2
+  name: "report"
+  old_name: ""
+  description: "Text output for verification of calculations includ..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 11:33:30"
+  updated_at: "2013-11-04 11:33:30"
+  display_control_id: 1
+  example: "$trans\n   plant year stage reprstr recruitment year..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 77
+  workflow_id: 10
+  port_type_id: 2
+  name: "plain_text_output"
+  old_name: ""
+  description: "Text representation of the R expression"
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 12:07:04"
+  updated_at: "2013-11-04 12:07:04"
+  display_control_id: 1
+  example: "Not Provided"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 78
+  workflow_id: 11
+  port_type_id: 2
+  name: "r_expression"
+  old_name: ""
+  description: "Matrix reprensentation (R Expression) of the input ..."
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 12:09:48"
+  updated_at: "2013-11-04 12:09:48"
+  display_control_id: 1
+  example: "structure(list(plant = c(2L, 4L, 5L, 31L, 36L, 37L,..."
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil
+
+  tl_workflowport_20:
+  id: 79
+  workflow_id: 21
+  port_type_id: 2
+  name: "csv_output"
+  old_name: ""
+  description: "Not Provided"
+  old_description: ""
+  order: nil
+  created_at: "2013-11-04 12:16:15"
+  updated_at: "2013-11-04 12:16:15"
+  display_control_id: 1
+  example: "Not Provided"
+  sample_file: nil
+  sample_file_type: nil
+  show: true
+  old_example: ""
+  example_type_id: nil

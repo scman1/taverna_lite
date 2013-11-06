@@ -1,3 +1,47 @@
+# Copyright (c) 2012-2013 Cardiff University, UK.
+# Copyright (c) 2012-2013 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the names of The University of Manchester nor Cardiff University nor
+#   the names of its contributors may be used to endorse or promote products
+#   derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Authors
+#     Abraham Nieva de la Hidalga
+#
+# Synopsis
+#
+# BioVeL Taverna Lite is a prototype interface provided to support web-based
+# inspection and modification of workflows.
+#
+# For more details see http://www.biovel.eu
+#
+# BioVeL is funded by the European Commission 7th Framework Programme (FP7),
+# through the grant agreement number 283359.
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
@@ -17,3 +61,175 @@ two:
   license_id: 1
   author_id: 1
   version: 1
+
+# need to seed the test DB with the details of the workflow profiles
+
+tl_workflowprofile_01:
+  id: 1
+  title: "No title provided"
+  description: nil
+  author_id: 1
+    version: nil
+  created_at: "2013-09-02 13:24:43"
+  updated_at: "2013-09-02 13:24:43"
+  workflow_id: nil
+
+  tl_workflowprofile_1:
+  id: 2
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 09:46:33"
+  updated_at: "2013-09-24 09:46:33"
+  workflow_id: 6
+
+  tl_workflowprofile_02:
+  id: 3
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 14:20:00"
+  updated_at: "2013-09-24 14:20:00"
+  workflow_id: 7
+
+  tl_workflowprofile_03:
+  id: 4
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 14:33:14"
+  updated_at: "2013-09-24 14:33:14"
+  workflow_id: 1
+
+  tl_workflowprofile_04:
+  id: 5
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 14:33:20"
+  updated_at: "2013-09-24 14:33:20"
+  workflow_id: 3
+
+  tl_workflowprofile_05:
+  id: 6
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 14:46:17"
+  updated_at: "2013-09-24 14:46:17"
+  workflow_id: 8
+
+  tl_workflowprofile_06:
+  id: 7
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-24 16:04:31"
+  updated_at: "2013-09-24 16:04:31"
+  workflow_id: 4
+
+  tl_workflowprofile_07:
+  id: 8
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-09-26 14:30:01"
+  updated_at: "2013-09-26 14:30:01"
+  workflow_id: 2
+
+  tl_workflowprofile_08:
+  id: 9
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-23 10:20:15"
+  updated_at: "2013-10-23 10:20:15"
+  workflow_id: 13
+
+  tl_workflowprofile_09:
+  id: 10
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-23 10:54:23"
+  updated_at: "2013-10-23 10:54:23"
+  workflow_id: 14
+
+  tl_workflowprofile_10:
+  id: 11
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-23 11:00:09"
+  updated_at: "2013-10-23 11:00:09"
+  workflow_id: 15
+
+  tl_workflowprofile_11:
+  id: 12
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-23 11:10:08"
+  updated_at: "2013-10-23 11:10:08"
+  workflow_id: 16
+
+  tl_workflowprofile_12:
+  id: 13
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-23 11:17:41"
+  updated_at: "2013-10-23 11:17:41"
+  workflow_id: 17
+
+  tl_workflowprofile_13:
+  id: 14
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-30 15:06:01"
+  updated_at: "2013-10-30 15:06:01"
+  workflow_id: 19
+
+  tl_workflowprofile_14:
+  id: 15
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-30 15:20:46"
+  updated_at: "2013-10-30 15:20:46"
+  workflow_id: 20
+
+  tl_workflowprofile_15:
+  id: 16
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-31 10:07:13"
+  updated_at: "2013-10-31 10:07:13"
+  workflow_id: 18
+
+  tl_workflowprofile_16:
+  id: 17
+  title: nil
+  description: nil
+  author_id: 1
+  version: nil
+  created_at: "2013-10-31 10:07:33"
+  updated_at: "2013-10-31 10:07:33"
+  workflow_id: 5
