@@ -178,9 +178,9 @@ workflow_09:
   id:  9
   title: "Stage Matrix From Census Data Interactive"
   author: "Jonathan Giddy"
-  description: "This workflow component will take an r-expression c..."
+  description: "This workflow component will take an r-expression c"
   name: "Stage_Matrix_From_Ce"
-  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2..."
+  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2flow"
   my_experiment_id: 3820
   user_id: 1
   is_shared: nil

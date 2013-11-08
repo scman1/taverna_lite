@@ -49,7 +49,6 @@ module TavernaLite
   class T2flowGetters
      TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
 
-
     # Constants for Paths
     DataFlowPath = "workflow/dataflow"
     ActivityConfigBeanPath="processors/processor/activities/activity/configBean"
@@ -135,8 +134,8 @@ module TavernaLite
 
       unless component.empty? then
         component = component[0]
-        wf=TavernaLite::WorkflowProfile.new(:workflow_id=>component.workflow_id)
-        component_ports = wf.get_custom_outputs
+        wfp=TavernaLite::WorkflowProfile.new(:workflow_id=>component.workflow_id)
+        component_ports = wfp.get_custom_outputs
         component_ports.each { |cpt|
           ports[cpt.name] = {:description=>cpt.description,
             :example=> cpt.example, :workflow_port=>cpt}

@@ -46,16 +46,53 @@ require 'test_helper'
 module TavernaLite
   class T2flowGettersTest < ActiveSupport::TestCase
     setup do
-      # Set up the workflow file path so it can be used in different tests.
-      # Using MatrixModelBootstrapNestedAndComponents.t2flow
-      # this file mixes components and nested workflows
+      # Set up the workflow file paths that will be used in different tests.
+      # MatrixModelBootstrapNestedAndComponents.t2flow
+      # This file mixes components and nested workflows, it has:
+      #  - 4 outputs,
+      #  - 12 inner links (not counting links form workflow input ports)
+      #  - 15 processor output ports (9 of them used)
+      #  - 7 processors (2 nested workflow, 5 components)
       fixtures_path = ActiveSupport::TestCase.fixture_path
       filename ='MatrixModelBootstrapNestedAndComponents.t2flow'
       from_here =fixtures_path+'/test_workflows/'+filename
       to_there = fixtures_path+'/test_workflows/test_result/'+filename
       FileUtils.cp from_here, to_there
       @workflow_01 = to_there
+      # MatrixModelBootstrapComponents.t2flow
+      # This file contains only workflow components, it has:
+      #  - 4 outputs,
+      #  - 12 inner links (not counting links form workflow input ports)
+      #  - 15 processor output ports (9 of them used)
+      #  - 7 processors (all components)
+      fixtures_path = ActiveSupport::TestCase.fixture_path
+      filename ='MatrixModelBootstrapComponents.t2flow'
+      from_here =fixtures_path+'/test_workflows/'+filename
+      to_there = fixtures_path+'/test_workflows/test_result/'+filename
+      FileUtils.cp from_here, to_there
+      @workflow_02 = to_there
     end
+
+    test "00 get component outputs" do
+      wf_reader = T2flowGetters.new
+      component={}
+      component["familyName"] = "POPMOD"
+      component["registryBase"] = "http://www.myexperiment.org"
+      component["componentVersion"]="1"
+      component["componentName"]="BootstrapOfObservTrans"
+      x = wf_reader.get_component_outputs(component)
+      assert !x.nil?
+      assert_equal(5, x.count)
+      component={}
+      component["familyName"] = "POPMOD"
+      component["registryBase"] = "http://www.myexperiment.org"
+      component["componentVersion"]="7"
+      component["componentName"]="StageMatrixFromCensus"
+      x = wf_reader.get_component_outputs(component)
+      assert !x.nil?
+      assert_equal(6, x.count)
+    end
+
     test "01 get processor ports and connections from workflow" do
       # first get processor outputs
       wf_reader = T2flowGetters.new
@@ -109,24 +146,21 @@ module TavernaLite
       #end
       # puts "*****************************************************************\n"
     end
-    test "02 test adding link and output to StageMatrixFromCensus:report" do
+    test "02 get processor ports and connections from workflow components" do
       processor = "StageMatrixFromCensus"
       port = "report"
       # first get processor outputs
       wf_reader = T2flowGetters.new
-      proc_outs = wf_reader.get_processors_outputs(@workflow_01)
+      proc_outs = wf_reader.get_processors_outputs(@workflow_02)
       # get t2flow model to check things returned from t2flow_getter
-      file_data = File.open(@workflow_01)
+      file_data = File.open(@workflow_02)
       t2_model = T2Flow::Parser.new.parse(file_data)
       t2f_outs_count = t2_model.all_sinks.count
       t2f_links_count = t2_model.datalinks.count
       t2f_links = t2_model.datalinks
       # the number of outputs should be the same
-      #puts "\n*****************************************************************"
-      #puts "PROCESSORS: " + proc_outs.count.to_s
       connection_count = 0
       outs_count = 0
-      #puts proc_outs
       proc_outs.each { |port_k,port_v|
         port_k
         proc_outs[port_k]["ports"].each { |k,v|
@@ -148,21 +182,15 @@ module TavernaLite
           end
         }
       }
-      # @worklfow_01 has 12 inner connections
+      # @worklfow_02 has 12 inner connections
       assert_equal(connection_count,12)
       # expect less links than those reported by t2flow
       assert_operator(connection_count,:<=,t2f_links_count)
-      # @worklfow_01 has 15 ports
+      # @worklfow_02 has 15 ports
       assert_equal(outs_count,15)
-      # expect less outputs than those reported reported by t2flow
-      assert_operator(outs_count,:<=,t2f_outs_count)
-
-      #puts "FROM GETTERS: " + connection_count.to_s
-      #puts "FROM T2FLOW:  " + outputs02.count.to_s
-      #outputs02.each do |sink|
-      #  puts sink.name
-      #end
-      # puts "*****************************************************************\n"
+      # expect more outputs than those reported reported by t2flow
+      # t2flow gem cannot read all the outputs in a component
+      assert_operator(outs_count,:>=,t2f_outs_count)
     end
     # Pending test of swap component
   end
