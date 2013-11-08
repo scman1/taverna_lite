@@ -83,10 +83,12 @@ module TavernaLite
                 cb.elements[1].elements.each { |el|
                   x[el.name]=el.text
                 }
-                x["ports"] = get_component_outputs(x)
+                x[:ports] = get_component_outputs(x)
               when DataflowBean
                 x[DataflowBean] = cb.elements[1].attributes['ref']
-                x["ports"] = get_dataflow_outputs(xml_file, x[DataflowBean])
+                x[:ports] = get_dataflow_outputs(xml_file, x[DataflowBean])
+              else
+                x = get_processor_outputs(xml_file, processor_name)
             end
             all_processor_outputs[processor_name] = x
           }
@@ -95,7 +97,7 @@ module TavernaLite
       }
       all_processor_outputs = get_ports_links(all_processor_outputs, xml_file)
       return all_processor_outputs
-    end # method get_processor_outputs
+    end # method get_processors_outputs
 
     # get the outputs ports from a nested workflow using nested workflow ID
     def get_dataflow_outputs(xml_file, id)
@@ -119,6 +121,34 @@ module TavernaLite
         end
       }
       ports
+    end
+
+    # get the outputs ports from any other processor using t2flow
+    def get_processor_outputs(xml_file, name)
+      processor = {}
+      ports = {}
+      processors = T2Flow::Parser.new.parse(xml_file).processors
+
+      processors.each{ |proc|
+        if proc.name == name then
+            processor[:type] = proc.type
+            proc.outputs.each { |output|
+              description = ""
+#              unless a_sink.descriptions.nil?
+#                description = a_sink.descriptions.join.to_s
+#              end
+              example = ""
+#              unless a_sink.example_values.nil?
+#                example = a_sink.example_values.join.to_s
+#              end
+              ports[output] = {:description=>description,
+                :example=>example, :workflow_port => nil}
+            }
+           processor[:ports] = ports
+          break
+        end
+      }
+      processor
     end
 
     # get the outputs ports from a component based on its signature
@@ -149,7 +179,7 @@ module TavernaLite
       datalinks = T2Flow::Parser.new.parse(xml_file).datalinks
       all_processor_outputs.each { |processor_key, a_processor|
         processor_name = processor_key
-        a_processor["ports"].each { |port_key, a_port|
+        a_processor[:ports].each { |port_key, a_port|
           port_name = port_key
           link_source = processor_name + ":" + port_name
           a_port[:connections] = []

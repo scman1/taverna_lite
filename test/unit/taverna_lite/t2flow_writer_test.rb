@@ -402,7 +402,7 @@ module TavernaLite
       outs_count = 0
       proc_outs.each { |port_k,port_v|
         port_k
-        proc_outs[port_k]["ports"].each { |k,v|
+        proc_outs[port_k][:ports].each { |k,v|
           outs_count += 1
           unless v[:connections].nil? then
             connection_count += v[:connections].count
@@ -461,7 +461,7 @@ module TavernaLite
       outs_count = 0
       proc_outs.each { |port_k,port_v|
         port_k
-        proc_outs[port_k]["ports"].each { |k,v|
+        proc_outs[port_k][:ports].each { |k,v|
           outs_count += 1
           unless v[:connections].nil? then
             connection_count += v[:connections].count
