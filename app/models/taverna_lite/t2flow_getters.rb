@@ -134,6 +134,8 @@ module TavernaLite
             processor[:type] = proc.type
             proc.outputs.each { |output|
               description = ""
+# THIS CAN BE INPROVED SLIGHTLY BY READING ANNOTATIONS ON PORTS. BUT T2Flow GEM
+# DOES NOT PROVIDE THEM SO NEEDS TO BE DONE USING XPATH
 #              unless a_sink.descriptions.nil?
 #                description = a_sink.descriptions.join.to_s
 #              end

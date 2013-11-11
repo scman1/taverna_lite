@@ -143,10 +143,10 @@ module TavernaLite
       new_sink.attributes["type"] = "dataflow"
 
       source_processor = Element.new("processor")
-      source_processor.text = "StageMatrixFromCensus"
+      source_processor.text = processor_name
 
       source_port = Element.new("port")
-      source_port.text = "report"
+      source_port.text = processor_port
 
       new_source = Element.new("source")
       new_source.add_element(source_processor)
@@ -164,25 +164,31 @@ module TavernaLite
       #04 add port to processor (expose it)
       processors = root.elements["dataflow[@role='top']"].elements["processors"]
       processors.elements.each("processor/name") { |prn|
-        if prn.text == "StageMatrixFromCensus" then
+        if prn.text == processor_name then
           the_processor = prn.parent
           output_maps = the_processor.elements["activities/activity/outputMap"]
-          new_map = Element.new("map")
-          new_map.attributes["from"] = "report"
-          new_map.attributes["to"] = "report"
-          output_maps.add_element(new_map)
+          #check if map exists, if not add else skip this
+          unless map_exists(output_maps, processor_port)
+            new_map = Element.new("map")
+            new_map.attributes["from"] = processor_port
+            new_map.attributes["to"] = processor_port
+            output_maps.add_element(new_map)
+          end
           output_ports = the_processor.elements["outputPorts"]
-          new_outport = Element.new("port")
-          new_outname = Element.new("name")
-          new_outname.text = "report"
-          new_depth = Element.new("depth")
-          new_depth.text = "1"
-          new_granular = Element.new("granularDepth")
-          new_granular.text = "1"
-          new_outport.add_element(new_outname)
-          new_outport.add_element(new_depth)
-          new_outport.add_element(new_granular)
-          output_ports.add_element(new_outport)
+          #check if port exists, if not add else skip this
+          unless port_exists(output_ports, processor_port)
+            new_outport = Element.new("port")
+            new_outname = Element.new("name")
+            new_outname.text = processor_port
+            new_depth = Element.new("depth")
+            new_depth.text = "1"
+            new_granular = Element.new("granularDepth")
+            new_granular.text = "1"
+            new_outport.add_element(new_outname)
+            new_outport.add_element(new_depth)
+            new_outport.add_element(new_granular)
+            output_ports.add_element(new_outport)
+         end
         end
       }
       # pending:
@@ -196,7 +202,24 @@ module TavernaLite
         document.write f
       end
     end
-
+    def map_exists(maps, processor_port)
+      exists = false
+      XPath.match(maps,"map[@from='#{processor_port}' and @to='#{processor_port}']").map {|x|
+          unless x.nil?
+            exists = true
+          end
+      }
+      exists
+    end
+    def port_exists(ports, processor_port)
+      exists = false
+      XPath.match(ports,"port/name='#{processor_port}'").map {|x|
+          unless x.nil?
+            exists = true
+          end
+      }
+      exists
+    end
     def save_wf_processor_annotations(xmlfile, processor_name, new_name, description)
       document = XML::Parser.file(xmlfile, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
