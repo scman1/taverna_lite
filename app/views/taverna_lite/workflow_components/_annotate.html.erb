@@ -67,6 +67,11 @@
      <%= processor.type %>
    </dd>
   </dl>
+  processor outputs <%= proc_outs[processor.name][:ports].count%><br/>
+  <% proc_outs[processor.name][:ports].each do |port_k,port_v| %>
+    Port Name: <%= port_k %> connected <%= if port_v[:connections].count then true else false end %>
+    <% port_v[:connections].each do |c| %><%= c.split(':') %><% end %><br/>
+  <% end %>
   <div title="Save annotation" alt="Save annotation" style="float:right; padding:10px;">
     <%= submit_tag 'Save' %>
   </div>

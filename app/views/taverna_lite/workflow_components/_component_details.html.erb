@@ -53,7 +53,8 @@
     <% @processors.each do |proc| %>
     <div id="<%= proc.name %>_component" class="div_component"
       style="display: none;">
-      <%= render :partial=>'taverna_lite/workflow_components/annotate', :locals => {:processor => proc} %>
+      <%= render :partial=>'taverna_lite/workflow_components/annotate',
+       :locals => {:processor => proc, :proc_outs=>@processor_ports}%>
       <% if @wf_components.count > 0 && @wf_components.has_key?(proc.name) %>
         <h4>COMPONENT DETAILS</h4>
         <dl class='list_any'>

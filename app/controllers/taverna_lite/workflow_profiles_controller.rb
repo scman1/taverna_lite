@@ -72,6 +72,8 @@ module TavernaLite
       @ordered_processors = @workflow_profile.get_processors_in_order
       @wf_components = get_workflow_components(@workflow_profile.id)
       @component_alternatives = get_component_alternatives(@wf_components)
+      # get all the processors outputs to enable add ouput
+      @processor_ports = get_processor_ports(@workflow.id)
     end
 
     def update_profile
@@ -190,6 +192,14 @@ module TavernaLite
       end
       return component_alternatives
     end
+
+    # Read the workflow file and get all available workflow ports
+    def get_processor_ports(workflow_id)
+      wf =  TavernaLite.workflow_class.find(workflow_id)
+      wfreader = T2flowGetters.new()
+      wfreader.get_processors_outputs(wf.workflow_filename)
+    end
+
     # Save processor annotations and name changes to workflow file
     def annotate_processor
       @workflow = TavernaLite.workflow_class.find(params[:id])
