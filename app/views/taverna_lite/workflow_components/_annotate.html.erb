@@ -51,6 +51,7 @@
   <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'component' %>
   <%= f.hidden_field "processor_name", :value =>  processor.name %>
+  <div class='basic_annotation'>
   <dl class='list_any'>
     <dt class='list_title'>Name:</dt>
     <dd class='list_description'>
@@ -59,46 +60,71 @@
     </dd>
     <dt class='list_title'>Description:</dt>
     <dd class='list_description'>
-      <%= f.text_area "description_for_#{processor.name}", :value => processor.description, :rows => 3,
-        :onclick => '$(this).select();', :style =>'width:95%'  %>
+      <%= f.text_area "description_for_#{processor.name}",
+        :value => processor.description, :rows => 3, :style =>'width:95%'  %>
     </dd>
    <dt class='list_title'>Processor Type</dt>
    <dd class='list_description'>
      <%= processor.type %>
    </dd>
   </dl>
-  processor outputs <%= proc_outs[processor.name][:ports].count%><br/>
-  <table>
-    <tr>
-      <th>port</th>
-      <th>Connected to</th>
-      <th>Add Output</th>
-      <th>Name</th>
-      <th>Description</th>
-     </tr>
-     <% proc_outs[processor.name][:ports].each do |port_k,port_v|
-        portname = port_k %>
-       <tr>
-         <td><%= port_k %></td>
-         <td>
-           <% port_v[:connections].each do |c| %><%= c.split(':') %><% end %>
-         </td>
-         <td>
-           <%= f.check_box "add_#{portname}", :checked => false %>
-           <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%>
-         </td>
-         <td>
-           <%= f.text_field "name_for_#{portname}", :value => processor.name+"_"+portname,
-             :onclick => '$(this).select();', :style =>'width:95%'  %>
-         </td>
-         <td>
-           <%= f.text_area "description_for_#{portname}", :value => "", :rows => 3,
-             :onclick => '$(this).select();', :style =>'width:95%'  %>
-         </td>
-      </tr>
-      <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
-    <% end %>
-  </table>
+  </div><!--Basic Anotations div-->
+  <span class="more_options">Advanced Customisation</span>
+  <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+    "javascript:hide_show_div('advanced_#{processor.name}', 'switch_#{processor.name}');",
+    :id=>"switch_#{processor.name}",
+    :title=>"show advanced options", :alt=>"show advanced options" -%>
+  <div id="advanced_<%= processor.name %>" class='advanced_annotation'
+    style="display:none">
+    <span class="more_options">processor outputs
+      <%= proc_outs[processor.name][:ports].count%></span>
+    <table>
+      <tr>
+        <th>port</th>
+        <th>Connected to</th>
+        <th>Add Output</th>
+        <th>Name</th>
+        <th>Description</th>
+       </tr>
+       <% proc_outs[processor.name][:ports].each do |port_k,port_v|
+          portname = port_k %>
+         <tr>
+           <td><%= port_k %></td>
+           <td>
+             <% port_v[:connections].each do |c|
+                  c_proc =""
+                  c_port =""
+                  unless c.index(':').nil?
+                    c_proc = c.split(':')[0]
+                    c_port =  c.split(':')[1]
+                  else
+                    c_port =  c
+                  end %>
+              <%= unless c.index(':').nil?
+                    "Proc: "+ c_proc +"-> Port: " + c_port
+                  else
+                    "Port: " + c_port
+                  end%>
+               <br/>
+            <% end %>
+           </td>
+           <td>
+             <%= f.check_box "add_#{portname}", :checked => false %>
+             <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%>
+           </td>
+           <td>
+             <%= f.text_field "name_for_#{portname}",
+              :value => processor.name+"_"+portname, :style =>'width:95%' %>
+           </td>
+           <td>
+             <%= f.text_area "description_for_#{portname}", :value => "",
+               :rows => 3, :style =>'width:95%'  %>
+           </td>
+        </tr>
+        <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
+      <% end %>
+    </table>
+  </div><!--Advanced Anotations div-->
   <div title="Save annotation" alt="Save annotation" style="float:right; padding:10px;">
     <%= submit_tag 'Save' %>
   </div>
