@@ -78,51 +78,46 @@
     style="display:none">
     <span class="more_options">processor outputs
       <%= proc_outs[processor.name][:ports].count%></span>
-    <table>
+    <table class="processor_out_ports">
       <tr>
         <th>port</th>
         <th>Connected to</th>
-        <th>Add Output</th>
-        <th>Name</th>
-        <th>Description</th>
-       </tr>
-       <% proc_outs[processor.name][:ports].each do |port_k,port_v|
-          portname = port_k %>
-         <tr>
-           <td><%= port_k %></td>
-           <td>
-             <% port_v[:connections].each do |c|
-                  c_proc =""
-                  c_port =""
-                  unless c.index(':').nil?
-                    c_proc = c.split(':')[0]
-                    c_port =  c.split(':')[1]
-                  else
-                    c_port =  c
-                  end %>
-              <%= unless c.index(':').nil?
-                    "Proc: "+ c_proc +"-> Port: " + c_port
-                  else
-                    "Port: " + c_port
-                  end%>
-               <br/>
+        <th>Add New Output</th>
+      </tr>
+      <% proc_ports = "" %>
+      <% proc_outs[processor.name][:ports].each do |port_k,port_v|
+        portname = port_k
+        unless proc_ports==""
+          proc_ports += "," + portname
+        else
+          proc_ports = portname
+        end
+        %>
+        <tr class="<%= cycle("", "alt")%>">
+          <td><%= port_k %></td>
+          <td>
+            <% port_v[:connections].each do |c| %>
+              <%= unless c == "" then c else "NOT CONNECTED"end%>
+              <br/>
             <% end %>
-           </td>
-           <td>
-             <%= f.check_box "add_#{portname}", :checked => false %>
-             <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%>
-           </td>
-           <td>
-             <%= f.text_field "name_for_#{portname}",
+          </td>
+          <td>
+            <%= f.check_box "add_#{portname}", :checked => false %>
+            <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%><br/>
+            <b>Output Name:</b>
+            <%= f.text_field "name_for_port_#{portname}",
               :value => processor.name+"_"+portname, :style =>'width:95%' %>
-           </td>
-           <td>
-             <%= f.text_area "description_for_#{portname}", :value => "",
+            <b>Output Description</b>
+            <%= f.text_area "description_for_port_#{portname}", :value => port_v[:description],
+              :rows => 3, :style =>'width:95%'  %>
+             <b>Output Example Value</b>
+             <%= f.text_area "example_for_port_#{portname}", :value => port_v[:example],
                :rows => 3, :style =>'width:95%'  %>
            </td>
-        </tr>
-        <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
+         </tr>
+         <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
       <% end %>
+      <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
     </table>
   </div><!--Advanced Anotations div-->
   <div title="Save annotation" alt="Save annotation" style="float:right; padding:10px;">

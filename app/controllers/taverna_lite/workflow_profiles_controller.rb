@@ -214,6 +214,17 @@ module TavernaLite
       xmlFile = @workflow.workflow_filename
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
+      processor_ports = params[:processor_annotations]["#{processor_name}_ports"]
+      the_ports = processor_ports.split(",")
+      the_ports.each do |p|
+        customise =  params[:processor_annotations]["add_#{p}"]
+        if customise == "1"
+          port_name=params[:processor_annotations]["name_for_port_#{p}"]
+          port_description=params[:processor_annotations]["description_for_port_#{p}"]
+          port_example=params[:processor_annotations]["example_for_port_#{p}"]
+          writer.add_wf_port(xmlFile, new_name, p, port_name, port_description,  port_example)
+        end
+      end
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
         format.json { head :no_content }
