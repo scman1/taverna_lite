@@ -120,7 +120,7 @@ module TavernaLite
     end
 
     # add a workflow port
-    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", description="", example="", port_type=2)
+    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
       root = document.root
@@ -191,8 +191,7 @@ module TavernaLite
          end
         end
       }
-      # pending:
-      #   - add annotations (description and example)
+
       #   - how to calculate depth and granular depth if required
       #   - UI should validate input of names "FOR ALL WF ELEMENTS"
       document.root.attributes["producedBy"] = TLVersion
@@ -201,6 +200,9 @@ module TavernaLite
       File.open(xml_filename, "w:UTF-8") do |f|
         document.write f
       end
+      # pending:
+      # - add annotations (description and example)
+      save_wf_port_annotations(xml_filename, port_name, port_name, port_description, port_example,2)
     end
     def map_exists(maps, processor_port)
       exists = false
@@ -406,6 +408,7 @@ module TavernaLite
         annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
       end
     end
+
     # replace a component
     def replace_component(xmlFile,processor_name,replacement_id)
       # get the workflow file and parse it as an XML document

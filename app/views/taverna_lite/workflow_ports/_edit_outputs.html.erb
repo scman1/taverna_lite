@@ -103,17 +103,18 @@
              options_for_select([["value (Default)", 2],
                                 ["file", 3]], item.display_control_id) %>
          </dd>
-         <dt class='list_title_chk'>
-           <%= image_tag "taverna_lite/eye.png", :alt => "Show/Hide"%></dt>
-         <dd class='list_description_chk'>
+         <dt class='list_title'>
+           Show
+         <dd class='list_description'>
            <%= f.check_box "show_#{portname}", :checked => item.show %>
-           Show <%= portname%>
+           <%= image_tag "taverna_lite/eye.png", :alt => "Show/Hide"%>
          </dd>
-         <dt class='list_title_chk'>
-           <%= image_tag "taverna_lite/delete.png", :alt => "Remove"%></dt>
-         <dd class='list_description_chk'>
+         <dt class='list_title'>
+           Remove
+         </dt>
+         <dd class='list_description'>
            <%= f.check_box "delete_#{portname}", :checked => false %>
-           Delete <%= portname%>
+           <%= image_tag "taverna_lite/delete.png", :alt => "Remove"%>
          </dd>
          <!--PENDING-->
          <!-- Add sort order so user can define the ordering of outputs -->
