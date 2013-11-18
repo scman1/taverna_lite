@@ -69,8 +69,9 @@
    </dd>
   </dl>
   </div><!--Basic Anotations div-->
-  <span class="more_options">Advanced Customisation</span>
-  <%= link_to image_tag('taverna_lite/bullet_arrow_down.png'),
+  <%= image_tag "taverna_lite/output_add.png", :alt => "Add Outputs"%>
+  <span class="more_options">Add Outputs</span>
+  <%= link_to image_tag('taverna_lite/unfold.png'),
     "javascript:hide_show_div('advanced_#{processor.name}', 'switch_#{processor.name}');",
     :id=>"switch_#{processor.name}",
     :title=>"show advanced options", :alt=>"show advanced options" -%>

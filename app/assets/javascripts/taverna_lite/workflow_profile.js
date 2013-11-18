@@ -93,13 +93,13 @@
     if(ele.style.display == "block") {
       ele.style.display = "none";
       ele2.style.display = "block"
-      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_down.png' />";
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/unfold.png' />";
       button.title = "show all";
       button.alt = "show all";   	}
     else {
       ele.style.display = "block";
       ele2.style.display = "none"
-      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_up.png' />";
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/fold.png' />";
       button.title = "show less";
       button.alt = "show less";
     }
@@ -109,12 +109,12 @@
     var button = document.getElementById(toggle_link);
     if(ele.style.display == "block") {
       ele.style.display = "none";
-      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_down.png' />";
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/unfold.png' />";
       button.title = "show advanced options";
       button.alt = "show advanced options";   	}
     else {
       ele.style.display = "block"
-      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/bullet_arrow_up.png' />";
+      button.innerHTML = "<img alt='Bullet_arrow_down' src='/assets/taverna_lite/fold.png' />";
       button.title = "hide advanced options";
       button.alt = "hide advanced options";
     }
