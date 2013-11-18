@@ -119,7 +119,7 @@ module TavernaLite
       end
     end
 
-    # add a workflow port
+    # add a workflow port uses XPATH
     def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
@@ -281,7 +281,7 @@ module TavernaLite
       node
     end
 
-    def create_annotation (type, content)
+    def create_annotation(type, content)
       annotation = create_node("annotation_chain", :attributes=>{"encoding"=>"xstream"})
       annotationchainimpl = create_node("net.sf.taverna.t2.annotation.AnnotationChainImpl", :attributes=>{"xmlns"=>""})
       annotationassertions = create_node("annotationAssertions", :attributes=>{})
@@ -379,6 +379,7 @@ module TavernaLite
         annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
       end
     end
+
     def insert_port_annotation(node = nil, annotation_type = "decription",
       annotation_text = "Blank")
       annotations = get_node(node,'annotations')
@@ -519,5 +520,85 @@ module TavernaLite
       end
     end # method replace_workflow_components
 
+    #Equivalent methods using xpath only
+    # Save workflow annotations
+    def save_wf_annotations_xpath(xml_filename, author, description, title, name)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      # add annotations (title, author, description)
+      insert_annotation_xpath(document, "author", author)
+      insert_annotation_xpath(document, "description", description)
+      insert_annotation_xpath(document, "title", title)
+      # get the name node
+      name_node = document.root.elements["dataflow[@role='top']"].elements["name"]
+      # add name
+      name_node.text = name
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+    # add annotations to top dataflow
+    def insert_annotation_xpath(xml_doc = nil, annotation_type = "author",
+      annotation_text = "Unknown")
+      annotations = xml_doc.root.elements["dataflow[@role='top']"].elements["annotations"]
+      annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
+      case annotation_type
+        when "author"
+          annotation_bean += ".Author"
+        when "description"
+          annotation_bean += ".FreeTextDescription"
+        when "title"
+          annotation_bean += ".DescriptiveTitle"
+        when "example"
+          annotation_bean += ".ExampleValue"
+        else
+          annotation_bean += ".FreeTextDescription"
+      end
+      #check if there is already an annotation of this type in the workflow
+      new_ann = nil
+      annt_bean_path = "annotation_chain"+
+                       "/net.sf.taverna.t2.annotation.AnnotationChainImpl"+
+                       "/annotationAssertions"+
+                       "/net.sf.taverna.t2.annotation.AnnotationAssertionImpl"+
+                       "/annotationBean"
+      XPath.match(annotations,"#{annt_bean_path}[@class='#{annotation_bean}']").map {|x|
+        unless x.nil?
+          new_ann = x
+          # if the annotation exists just change content
+          new_ann.elements['text'].text = ERB::Util.html_escape(annotation_text)
+        end
+      }
+      if new_ann.nil?
+        new_ann = create_annotation_xpath(annotation_bean, annotation_text)
+        annotations.add_element(new_ann)
+      end
+    end
+    def create_annotation_xpath(type, content)
+      annotation = Element.new("annotation_chain")
+      annotation.attributes["encoding"]="xstream"
+      annotationchainimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationChainImpl")
+      annotationchainimpl.attributes["xmlns"]=""
+      annotationassertions = Element.new("annotationAssertions")
+      annotationassertionimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationAssertionImpl")
+      annotationbean = Element.new("annotationBean")
+      annotationbean.attributes["class"]=type
+      text_node = Element.new("text")
+      text_node.text = ERB::Util.html_escape(content)
+      date = Element.new("date")
+      date.text = Time.now.to_s
+      creators = Element.new("creators")
+      curationEventList = Element.new("curationEventList")
+      annotationbean.add_element(text_node)
+      annotationassertionimpl.add_element(annotationbean)
+      annotationassertionimpl.add_element(date)
+      annotationassertionimpl.add_element(creators)
+      annotationassertionimpl.add_element(curationEventList)
+      annotationassertions.add_element(annotationassertionimpl)
+      annotationchainimpl.add_element(annotationassertions)
+      annotation.add_element(annotationchainimpl)
+      annotation
+    end
   end # class
 end # module
