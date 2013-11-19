@@ -119,109 +119,6 @@ module TavernaLite
       end
     end
 
-    # add a workflow port uses XPATH
-    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
-      root = document.root
-      # 01 Add the port
-      outputs = root.elements["dataflow[@role='top']"].elements["outputPorts"]
-      portname = Element.new("name")
-      portname.text = port_name
-      new_port = Element.new("port")
-      new_port.add_element(portname)
-      new_port.add_element(Element.new("annotations"))
-      outputs.add_element(new_port)
-
-      # 02 Add a datalink for the port
-      datalinks = root.elements["dataflow[@role='top']"].elements["datalinks"]
-      sink_port = Element.new("port")
-      sink_port.text = port_name
-
-      new_sink = Element.new("sink")
-      new_sink.add_element(sink_port)
-      new_sink.attributes["type"] = "dataflow"
-
-      source_processor = Element.new("processor")
-      source_processor.text = processor_name
-
-      source_port = Element.new("port")
-      source_port.text = processor_port
-
-      new_source = Element.new("source")
-      new_source.add_element(source_processor)
-      new_source.add_element(source_port)
-
-      new_source.attributes["type"] = "processor"
-
-      new_datalink = Element.new("datalink")
-      new_datalink.add_element(new_sink)
-      new_datalink.add_element(new_source)
-
-      datalinks.add_element(new_datalink)
-
-      #03 add the output map to the processor
-      #04 add port to processor (expose it)
-      processors = root.elements["dataflow[@role='top']"].elements["processors"]
-      processors.elements.each("processor/name") { |prn|
-        if prn.text == processor_name then
-          the_processor = prn.parent
-          output_maps = the_processor.elements["activities/activity/outputMap"]
-          #check if map exists, if not add else skip this
-          unless map_exists(output_maps, processor_port)
-            new_map = Element.new("map")
-            new_map.attributes["from"] = processor_port
-            new_map.attributes["to"] = processor_port
-            output_maps.add_element(new_map)
-          end
-          output_ports = the_processor.elements["outputPorts"]
-          #check if port exists, if not add else skip this
-          unless port_exists(output_ports, processor_port)
-            new_outport = Element.new("port")
-            new_outname = Element.new("name")
-            new_outname.text = processor_port
-            new_depth = Element.new("depth")
-            new_depth.text = "1"
-            new_granular = Element.new("granularDepth")
-            new_granular.text = "1"
-            new_outport.add_element(new_outname)
-            new_outport.add_element(new_depth)
-            new_outport.add_element(new_granular)
-            output_ports.add_element(new_outport)
-         end
-        end
-      }
-
-      #   - how to calculate depth and granular depth if required
-      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
-      document.root.attributes["producedBy"] = TLVersion
-
-      # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
-        document.write f
-      end
-      # pending:
-      # - add annotations (description and example)
-      save_wf_port_annotations(xml_filename, port_name, port_name, port_description, port_example,2)
-    end
-    def map_exists(maps, processor_port)
-      exists = false
-      XPath.match(maps,"map[@from='#{processor_port}' and @to='#{processor_port}']").map {|x|
-          unless x.nil?
-            exists = true
-          end
-      }
-      exists
-    end
-    def port_exists(ports, processor_port)
-      exists = false
-      XPath.match(ports,"port/name='#{processor_port}'").map {|x|
-          unless x.nil?
-            exists = true
-          end
-      }
-      exists
-    end
     def save_wf_processor_annotations(xmlfile, processor_name, new_name, description)
       document = XML::Parser.file(xmlfile, :options => XML::Parser::Options::NOBLANKS).parse
       # find the port node
@@ -520,17 +417,19 @@ module TavernaLite
       end
     end # method replace_workflow_components
 
-    #Equivalent methods using xpath only
+    # Equivalent methods using xpath only
+    Top_dataflow = "dataflow[@role='top']"
     # Save workflow annotations
     def save_wf_annotations_xpath(xml_filename, author, description, title, name)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
+      top_df = document.root.elements[Top_dataflow]
       # add annotations (title, author, description)
-      insert_annotation_xpath(document, "author", author)
-      insert_annotation_xpath(document, "description", description)
-      insert_annotation_xpath(document, "title", title)
+      insert_node_annotation_xpath(top_df, "author", author)
+      insert_node_annotation_xpath(top_df, "description", description)
+      insert_node_annotation_xpath(top_df, "title", title)
       # get the name node
-      name_node = document.root.elements["dataflow[@role='top']"].elements["name"]
+      name_node = document.root.elements[Top_dataflow].elements["name"]
       # add name
       name_node.text = name
       document.root.attributes["producedBy"] = TLVersion
@@ -538,11 +437,75 @@ module TavernaLite
       File.open(xml_filename, "w:UTF-8") do |f|
         f.write document.root
       end
+    end # Save workflow annotations
+    # create annotations using XPATH
+    def create_annotation_xpath(type, content)
+      annotation = Element.new("annotation_chain")
+      annotation.attributes["encoding"]="xstream"
+      annotationchainimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationChainImpl")
+      annotationchainimpl.attributes["xmlns"]=""
+      annotationassertions = Element.new("annotationAssertions")
+      annotationassertionimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationAssertionImpl")
+      annotationbean = Element.new("annotationBean")
+      annotationbean.attributes["class"]=type
+      text_node = Element.new("text")
+      text_node.text = ERB::Util.html_escape(content)
+      date = Element.new("date")
+      date.text = Time.now.to_s
+      creators = Element.new("creators")
+      curationEventList = Element.new("curationEventList")
+      annotationbean.add_element(text_node)
+      annotationassertionimpl.add_element(annotationbean)
+      annotationassertionimpl.add_element(date)
+      annotationassertionimpl.add_element(creators)
+      annotationassertionimpl.add_element(curationEventList)
+      annotationassertions.add_element(annotationassertionimpl)
+      annotationchainimpl.add_element(annotationassertions)
+      annotation.add_element(annotationchainimpl)
+      annotation
     end
-    # add annotations to top dataflow
-    def insert_annotation_xpath(xml_doc = nil, annotation_type = "author",
-      annotation_text = "Unknown")
-      annotations = xml_doc.root.elements["dataflow[@role='top']"].elements["annotations"]
+    # save workflow port annotaions using XPATH
+    def save_wf_port_annotations_xpath(xml_filename, port_name, new_name, description, example_val,port_type=1)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      # find the port node
+      path_to_port = 'inputPorts'
+      unless port_type == 1
+        path_to_port = 'outputPorts'
+      end
+      # get the collection of ports
+      ports = document.root.elements[Top_dataflow].elements[path_to_port]
+      # find the port to annotate
+      port_node = nil
+      ports.elements["port/name"].each {|a_port|
+        if a_port == port_name
+          port_node = a_port.parent.parent
+          break
+        end
+      }
+      unless port_node.nil?
+        # add annotations (description, example)
+        insert_node_annotation_xpath(port_node, "description", description)
+        insert_node_annotation_xpath(port_node, "example", example_val)
+        # get the name node
+        name_node = port_node.elements['name']
+        # change the port name
+        if name_node != port_name
+          name_node.text = new_name
+          # need to change datalinks too
+          change_datalinks_for_port(document, port_name, new_name, port_type)
+        end
+        document.root.attributes["producedBy"] = TLVersion
+        # save workflow in the host app passing the file
+        File.open(xml_filename, "w:UTF-8") do |f|
+          f.write document.root
+        end
+      end
+    end
+    # inser a port annotation using XPATH
+    def insert_node_annotation_xpath(node = nil, annotation_type = "decription",
+      annotation_text = "Blank")
+      annotations = node.elements['annotations']
       annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
       case annotation_type
         when "author"
@@ -574,31 +537,128 @@ module TavernaLite
         new_ann = create_annotation_xpath(annotation_bean, annotation_text)
         annotations.add_element(new_ann)
       end
+    end # insert port annotation
+
+    # replace all datalinks referencing an input port on a workflow using XPATH
+    def change_datalinks_for_port(doc, port_name, new_name, port_type=1)
+      # loop through all datalinks containing port_name as source
+      # at least one data link should be found
+      dl_port_path = 'source/port'
+      if port_type == 2
+        dl_port_path = 'sink/port'
+      end
+      datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
+      datalinks.children.each do |x|
+        if x.class == REXML::Element
+          if x.elements[dl_port_path].text == port_name
+            x.elements[dl_port_path].text = new_name
+          end
+        end
+      end
+    end # change_datalinks_for_input
+
+   # add a workflow port uses XPATH
+    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      root = document.root
+      # 01 Add the port
+      outputs = root.elements[Top_dataflow].elements["outputPorts"]
+      portname = Element.new("name")
+      portname.text = port_name
+      new_port = Element.new("port")
+      new_port.add_element(portname)
+      new_port.add_element(Element.new("annotations"))
+      outputs.add_element(new_port)
+
+      # 02 Add a datalink for the port
+      datalinks = root.elements[Top_dataflow].elements["datalinks"]
+      sink_port = Element.new("port")
+      sink_port.text = port_name
+
+      new_sink = Element.new("sink")
+      new_sink.add_element(sink_port)
+      new_sink.attributes["type"] = "dataflow"
+
+      source_processor = Element.new("processor")
+      source_processor.text = processor_name
+
+      source_port = Element.new("port")
+      source_port.text = processor_port
+
+      new_source = Element.new("source")
+      new_source.add_element(source_processor)
+      new_source.add_element(source_port)
+
+      new_source.attributes["type"] = "processor"
+
+      new_datalink = Element.new("datalink")
+      new_datalink.add_element(new_sink)
+      new_datalink.add_element(new_source)
+
+      datalinks.add_element(new_datalink)
+
+      #03 add the output map to the processor
+      #04 add port to processor (expose it)
+      processors = root.elements[Top_dataflow].elements["processors"]
+      processors.elements.each("processor/name") { |prn|
+        if prn.text == processor_name then
+          the_processor = prn.parent
+          output_maps = the_processor.elements["activities/activity/outputMap"]
+          #check if map exists, if not add else skip this
+          unless map_exists(output_maps, processor_port)
+            new_map = Element.new("map")
+            new_map.attributes["from"] = processor_port
+            new_map.attributes["to"] = processor_port
+            output_maps.add_element(new_map)
+          end
+          output_ports = the_processor.elements["outputPorts"]
+          #check if port exists, if not add else skip this
+          unless port_exists(output_ports, processor_port)
+            new_outport = Element.new("port")
+            new_outname = Element.new("name")
+            new_outname.text = processor_port
+            new_depth = Element.new("depth")
+            new_depth.text = "1"
+            new_granular = Element.new("granularDepth")
+            new_granular.text = "1"
+            new_outport.add_element(new_outname)
+            new_outport.add_element(new_depth)
+            new_outport.add_element(new_granular)
+            output_ports.add_element(new_outport)
+         end
+        end
+      }
+
+      #   - how to calculate depth and granular depth if required
+      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
+      document.root.attributes["producedBy"] = TLVersion
+
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        document.write f
+      end
+      # pending:
+      # - add annotations (description and example)
+      save_wf_port_annotations(xml_filename, port_name, port_name, port_description, port_example,2)
     end
-    def create_annotation_xpath(type, content)
-      annotation = Element.new("annotation_chain")
-      annotation.attributes["encoding"]="xstream"
-      annotationchainimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationChainImpl")
-      annotationchainimpl.attributes["xmlns"]=""
-      annotationassertions = Element.new("annotationAssertions")
-      annotationassertionimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationAssertionImpl")
-      annotationbean = Element.new("annotationBean")
-      annotationbean.attributes["class"]=type
-      text_node = Element.new("text")
-      text_node.text = ERB::Util.html_escape(content)
-      date = Element.new("date")
-      date.text = Time.now.to_s
-      creators = Element.new("creators")
-      curationEventList = Element.new("curationEventList")
-      annotationbean.add_element(text_node)
-      annotationassertionimpl.add_element(annotationbean)
-      annotationassertionimpl.add_element(date)
-      annotationassertionimpl.add_element(creators)
-      annotationassertionimpl.add_element(curationEventList)
-      annotationassertions.add_element(annotationassertionimpl)
-      annotationchainimpl.add_element(annotationassertions)
-      annotation.add_element(annotationchainimpl)
-      annotation
+    def map_exists(maps, processor_port)
+      exists = false
+      XPath.match(maps,"map[@from='#{processor_port}' and @to='#{processor_port}']").map {|x|
+          unless x.nil?
+            exists = true
+          end
+      }
+      exists
+    end
+    def port_exists(ports, processor_port)
+      exists = false
+      XPath.match(ports,"port/name='#{processor_port}'").map {|x|
+          unless x.nil?
+            exists = true
+          end
+      }
+      exists
     end
   end # class
 end # module
