@@ -502,6 +502,7 @@ module TavernaLite
         end
       end
     end
+
     # inser a port annotation using XPATH
     def insert_node_annotation_xpath(node = nil, annotation_type = "decription",
       annotation_text = "Blank")
@@ -555,9 +556,65 @@ module TavernaLite
           end
         end
       end
-    end # change_datalinks_for_input
+    end #method: change_datalinks_for_port
 
-   # add a workflow port uses XPATH
+    # change all datalinks referencing the processors input and/or output ports
+    def change_datalinks_for_processor_xpath(doc, processor_name, new_name)
+      # loop through all datalinks containing processor_name as sink or source
+      # at least one data link should be found
+      dl_source_path = 'source/processor'
+      dl_sink_path = 'sink/processor'
+      datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
+      datalinks.children.each do |x|
+        if x.class == REXML::Element
+          if !x.elements[dl_source_path].nil? &&
+            x.elements[dl_source_path].text == processor_name
+            x.elements[dl_source_path].text = new_name
+          end
+          if !x.elements[dl_sink_path].nil? &&
+            x.elements[dl_sink_path].text == processor_name
+            x.elements[dl_sink_path].text = new_name
+          end
+        end
+      end
+    end # change_datalinks_for_processor_xpath
+
+    # saves wf_processor annotations and renames processor
+    def save_wf_processor_annotations_xpath(xml_filename, processor_name,
+      new_name, description)
+
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      # find the port node in the top dataflow
+      processors = document.root.elements[Top_dataflow].elements["processors"]
+      path_to_procesor_name = 'name'
+      processor_node = nil
+      processors.children.each do |x|
+        if x.class == REXML::Element
+          if x.elements[path_to_procesor_name].text == processor_name
+            processor_node = x
+          end
+        end
+      end
+
+      # add annotations (description, example)
+      insert_node_annotation_xpath(processor_node, "description", description)
+      # change the processor name
+      if new_name != processor_name
+        # get the name node
+        name_node = processor_node.elements[path_to_procesor_name]
+        name_node.text = new_name
+        # need to change datalinks too
+        change_datalinks_for_processor_xpath(document, processor_name, new_name)
+      end
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end# method: save_wf_processor_annotations_xpath
+
+    # add a workflow port uses XPATH
     def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
@@ -660,5 +717,6 @@ module TavernaLite
       }
       exists
     end
+
   end # class
 end # module
