@@ -57,6 +57,8 @@ module TavernaLite
     ComponentBean = "net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
     DataflowBean ="dataflow"
 
+    # Need to restore get node containing or get a struct about components
+
     # get a list of all the processor outputs in the workflow and indicate
     # if they are used (conncted to some port)
     def get_processors_outputs(xml_filename)
