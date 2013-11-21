@@ -47,159 +47,7 @@ require 'rexml/document'
 include REXML
 module TavernaLite
   class T2flowWriter
-     TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
-     def save_wf_annotations(xml_filename, author, description, title, name)
-      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
-      # add annotations (title, author, description)
-      insert_annotation(document, "author", author)
-      insert_annotation(document, "description", description)
-      insert_annotation(document, "title", title)
-      # get the name node
-      name_node = get_node(document.root,'dataflow/name')
-      # add name
-      name_node.content = name
-      document.root["producedBy"] = TLVersion
-      # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
-        f.write document.root
-      end
-    end
-
-    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val,port_type=1)
-      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
-      # find the port node
-      path_to_port = 'dataflow/inputPorts/port/name'
-      unless port_type == 1
-        path_to_port = 'dataflow/outputPorts/port/name'
-      end
-      port_node = get_node_containing(document.root,path_to_port, port_name)
-      # add annotations (description, example)
-      insert_port_annotation(port_node, "description", description)
-      insert_port_annotation(port_node, "example", example_val)
-      # get the name node
-      name_node = get_node(port_node,'name')
-      # change the port name
-      if new_name != port_name
-        name_node.content = new_name
-        # need to change datalinks too
-        if  port_type == 1
-          change_datalinks_for_input(document, port_name, new_name)
-        else
-          change_datalinks_for_output(document, port_name, new_name)
-        end
-      end
-      document.root["producedBy"] = TLVersion
-      # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
-        f.write document.root
-      end
-    end
-
-    # remove a workflow port
-    def remove_wf_port(xml_filename, port_name,port_type=1)
-      document = XML::Parser.file(xml_filename, :options => XML::Parser::Options::NOBLANKS).parse
-      # find the port node
-      path_to_port = 'dataflow/inputPorts/port/name'
-      unless port_type == 1
-        path_to_port = 'dataflow/outputPorts/port/name'
-      end
-      port_node = get_node_containing(document.root,path_to_port, port_name)
-      # remove the port node
-      port_node.remove!
-      # remove the datalinks referencing the port
-      if  port_type == 1
-        remove_datalinks_for_input(document, port_name)
-      else
-        remove_datalinks_for_output(document, port_name)
-      end
-      document.root["producedBy"] = TLVersion
-      # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
-        f.write document.root
-      end
-    end
-
-    def save_wf_processor_annotations(xmlfile, processor_name, new_name, description)
-      document = XML::Parser.file(xmlfile, :options => XML::Parser::Options::NOBLANKS).parse
-      # find the port node
-      path_to_procesor = 'dataflow/processors/processor/name'
-      processor_node = get_node_containing(document.root,path_to_procesor, processor_name)
-      # add annotations (description, example)
-      insert_port_annotation(processor_node, "description", description)
-      # change the port name
-      if new_name != processor_name
-        # get the name node
-        name_node = get_node(processor_node,'name')
-        name_node.content = new_name
-        # need to change datalinks too
-        change_datalinks_for_processor(document, processor_name, new_name)
-      end
-      document.root["producedBy"] = TLVersion
-      # save workflow in the host app passing the file
-      File.open(xmlfile, "w:UTF-8") do |f|
-        f.write document.root
-      end
-    end
-    #add a list of namespaces to the node
-    #the namespaces formal parameter is a hash
-    #with "prefix" and "prefix_uri" as
-    #key, value pairs
-    #prefix for the default namespace is "default"
-    def add_namespaces( node, namespaces )
-      #pass nil as the prefix to create a default node
-      default = namespaces.delete( "default" )
-      node.namespaces.namespace = XML::Namespace.new( node, nil, default )
-      namespaces.each do |prefix, prefix_uri|
-        XML::Namespace.new( node, prefix, prefix_uri )
-      end
-    end
-
-    #add a list of attributes to the node
-    #the attributes formal parameter is a hash
-    #with "name" and "value" as
-    #key, value pairs
-    def add_attributes( node, attributes )
-      attributes.each do |name, value|
-        XML::Attr.new( node, name, value )
-      end
-    end
-
-    #create a node with name
-    #and a hash of namespaces or attributes
-    #passed to options
-    def create_node( name, options )
-      node = XML::Node.new( name )
-
-      namespaces = options.delete( :namespaces )
-      add_namespaces( node, namespaces ) if namespaces
-
-      attributes = options.delete( :attributes )
-      add_attributes( node, attributes ) if attributes
-      node
-    end
-
-    def create_annotation(type, content)
-      annotation = create_node("annotation_chain", :attributes=>{"encoding"=>"xstream"})
-      annotationchainimpl = create_node("net.sf.taverna.t2.annotation.AnnotationChainImpl", :attributes=>{"xmlns"=>""})
-      annotationassertions = create_node("annotationAssertions", :attributes=>{})
-      annotationassertionimpl = create_node("net.sf.taverna.t2.annotation.AnnotationAssertionImpl", :attributes=>{})
-      annotationbean = create_node("annotationBean", :attributes=>{"class"=>type})
-      text = create_node("text", :attributes=>{})
-      text.content = content
-      date = create_node("date", :attributes=>{})
-      date.content = Time.now.to_s
-      creators = create_node("creators", :attributes=>{})
-      curationEventList = create_node("curationEventList", :attributes=>{})
-      annotationbean << text
-      annotationassertionimpl << annotationbean
-      annotationassertionimpl << date
-      annotationassertionimpl << creators
-      annotationassertionimpl << curationEventList
-      annotationassertions << annotationassertionimpl
-      annotationchainimpl << annotationassertions
-      annotation << annotationchainimpl
-      annotation
-    end
+    TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
 
     # recursively finds the first occurrence of path in the given node and
     # returns the corresponding node
@@ -247,66 +95,6 @@ module TavernaLite
       end
     end
 
-    def insert_annotation(xml_doc = nil, annotation_type = "author",
-      annotation_text = "Unknown")
-      annotations = get_node(xml_doc.root,'dataflow/annotations')
-      annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
-      case annotation_type
-        when "author"
-          annotation_bean += ".Author"
-        when "description"
-          annotation_bean += ".FreeTextDescription"
-        when "title"
-          annotation_bean += ".DescriptiveTitle"
-        when "example"
-          annotation_bean += ".ExampleValue"
-        else
-          annotation_bean += ".FreeTextDescription"
-      end
-      #check if there is already an annotation of this type in the workflow
-      new_ann = nil
-      annotations.children.each do |ann|
-        if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
-          new_ann = ann.children[0].children[0].children[0].children[0].children[0]
-          new_ann.content = ERB::Util.html_escape(annotation_text.to_s)
-          break
-        end
-      end
-      if new_ann.nil?
-        annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
-      end
-    end
-
-    def insert_port_annotation(node = nil, annotation_type = "decription",
-      annotation_text = "Blank")
-      annotations = get_node(node,'annotations')
-      annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
-      case annotation_type
-        when "author"
-          annotation_bean += ".Author"
-        when "description"
-          annotation_bean += ".FreeTextDescription"
-        when "title"
-          annotation_bean += ".DescriptiveTitle"
-        when "example"
-          annotation_bean += ".ExampleValue"
-        else
-          annotation_bean += ".FreeTextDescription"
-      end
-      #check if there is already an annotation of this type in the workflow
-      new_ann = nil
-      annotations.children.each do |ann|
-        if annotation_bean == ann.children[0].children[0].children[0].children[0].attributes['class']
-          new_ann = ann.children[0].children[0].children[0].children[0].children[0]
-          new_ann.content = ERB::Util.html_escape(annotation_text.to_s)
-          break
-        end
-      end
-      if new_ann.nil?
-        annotations << create_annotation(annotation_bean, ERB::Util.html_escape(annotation_text))
-      end
-    end
-
     # replace a component
     def replace_component(xmlFile,processor_name,replacement_id)
       # get the workflow file and parse it as an XML document
@@ -320,77 +108,6 @@ module TavernaLite
         f.write doc.root
       end
     end
-
-    # replace all datalinks referencing an input port on a workflow
-    def change_datalinks_for_input(doc, port_name, new_name)
-      # loop through all datalinks containing port_name as source
-      begin
-        # at least one data link should be found
-        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
-        unless data_link.nil?
-          data_link.children.each do |dl_part|
-            dl_part.content = new_name
-          end
-        end
-      end while !data_link.nil?
-    end # change_datalinks_for_input
-
-    # replace all datalinks referencing an output port on a workflow
-    def change_datalinks_for_output(doc, port_name, new_name)
-      # loop through all datalinks containing port_name as sink
-      begin
-        # at least one data link should be found
-        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
-        unless data_link.nil?
-          data_link.children.each do |dl_part|
-            dl_part.content = new_name
-          end
-        end
-      end while !data_link.nil?
-    end # change_datalinks_for_output
-
-    # remove all datalinks referencing an input port on a workflow
-    def remove_datalinks_for_input(doc, port_name)
-      # loop through all datalinks containing port_name as source
-      begin
-        # at least one data link should be found
-        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/port', port_name)
-        unless data_link.nil?
-          data_link.parent.remove!
-        end
-      end while !data_link.nil?
-    end # remove_datalinks_for_input
-
-    # remove all datalinks referencing an output port on a workflow
-    def remove_datalinks_for_output(doc, port_name)
-      # loop through all datalinks containing port_name as sink
-      begin
-        # at least one data link should be found
-        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/port', port_name)
-        unless data_link.nil?
-          data_link.parent.remove!
-        end
-      end while !data_link.nil?
-    end # remove_datalinks_for_output
-
-    # change all datalinks referencing the processors input and/or output ports
-    def change_datalinks_for_processor(doc, processor_name, new_name)
-      # loop through all datalinks containing port_name as sink or source
-      begin
-        # at least one data link should be found
-        data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/source/processor', processor_name)
-        if data_link.nil?
-          data_link=get_node_containing(doc.root,'dataflow/datalinks/datalink/sink/processor', processor_name)
-        end
-        unless data_link.nil?
-          data_link.children.each do |dl_part|
-            if dl_part.name == 'processor'
-              dl_part.content = new_name
-            end
-          end
-        end
-      end while !data_link.nil?
-    end # change_datalinks_for_processor
 
     # replace a component on a workflow
     def replace_workflow_components(doc,processor_name,replacement_id)
@@ -420,14 +137,14 @@ module TavernaLite
     # Equivalent methods using xpath only
     Top_dataflow = "dataflow[@role='top']"
     # Save workflow annotations
-    def save_wf_annotations_xpath(xml_filename, author, description, title, name)
+    def save_wf_annotations(xml_filename, author, description, title, name)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
       top_df = document.root.elements[Top_dataflow]
       # add annotations (title, author, description)
-      insert_node_annotation_xpath(top_df, "author", author)
-      insert_node_annotation_xpath(top_df, "description", description)
-      insert_node_annotation_xpath(top_df, "title", title)
+      insert_node_annotation(top_df, "author", author)
+      insert_node_annotation(top_df, "description", description)
+      insert_node_annotation(top_df, "title", title)
       # get the name node
       name_node = document.root.elements[Top_dataflow].elements["name"]
       # add name
@@ -439,7 +156,7 @@ module TavernaLite
       end
     end # Save workflow annotations
     # create annotations using XPATH
-    def create_annotation_xpath(type, content)
+    def create_annotation(type, content)
       annotation = Element.new("annotation_chain")
       annotation.attributes["encoding"]="xstream"
       annotationchainimpl = Element.new("net.sf.taverna.t2.annotation.AnnotationChainImpl")
@@ -465,7 +182,7 @@ module TavernaLite
       annotation
     end
     # save workflow port annotaions using XPATH
-    def save_wf_port_annotations_xpath(xml_filename, port_name, new_name, description, example_val,port_type=1)
+    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val,port_type=1)
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
       # find the port node
@@ -477,21 +194,21 @@ module TavernaLite
       ports = document.root.elements[Top_dataflow].elements[path_to_port]
       # find the port to annotate
       port_node = nil
-      ports.elements["port/name"].each {|a_port|
-        if a_port == port_name
-          port_node = a_port.parent.parent
+      ports.elements.each {|a_port|
+        if a_port.elements["name"].text == port_name
+          port_node = a_port
           break
         end
       }
       unless port_node.nil?
         # add annotations (description, example)
-        insert_node_annotation_xpath(port_node, "description", description)
-        insert_node_annotation_xpath(port_node, "example", example_val)
+        insert_node_annotation(port_node, "description", description)
+        insert_node_annotation(port_node, "example", example_val)
         # get the name node
         name_node = port_node.elements['name']
         # change the port name
-        if name_node != port_name
-          name_node.text = new_name
+        if port_node.elements['name'] != new_name
+          port_node.elements['name'].text = new_name
           # need to change datalinks too
           change_datalinks_for_port(document, port_name, new_name, port_type)
         end
@@ -504,7 +221,7 @@ module TavernaLite
     end
 
     # inser a port annotation using XPATH
-    def insert_node_annotation_xpath(node = nil, annotation_type = "decription",
+    def insert_node_annotation(node = nil, annotation_type = "decription",
       annotation_text = "Blank")
       annotations = node.elements['annotations']
       annotation_bean = "net.sf.taverna.t2.annotation.annotationbeans"
@@ -535,7 +252,7 @@ module TavernaLite
         end
       }
       if new_ann.nil?
-        new_ann = create_annotation_xpath(annotation_bean, annotation_text)
+        new_ann = create_annotation(annotation_bean, annotation_text)
         annotations.add_element(new_ann)
       end
     end # insert port annotation
@@ -559,7 +276,7 @@ module TavernaLite
     end #method: change_datalinks_for_port
 
     # change all datalinks referencing the processors input and/or output ports
-    def change_datalinks_for_processor_xpath(doc, processor_name, new_name)
+    def change_datalinks_for_processor(doc, processor_name, new_name)
       # loop through all datalinks containing processor_name as sink or source
       # at least one data link should be found
       dl_source_path = 'source/processor'
@@ -577,10 +294,10 @@ module TavernaLite
           end
         end
       end
-    end # change_datalinks_for_processor_xpath
+    end # change_datalinks_for_processor
 
     # saves wf_processor annotations and renames processor
-    def save_wf_processor_annotations_xpath(xml_filename, processor_name,
+    def save_wf_processor_annotations(xml_filename, processor_name,
       new_name, description)
 
       xml_file = File.new(xml_filename)
@@ -598,21 +315,67 @@ module TavernaLite
       end
 
       # add annotations (description, example)
-      insert_node_annotation_xpath(processor_node, "description", description)
+      insert_node_annotation(processor_node, "description", description)
       # change the processor name
       if new_name != processor_name
         # get the name node
         name_node = processor_node.elements[path_to_procesor_name]
         name_node.text = new_name
         # need to change datalinks too
-        change_datalinks_for_processor_xpath(document, processor_name, new_name)
+        change_datalinks_for_processor(document, processor_name, new_name)
       end
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
       File.open(xml_filename, "w:UTF-8") do |f|
         f.write document.root
       end
-    end# method: save_wf_processor_annotations_xpath
+    end# method: save_wf_processor_annotations
+
+    # remove a workflow port uses XPATH
+    def remove_wf_port(xml_filename, port_name,port_type=1)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      # find the port node
+      path_to_port = 'inputPorts'
+      unless port_type == 1
+        path_to_port = 'outputPorts'
+      end
+      # get the collection of ports
+      ports = document.root.elements[Top_dataflow].elements[path_to_port]
+      # find the port to remove
+      port_node = nil
+      ports.elements.each {|a_port|
+        if a_port.elements["name"].text == port_name
+          port_node = a_port
+          break
+        end
+      }
+      # remove the port node
+      port_node.parent.delete(port_node)
+      # remove the datalinks referencing the port
+      remove_datalinks_for_port(document, port_name, port_type)
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xml_filename, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end #method: remove_wf_port
+
+    def remove_datalinks_for_port(doc, port_name, port_type)
+      dl_port_path = 'source/port'
+      if port_type == 2
+        dl_port_path = 'sink/port'
+      end
+      # loop through all datalinks containing port_name and delete if found
+      datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
+      datalinks.children.each do |x|
+        if x.class == REXML::Element
+          if x.elements[dl_port_path].text == port_name
+            datalinks.delete(x)
+          end
+        end
+      end
+    end # remove_datalinks_for_port
 
     # add a workflow port uses XPATH
     def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
