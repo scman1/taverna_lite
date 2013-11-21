@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class WorkflowComponentsControllerTest < ActionController::TestCase
     setup do
-      @workflow_component = taverna_lite_workflow_components(:one)
+      @workflow_component = taverna_lite_workflow_components(:tl_wfcomponent_01)
     end
 
     test "should get index" do

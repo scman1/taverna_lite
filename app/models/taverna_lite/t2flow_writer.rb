@@ -49,53 +49,7 @@ module TavernaLite
   class T2flowWriter
     TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
 
-    # recursively finds the first occurrence of path in the given node and
-    # returns the corresponding node
-    # Example: a = get_node(doc.root,'dataflow/processors/processor/name/')
-    def get_node(node,path)
-      name = path.split("/")[0]
-      rest = path.split("/")
-      rest.delete(name)
-      rest = rest.join("/")
-      node.each_element do |element|
-          if element.name == name
-            if rest == ""
-              return element
-            else
-              return get_node(element,rest)
-          end
-        end
-      end
-    end
-
-    # recursively finds the first occurrence of path in the given node which
-    # matches the content and returns the corresponding node:
-    # Example: a = get_node_containing(doc.root,'dataflow/processors/processor/name/','Output_Stage_Matrix')
-    def get_node_containing(node,path,content)
-      if path == "" then
-        return nil
-      end
-      name = path.split("/")[0]
-      rest = path.split("/")
-      rest.delete(name)
-      rest = rest.join("/")
-      node.each_element do |element|
-        if element.name == name
-           if rest == "" && element.content == content
-            return element.parent
-          else
-            node = get_node_containing(element,rest,content)
-            if node == nil
-              next
-            else
-              return node
-            end
-          end
-        end
-      end
-    end
-
-    # Equivalent methods using xpath only
+    # Refactored methods using xpath only (REXML)
     Top_dataflow = "dataflow[@role='top']"
     # Save workflow annotations
     def save_wf_annotations(xml_filename, author, description, title, name)
@@ -450,7 +404,7 @@ module TavernaLite
       xml_file = File.new(xmlFile)
       document = Document.new(xml_file)
       #replace the component
-      replace_workflow_components_xpath(document,processor_name,replacement_id)
+      replace_workflow_components(document,processor_name,replacement_id)
       #label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file

@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class AlternativeComponentsControllerTest < ActionController::TestCase
     setup do
-      @alternative_component = taverna_lite_alternative_components(:one)
+      @alternative_component = taverna_lite_alternative_components(:tl_alternativecomponent_01)
     end
 
     test "should get index" do
