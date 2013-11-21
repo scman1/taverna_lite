@@ -106,6 +106,7 @@ module TavernaLite
       to_there = fixtures_path+'/test_workflows/test_result/'+filename
       FileUtils.cp from_here, to_there
       @workflow_05 = to_there
+      @wf_component = taverna_lite_workflow_components(:tl_wfcomponent_03)
     end # Test setup
     test "01 should update_workflow_annotations" do
       author = "Stian Soiland Reyes"
@@ -691,6 +692,18 @@ module TavernaLite
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
     end #test 15 add an output_port for FirstProcessor:FirstPort any component
-    # Pending test of swap component
+
+    # Test of swap component
+    test "16 Swap component " do
+      writer = T2flowWriter.new
+      processor_name="Read_Census_Data_From_CSV_File"
+      replacement_id= @wf_component.id
+
+      writer.replace_component(@workflow_05,processor_name,replacement_id)
+      file_data = File.open(@workflow_05)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(t2_model, nil)
+    end #test 16xp
+
   end
 end

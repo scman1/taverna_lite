@@ -95,45 +95,6 @@ module TavernaLite
       end
     end
 
-    # replace a component
-    def replace_component(xmlFile,processor_name,replacement_id)
-      # get the workflow file and parse it as an XML document
-      doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
-      #replace the component
-      replace_workflow_components(doc,processor_name,replacement_id)
-      #label the workflow as produced by taverna lite
-      doc.root["producedBy"]="TavernaLite_v_0.3.8"
-      # save workflow in the host app passing the file
-      File.open(xmlFile, "w:UTF-8") do |f|
-        f.write doc.root
-      end
-    end
-
-    # replace a component on a workflow
-    def replace_workflow_components(doc,processor_name,replacement_id)
-      replacement_component = WorkflowComponent.find(replacement_id)
-      writer = T2flowWriter.new
-      a=writer.get_node_containing(doc.root,'dataflow/processors/processor/name/', processor_name)
-      b=writer.get_node(a,"activities/activity/configBean")
-      #put component info in the child node
-      b.children[0].each do |cacb|
-        case cacb.name
-          when 'registryBase'
-          # node name: registryBase content
-            cacb.content = replacement_component.registry
-          when 'familyName'
-          # node name: familyName content
-            cacb.content = replacement_component.family
-          when 'componentName'
-          # node name: componentName content
-            cacb.content = replacement_component.name
-          when 'componentVersion'
-          # node name: componentVersion content
-            cacb.content = replacement_component.version.to_s
-        end
-      end
-    end # method replace_workflow_components
-
     # Equivalent methods using xpath only
     Top_dataflow = "dataflow[@role='top']"
     # Save workflow annotations
@@ -155,6 +116,7 @@ module TavernaLite
         f.write document.root
       end
     end # Save workflow annotations
+
     # create annotations using XPATH
     def create_annotation(type, content)
       annotation = Element.new("annotation_chain")
@@ -181,6 +143,7 @@ module TavernaLite
       annotation.add_element(annotationchainimpl)
       annotation
     end
+
     # save workflow port annotaions using XPATH
     def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val,port_type=1)
       xml_file = File.new(xml_filename)
@@ -481,5 +444,44 @@ module TavernaLite
       exists
     end
 
+    # replace a component
+    def replace_component(xmlFile,processor_name,replacement_id)
+      # get the workflow file and parse it as an XML document
+      xml_file = File.new(xmlFile)
+      document = Document.new(xml_file)
+      #replace the component
+      replace_workflow_components_xpath(document,processor_name,replacement_id)
+      #label the workflow as produced by taverna lite
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xmlFile, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+
+    # replace a component on a workflow
+    def replace_workflow_components(doc,processor_name,replacement_id)
+      replacement_component = WorkflowComponent.find(replacement_id)
+
+      processors = doc.root.elements[Top_dataflow].elements["processors"]
+      path_to_procesor_name = 'name'
+      processor_node = nil
+      processors.children.each do |x|
+        if x.class == REXML::Element
+          if x.elements[path_to_procesor_name].text == processor_name
+            processor_node = x
+          end
+        end
+      end
+
+      cb_path = "activities/activity/configBean"
+      cb_path += "/net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
+      config_bean = processor_node.elements[cb_path]
+      #put component info in the child node
+      config_bean.elements['registryBase'].text = replacement_component.registry
+      config_bean.elements['familyName'].text = replacement_component.family
+      config_bean.elements['componentName'].text = replacement_component.name
+      config_bean.elements['componentVersion'].text = replacement_component.version.to_s
+    end # method replace_workflow_components
   end # class
 end # module
