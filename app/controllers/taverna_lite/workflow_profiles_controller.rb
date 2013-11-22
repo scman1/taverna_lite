@@ -133,6 +133,8 @@ module TavernaLite
       workflow_profile = WorkflowProfile.find(id)
       processors = workflow_profile.get_processors
       xmlFile = workflow_profile.workflow.workflow_filename
+      #t2flow does not give this info so need to use t2flow_getters
+
       doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
       components = {}
       processors.each do |proc|

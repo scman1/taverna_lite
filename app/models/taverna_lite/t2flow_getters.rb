@@ -47,7 +47,10 @@ require 'rexml/document'
 include REXML
 module TavernaLite
   class T2flowGetters
-     TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
+    TLVersion = "TavernaLite_v_"+TavernaLite::VERSION
+
+    # path to top dataflow
+    Top_dataflow = "dataflow[@role='top']"
 
     # Constants for Paths
     DataFlowPath = "workflow/dataflow"
@@ -195,5 +198,75 @@ module TavernaLite
         }
       }
     end # method get_port_links
+
+    # Get the components within a workflow
+    def get_workflow_components(xml_filename)
+      xml_file = File.new(xml_filename)
+      document = Document.new(xml_file)
+      #t2flow does not give this info so need to use XPATH to extract it
+      # get the processors nodes
+      processors = document.root.elements[Top_dataflow].elements["processors"]
+      activities = "activities"
+      component_activity = "net.sf.taverna.t2.component.ComponentActivity"
+      processors.elements.each("processor/activities/avtivity") { |pra|
+        if prn.text == processor_name then
+      doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
+      components = {}
+      PAC_path = "activities/activity/class"
+      CA_ID = "net.sf.taverna.t2.component.ComponentActivity"
+      CB_path = "configBean/net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
+      components = {}
+      processors.elements.each("processor") { |pr|
+        pr.elements.each(PAC_path) {|pac|
+          if pac.text == CA_ID
+            ac = pac.parent
+            config_bean = ac.elements[CB_path]
+            # create a new component
+            puts pr.elements["name"].text
+            puts "This is a component"
+            puts config_bean.elements['registryBase'].text
+            puts config_bean.elements['familyName'].text
+            puts config_bean.elements['componentName'].text
+            puts config_bean.elements['componentVersion'].text
+          end
+        }
+      }
+
+
+
+
+      processors.each do |proc|
+        if proc.type == 'component'
+          wfc = WorkflowComponent.new()
+          writer = T2flowWriter.new
+          a=writer.get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name)
+          b=writer.get_node(a,"activities/activity/configBean")
+          #extract component info from the file
+          b.children[0].each do |cacb|
+            case cacb.name
+              when 'registryBase'
+              # node name: registryBase content: http://www.myexperiment.org
+                wfc.registry = cacb.content
+              when 'familyName'
+              # node name: familyName content: POPMOD
+                wfc.family = cacb.content
+              when 'componentName'
+              # node name: componentName content: StageMatrixFromCensus
+                wfc.name = cacb.content
+              when 'componentVersion'
+              # node name: componentVersion content: 3
+                wfc.version = cacb.content
+            end
+          end
+          wfc_db = WorkflowComponent.find_by_name(wfc.name)
+          wf = nil
+          unless wfc_db.nil?
+            wf =  TavernaLite.workflow_class.find(wfc_db.workflow_id)
+          end
+          components[proc.name] = [wfc, wf]
+        end
+      end
+      return components
+    end
   end # class
 end # module

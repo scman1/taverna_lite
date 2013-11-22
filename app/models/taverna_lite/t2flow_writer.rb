@@ -341,7 +341,9 @@ module TavernaLite
     end # remove_datalinks_for_port
 
     # add a workflow port uses XPATH
-    def add_wf_port(xml_filename, processor_name, processor_port, port_name="", port_description="", port_example="", port_type=2)
+    def add_wf_port(xml_filename, processor_name, processor_port, port_name="",
+      port_description="", port_example="", port_type=2)
+
       xml_file = File.new(xml_filename)
       document = Document.new(xml_file)
       root = document.root
