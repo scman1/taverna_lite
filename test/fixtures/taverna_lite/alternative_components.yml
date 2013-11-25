@@ -44,6 +44,15 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+one:
+  component_id: 1
+  alternative_id: 1
+  note: MyString
+
+two:
+  component_id: 1
+  alternative_id: 1
+  note: MyString
 
 # need to seed the DB with the details of the alternative components as
 # stored in the test/dummy app

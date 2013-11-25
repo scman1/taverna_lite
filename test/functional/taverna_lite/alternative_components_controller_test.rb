@@ -46,6 +46,7 @@ require 'test_helper'
 module TavernaLite
   class AlternativeComponentsControllerTest < ActionController::TestCase
     setup do
+      @one = taverna_lite_alternative_components(:one)
       @new_ac = taverna_lite_alternative_components(:tl_new_ac)
       @ac_01 = taverna_lite_alternative_components(:tl_alternativecomponent_01)
     end
@@ -64,9 +65,9 @@ module TavernaLite
     test "should create alternative_component" do
       assert_difference('AlternativeComponent.count') do
         post :create, alternative_component:{
-          alternative_id: @new_ac.alternative_id,
-          component_id: @new_ac.component_id,
-          note: @new_ac.note
+          alternative_id: @one.alternative_id,
+          component_id: @one.component_id,
+          note: @one.note
         }
       end
 

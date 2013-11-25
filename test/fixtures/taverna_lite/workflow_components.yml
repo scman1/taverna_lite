@@ -44,6 +44,22 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+one:
+  workflow_id: 1
+  license_id: 1
+  version: 1
+  family: MyString
+  name: MyString
+  registry: MyString
+
+two:
+  workflow_id: 1
+  license_id: 1
+  version: 1
+  family: MyString
+  name: MyString
+  registry: MyString
+
 # need to seed the test DB with the details of the workflow components
 
 tl_wfcomponent_01:
