@@ -257,6 +257,7 @@ module TavernaLite
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
     end
+
     test "04 get processor ports and connections from rshell processors" do
       processor = "StageMatrixFromCensus"
       port = "report"
@@ -303,6 +304,19 @@ module TavernaLite
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
     end
-    # Pending test of swap component
+
+    test "06 get components list from workflow" do
+      # first get processor components
+      wf_reader = T2flowGetters.new
+      components_list = wf_reader.get_workflow_components(@workflow_04)
+      # the workflow has 6 components
+      assert_equal(6, components_list.count)
+      # all components should be registered so no nil values
+      components_list.each { |comp_k, comp_v|
+        assert_not_nil(comp_k,"Key is nil")
+        assert_not_nil(comp_v[0],"component is nil")
+        assert_not_nil(comp_v[1],"workflow in component is nil")
+      }
+    end # test 06
   end
 end
