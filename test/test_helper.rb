@@ -1,7 +1,7 @@
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+require File.expand_path("../dummy/config/environment.rb", __FILE__)
 require "rails/test_help"
 
 Rails.backtrace_cleaner.remove_silencers!
@@ -14,23 +14,8 @@ if ActiveSupport::TestCase.method_defined?(:fixture_path=)
   ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
 end
 
-
-# Code added from https://github.com/rails/rails/issues/4971
-# to fix non running tests
-
 class ActiveSupport::TestCase
+  include TavernaLite::Engine.routes.url_helpers
+  include ActionDispatch::TestProcess
   fixtures :all
 end
-
-module TavernaLite
-  class ActionController::TestCase
-    setup do
-      @routes = Engine.routes
-    end
-  end
-end
-
-if ActionDispatch::IntegrationTest.method_defined?(:fixture_path=)
-  ActionDispatch::IntegrationTest.fixture_path = File.expand_path("../fixtures", __FILE__)
-end
-# still not loading dummy fixtures
