@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class WorkflowPortsControllerTest < ActionController::TestCase
     setup do
-      @workflow_port = taverna_lite_workflow_ports(:one)
+      @workflow_port = taverna_lite_workflow_ports(:tl_workflowport_01)
     end
     test "just test put" do
       # test using this hash
@@ -63,12 +63,12 @@ module TavernaLite
       #         leave as it is for now
       # THIS TEST IS TOO FLAKY, IT DEPENDS ON THE STATE OF THE DUMMY APP.
       # DO NOT DEPEND ON IT
-      put :save_custom_inputs, {"workflow_id"=>"1","selected_tab"=>"components",
+      put :save_custom_inputs, {"workflow_id"=>"6","selected_tab"=>"components",
         "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
         "description_for_name"=>"Your name for the greeting",
         "name"=>"World!", "type_for_name"=>"1", "display_for_name"=>"1"},
-        "commit"=>"Save", "id"=>"1"}
-      assert_redirected_to edit_workflow_profile_path(1)
+        "commit"=>"Save", "id"=>"6"}
+      assert_redirected_to edit_workflow_profile_path(6)
     end
 
 #    test "should not update workflow_port if no changes" do

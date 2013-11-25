@@ -49,6 +49,28 @@
 # so need workflows here, plus corresponding records on profiles, components
 # ports and alternatives tables
 
+one:
+  id: 522
+  title: "Workflow 1"
+  author: "Author 1"
+  description: "Dummy workflow 1"
+  name: "Workflow1"
+  workflow_file: "HelloAnyone.t2flow"
+  my_experiment_id: 1
+  user_id: 1
+  is_shared: false
+
+two:
+  id: 523
+  title: "Workflow 2"
+  author: "Author 2"
+  description: "Dummy workflow 2"
+  name: "Workflow1"
+  workflow_file: "/path/to/workflow2"
+  my_experiment_id: 2
+  user_id: 1
+  is_shared: false
+
 workflow_00:
   id:  1
   title: "Hello Anyone"
