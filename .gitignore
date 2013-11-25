@@ -4,6 +4,7 @@ tlite_hist.txt
 .bundle/
 log/*.log
 pkg/
+problems/
 test/dummy/Gemfile
 test/dummy/Gemfile.lock
 test/dummy/db/*.sqlite3
