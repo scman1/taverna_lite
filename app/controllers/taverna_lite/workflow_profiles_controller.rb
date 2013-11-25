@@ -131,44 +131,10 @@ module TavernaLite
     # Get the components for a given workflow
     def get_workflow_components(id)
       workflow_profile = WorkflowProfile.find(id)
-      processors = workflow_profile.get_processors
-      xmlFile = workflow_profile.workflow.workflow_filename
+      wf_file = workflow_profile.workflow.workflow_filename
       #t2flow does not give this info so need to use t2flow_getters
-
-      doc = XML::Parser.file(xmlFile, :options => XML::Parser::Options::NOBLANKS).parse
-      components = {}
-      processors.each do |proc|
-        if proc.type == 'component'
-          wfc = WorkflowComponent.new()
-          writer = T2flowWriter.new
-          a=writer.get_node_containing(doc.root,'dataflow/processors/processor/name/', proc.name)
-          b=writer.get_node(a,"activities/activity/configBean")
-          #extract component info from the file
-          b.children[0].each do |cacb|
-            case cacb.name
-              when 'registryBase'
-              # node name: registryBase content: http://www.myexperiment.org
-                wfc.registry = cacb.content
-              when 'familyName'
-              # node name: familyName content: POPMOD
-                wfc.family = cacb.content
-              when 'componentName'
-              # node name: componentName content: StageMatrixFromCensus
-                wfc.name = cacb.content
-              when 'componentVersion'
-              # node name: componentVersion content: 3
-                wfc.version = cacb.content
-            end
-          end
-          wfc_db = WorkflowComponent.find_by_name(wfc.name)
-          wf = nil
-          unless wfc_db.nil?
-            wf =  TavernaLite.workflow_class.find(wfc_db.workflow_id)
-          end
-          components[proc.name] = [wfc, wf]
-        end
-      end
-      return components
+      wf_reader = T2flowGetters.new
+      return components_list = wf_reader.get_workflow_components(wf_file)
     end
 
     # Get the registered alternative components from a given list of components

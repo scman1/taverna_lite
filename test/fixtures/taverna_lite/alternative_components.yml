@@ -48,6 +48,11 @@
 # need to seed the DB with the details of the alternative components as
 # stored in the test/dummy app
 
+tl_new_ac:
+  component_id: 1
+  alternative_id: 2
+  note: "New Alternative"
+
 tl_alternativecomponent_01:
   component_id: 3
   alternative_id: 4

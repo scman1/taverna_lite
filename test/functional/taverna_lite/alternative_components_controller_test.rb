@@ -46,7 +46,8 @@ require 'test_helper'
 module TavernaLite
   class AlternativeComponentsControllerTest < ActionController::TestCase
     setup do
-      @alternative_component = taverna_lite_alternative_components(:tl_alternativecomponent_01)
+      @new_ac = taverna_lite_alternative_components(:tl_new_ac)
+      @ac_01 = taverna_lite_alternative_components(:tl_alternativecomponent_01)
     end
 
     test "should get index" do
@@ -62,30 +63,34 @@ module TavernaLite
 
     test "should create alternative_component" do
       assert_difference('AlternativeComponent.count') do
-        post :create, alternative_component: { alternative_id: @alternative_component.alternative_id, component_id: @alternative_component.component_id, note: @alternative_component.note }
+        post :create, alternative_component:{
+          alternative_id: @new_ac.alternative_id,
+          component_id: @new_ac.component_id,
+          note: @new_ac.note
+        }
       end
 
       assert_redirected_to alternative_component_path(assigns(:alternative_component))
     end
 
     test "should show alternative_component" do
-      get :show, id: @alternative_component, use_route: :taverna_lite
+      get :show, id: @ac_01, use_route: :taverna_lite
       assert_response :success
     end
 
     test "should get edit" do
-      get :edit, id: @alternative_component, use_route: :taverna_lite
+      get :edit, id: @ac_01, use_route: :taverna_lite
       assert_response :success
     end
 
     test "should update alternative_component" do
-      put :update, id: @alternative_component, alternative_component: { alternative_id: @alternative_component.alternative_id, component_id: @alternative_component.component_id, note: @alternative_component.note }, use_route: :taverna_lite
+      put :update, id: @ac_01, alternative_component: { alternative_id: @ac_01.alternative_id, component_id: @ac_01.component_id, note: @ac_01.note }, use_route: :taverna_lite
       assert_redirected_to alternative_component_path(assigns(:alternative_component))
     end
 
     test "should destroy alternative_component" do
       assert_difference('AlternativeComponent.count', -1) do
-        delete :destroy, id: @alternative_component, use_route: :taverna_lite
+        delete :destroy, id: @ac_01, use_route: :taverna_lite
       end
 
       assert_redirected_to alternative_components_path
