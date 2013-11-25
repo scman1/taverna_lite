@@ -44,13 +44,8 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-
-# need to seed the DB with the details of the component workflows,
-# so need workflows here, plus corresponding records on profiles, components
-# ports and alternatives tables
-
 one:
-  id: 522
+  id: 1
   title: "Workflow 1"
   author: "Author 1"
   description: "Dummy workflow 1"
@@ -61,7 +56,7 @@ one:
   is_shared: false
 
 two:
-  id: 523
+  id: 2
   title: "Workflow 2"
   author: "Author 2"
   description: "Dummy workflow 2"
@@ -71,18 +66,9 @@ two:
   user_id: 1
   is_shared: false
 
-workflow_00:
-  id:  1
-  title: "Hello Anyone"
-  author: "Stian Soiland-Reyes"
-  description: "An extension to helloworld.t2flow"
-  name: "Hello_Anyone"
-  workflow_file: "HelloAnyone.t2flow"
-  my_experiment_id: nil
-  user_id: 1
-  is_shared: nil
-  created_at: "2013-08-30 13:54:42"
-  updated_at: "2013-10-29 10:36:17"
+# need to seed the DB with the details of the component workflows,
+  # so need workflows here, plus corresponding records on profiles, components and
+# ports tables
 
 workflow_01:
   id:  23

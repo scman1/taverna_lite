@@ -62,7 +62,7 @@ two:
 
 # need to seed the test DB with the details of the workflow components
 
-tl_wfcomponent_01:
+tl_workflowcomponent_01:
   id: 1
   workflow_id: 9
   license_id: 1
@@ -73,7 +73,7 @@ tl_wfcomponent_01:
   created_at: "2013-09-24 14:49:25"
   updated_at: "2013-09-27 16:00:45"
 
-tl_wfcomponent_02:
+tl_workflowcomponent_02:
   id: 2
   workflow_id: 10
   license_id: 1
@@ -84,7 +84,7 @@ tl_wfcomponent_02:
   created_at: "2013-09-24 14:55:59"
   updated_at: "2013-11-04 11:49:33"
 
-tl_wfcomponent_03:
+tl_workflowcomponent_03:
   id: 3
   workflow_id: 8
   license_id: 1
@@ -95,7 +95,7 @@ tl_wfcomponent_03:
   created_at: "2013-09-24 14:56:54"
   updated_at: "2013-09-27 16:00:34"
 
-tl_wfcomponent_04:
+tl_workflowcomponent_04:
   id: 4
   workflow_id: 11
   license_id: 1
@@ -106,7 +106,7 @@ tl_wfcomponent_04:
   created_at: "2013-09-25 13:22:51"
   updated_at: "2013-11-04 12:09:43"
 
-tl_wfcomponent_05:
+tl_workflowcomponent_05:
   id: 5
   workflow_id: 12
   license_id: 1
@@ -117,7 +117,7 @@ tl_wfcomponent_05:
   created_at: "2013-09-25 13:26:00"
   updated_at: "2013-09-25 13:26:00"
 
-tl_wfcomponent_06:
+tl_workflowcomponent_06:
   id: 6
   workflow_id: 21
   license_id: 1
@@ -128,7 +128,7 @@ tl_wfcomponent_06:
   created_at: "2013-11-04 12:16:09"
   updated_at: "2013-11-04 12:16:09"
 
-tl_wfcomponent_07:
+tl_workflowcomponent_07:
   id: 7
   workflow_id: 20
   license_id: 1

@@ -71,7 +71,7 @@ module TavernaLite
       #  - 4 outputs,
       #  - 12 inner links (not counting links form workflow input ports)
       #  - 15 processor output ports (9 of them used)
-      #  - 6 processors (all components)
+      #  - 7 processors (all components)
       fixtures_path = ActiveSupport::TestCase.fixture_path
       filename ='MatrixModelBootstrapComponents.t2flow'
       from_here =fixtures_path+'/test_workflows/'+filename
@@ -92,7 +92,7 @@ module TavernaLite
       @workflow_05 = to_there
     end
 
-    test "01 get component outputs" do
+    test "00 get component outputs" do
       wf_reader = T2flowGetters.new
       component={}
       component["familyName"] = "POPMOD"
@@ -110,9 +110,9 @@ module TavernaLite
       x = wf_reader.get_component_outputs(component)
       assert !x.nil?
       assert_equal(6, x.count)
-    end # test 01
+    end
 
-    test "02 get processor ports and connections from workflow" do
+    test "01 get processor ports and connections from workflow" do
       # first get processor outputs
       wf_reader = T2flowGetters.new
       proc_outs = wf_reader.get_processors_outputs(@workflow_03)
@@ -164,9 +164,8 @@ module TavernaLite
       #  puts sink.name
       #end
       # puts "*****************************************************************\n"
-    end# test 02
-
-    test "03 get processor ports and connections from workflow components" do
+    end
+    test "02 get processor ports and connections from workflow components" do
       processor = "StageMatrixFromCensus"
       port = "report"
       # first get processor outputs
@@ -211,9 +210,8 @@ module TavernaLite
       # expect more outputs than those reported reported by t2flow
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
-    end # test 03
-
-    test "04 get processor ports and connections from workflow components" do
+    end
+    test "03 get processor ports and connections from workflow components" do
       processor = "StageMatrixFromCensus"
       port = "report"
       # first get processor outputs
@@ -258,9 +256,8 @@ module TavernaLite
       # expect more outputs than those reported reported by t2flow
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
-    end # test 04
-
-    test "05 get processor ports and connections from rshell processors" do
+    end
+    test "04 get processor ports and connections from rshell processors" do
       processor = "StageMatrixFromCensus"
       port = "report"
       # first get processor outputs
@@ -305,20 +302,7 @@ module TavernaLite
       # expect more outputs than those reported reported by t2flow
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
-    end # test 05
-
-    test "06 get components list from workflow" do
-      # first get processor components
-      wf_reader = T2flowGetters.new
-      components_list = wf_reader.get_workflow_components(@workflow_04)
-      # the workflow has 6 components
-      assert_equal(6, components_list.count)
-      # all components should be registered so no nil values
-      components_list.each { |comp_k, comp_v|
-        assert_not_nil(comp_k,"Key is nil")
-        assert_not_nil(comp_v[0],"component is nil")
-        assert_not_nil(comp_v[1],"workflow in component is nil")
-      }
-    end # test 06
+    end
+    # Pending test of swap component
   end
 end
