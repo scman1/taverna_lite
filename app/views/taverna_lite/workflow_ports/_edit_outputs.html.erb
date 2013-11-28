@@ -64,8 +64,11 @@
       <dl class='list_any'>
         <dt class='list_title'>Name:</dt>
         <dd class='list_description'>
-          <%= f.text_field "name_for_#{portname}", :value => portname,
-           :style =>'width:95%'  %>
+         <%= f.text_field "name_for_#{portname}", :value => portname,
+           :onkeyup=>"validate_name(this.id);", :style =>'width:95%'%>
+         <% alert_msg = "Name can only contain letters (a-z,A-Z)" +
+              ", numbers (0-9) and underscore(_)" %>
+         <%= content_tag :span, alert_msg, :id=>"error_for_file_uploads_name_for_#{portname}", :class=>"warning_message", :style=>"display:none" %>
        </dd>
        <dt class='list_title'>Description:</dt>
        <dd class='list_description'>

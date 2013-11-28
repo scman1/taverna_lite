@@ -82,3 +82,9 @@ dd.list_description_chk  {
   margin-bottom: 10px;
 }
 span.more_options {font-weight: bold;font-size: 12px;padding: 2px;}
+span.warning_message {
+  color: #D00;
+  padding-left: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
