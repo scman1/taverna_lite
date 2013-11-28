@@ -121,7 +121,6 @@
   }
 
   function validate_name(text){    //Allow only letters, numbers and underscore
-    //alert("Validating now " + text);
     var element = document.getElementById(text);
     var ele_value = element.value;
     var patt = new RegExp("^[a-zA-Z0-9_]+$");
@@ -129,17 +128,6 @@
     var errmsg_id="error_for_"+text;
     var err_el = document.getElementById(errmsg_id);
     if (!res) {
-
-//      alert(newDiv_id)
-//      if (document.contains(newDiv_id)){
-//        var alert_msg = "Name can only contain letters (a-z,A-Z)" +
-//          ", numbers (0-9) and underscore(_)"
-//        var newDiv = document.createElement("div");
-//        newDiv.id=newDiv_id;
-//        var newContent = document.createTextNode(alert_msg);
-//        newDiv.appendChild(newContent); //add the text node to the newly created div.
-//        element.parentNode.appendChild(newDiv);
-//      }
       err_el.style.display = "block";
       return false;
       }
@@ -148,36 +136,14 @@
     }
     return true;
   }
-//  function validate_name(text){    //Only letters and numbers allowed
-//    //alert("Validating now " + text);
-//    var patt = new RegExp("^[a-zA-Z0-9_]+$");
-//    var res = patt.test(text);
-//    if (!res) {
-//      alert("name can only contain letters, numbers and underscore");
-//        return false;
-//      }
-//    return true;
-//  }
-//  function validate_name(evt){    //Only letters and numbers allowed
-//    evt = (evt) ? evt : event;
-//    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
-//           ((evt.which) ? evt.which : 0));
-//    if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode!=95) {
-//      alert("Enter numerals only in this field.");alert(charCode);
-//        return false;
-//      }
-//    return true;
-//  }
-//  function validate_name(){    //Only letters and numbers allowed
-//    var text = this.innerHTML
-//    allowedevt = (evt) ? evt : event;
-//    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
-//           ((evt.which) ? evt.which : 0));
-//        if (charCode > 31 && (charCode < 48 || charCode > 57) &&
-//          charCode != 95 && (charCode < 65 || charCode > 90) &&
-//          (charCode < 97 || charCode > 122)) {
-//           alert("Use only leters, numbers and underscore");
-//           return false;
-//          }
-//           return true;
-//  }
+
+  function ValidateForm(){
+  var cusid_ele = document.getElementsByClassName('warning_message');
+    for (var i = 0; i < cusid_ele.length; ++i) {
+      var item = cusid_ele[i];
+      if (item.style.display == "block"){
+        return false;
+      }
+    }
+    return true;
+  }

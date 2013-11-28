@@ -66,9 +66,10 @@
       <dd class='list_description'>
         <%= f.text_field :name, :onkeyup=>"validate_name(this.id);",
           :style =>'width:95%'%>
-        <span id="error_for_workflow_name" style="display:none" class="warning_message">
-          wrong name
-        </span>
+        <% alert_msg = "Name can only contain letters (a-z,A-Z)" +
+             ", numbers (0-9) and underscore(_)" %>
+        <%= content_tag :span, alert_msg, :style=>"display:none",
+          :id=>"error_for_workflow_name", :class=>"warning_message" %>
       </dd>
       <dt class='list_title'><%= f.label :title %></dt>
       <dd class='list_description'><%= f.text_field :title,
@@ -106,4 +107,11 @@
   </div>
 <% end %>
 </div>
+<script>
+  $('form').submit(function() {
+    if (!ValidateForm()){
+      return false; // prevents normal behaviour
+    }
+  });
+ </script>
 <br/>

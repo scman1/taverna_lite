@@ -98,19 +98,20 @@ module TavernaLite
         new_name_i = "name_for_"+port_name
         show_i = "show_"+port_name
         delete_i = "delete_"+port_name
-        delete_port = params[:file_uploads][delete_i] == '1'
+        delete_port = params[:port_annotations][delete_i] == '1'
         unless delete_port then
           # verify if customised input exists
-          wfps = WorkflowPort.where("port_type_id = ? and name = ? and workflow_id = ?", port_type, port_name, @workflow.id)
+          condition = "port_type_id = ? and name = ? and workflow_id = ?"
+          wfps = WorkflowPort.where(condition, port_type, port_name, @workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
             @wfp = wfps[0]
           end
 
-          new_name = params[:file_uploads][new_name_i]
-          new_description = params[:file_uploads][description_i]
-          new_example = params[:file_uploads][port_name]
+          new_name = params[:port_annotations][new_name_i]
+          new_description = params[:port_annotations][description_i]
+          new_example = params[:port_annotations][port_name]
           t2flow_changes=false
           #get values for customised input
           @wfp.workflow_id = @workflow.id
@@ -122,14 +123,14 @@ module TavernaLite
           @wfp.description = new_description
           @wfp.old_example = @wfp.example
           @wfp.example = new_example
-          @wfp.display_control_id = params[:file_uploads][display_i]
-          @wfp.example_type_id = params[:file_uploads][type_i]
-          @wfp.show = params[:file_uploads][show_i]
-          if params[:file_uploads].include? file_for_i
+          @wfp.display_control_id = params[:port_annotations][display_i]
+          @wfp.example_type_id = params[:port_annotations][type_i]
+          @wfp.show = params[:port_annotations][show_i]
+          if params[:port_annotations].include? file_for_i
             #save file
-            @wfp.file_content = params[:file_uploads][file_for_i].tempfile
-            @wfp.sample_file =  params[:file_uploads][file_for_i].original_filename
-            @wfp.sample_file_type = params[:file_uploads][file_for_i].content_type
+            @wfp.file_content = params[:port_annotations][file_for_i].tempfile
+            @wfp.sample_file =  params[:port_annotations][file_for_i].original_filename
+            @wfp.sample_file_type = params[:port_annotations][file_for_i].content_type
           end
           # now need to save changes to t2flow file
           xmlFile = @workflow.workflow_filename

@@ -128,4 +128,11 @@
     <%= submit_tag 'Save' %>
   </div>
 <% end -%> <!--form-->
+<script>
+  $('form').submit(function() {
+    if (!ValidateForm()){
+      return false; // prevents normal behaviour
+    }
+  });
+ </script>
 </div><!--Processor Annotations div-->
