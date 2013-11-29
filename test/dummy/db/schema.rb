@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131010141457) do
+ActiveRecord::Schema.define(:version => 20131129162725) do
 
   create_table "results", :force => true do |t|
     t.string   "name"
@@ -43,6 +43,56 @@ ActiveRecord::Schema.define(:version => 20131010141457) do
     t.string   "note"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "taverna_lite_feature_constraints", :force => true do |t|
+    t.string   "cnf_clause"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "taverna_lite_feature_model_metadata", :force => true do |t|
+    t.integer  "feature_model_id"
+    t.string   "description"
+    t.string   "creator"
+    t.string   "email"
+    t.string   "date"
+    t.string   "department"
+    t.string   "organisation"
+    t.string   "address"
+    t.string   "phone"
+    t.string   "website"
+    t.string   "reference"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "taverna_lite_feature_models", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "taverna_lite_feature_trees", :force => true do |t|
+    t.integer  "feature_model_id"
+    t.integer  "parent_node_id"
+    t.string   "name"
+    t.integer  "feature_type_id"
+    t.integer  "cardinality_lower_bound"
+    t.integer  "cardinality_upper_bound"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  create_table "taverna_lite_fm_feature_trees", :force => true do |t|
+    t.integer  "feature_model_id"
+    t.integer  "parent_node_id"
+    t.string   "name"
+    t.integer  "feature_type_id"
+    t.integer  "cardinality_lower_bound"
+    t.integer  "cardinality_upper_bound"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
   end
 
   create_table "taverna_lite_port_types", :force => true do |t|

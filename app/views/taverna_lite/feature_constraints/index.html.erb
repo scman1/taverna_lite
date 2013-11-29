@@ -1,0 +1,23 @@
+<h1>Listing feature_constraints</h1>
+
+<table>
+  <tr>
+    <th>Cnf clause</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @feature_constraints.each do |feature_constraint| %>
+  <tr>
+    <td><%= feature_constraint.cnf_clause %></td>
+    <td><%= link_to 'Show', feature_constraint %></td>
+    <td><%= link_to 'Edit', edit_feature_constraint_path(feature_constraint) %></td>
+    <td><%= link_to 'Destroy', feature_constraint, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Feature constraint', new_feature_constraint_path %>

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Feature model:</b>
+  <%= @fm_feature_tree.feature_model_id %>
+</p>
+
+<p>
+  <b>Parent node:</b>
+  <%= @fm_feature_tree.parent_node_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @fm_feature_tree.name %>
+</p>
+
+<p>
+  <b>Feature type:</b>
+  <%= @fm_feature_tree.feature_type_id %>
+</p>
+
+<p>
+  <b>Cardinality lower bound:</b>
+  <%= @fm_feature_tree.cardinality_lower_bound %>
+</p>
+
+<p>
+  <b>Cardinality upper bound:</b>
+  <%= @fm_feature_tree.cardinality_upper_bound %>
+</p>
+
+
+<%= link_to 'Edit', edit_fm_feature_tree_path(@fm_feature_tree) %> |
+<%= link_to 'Back', fm_feature_trees_path %>

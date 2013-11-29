@@ -1,0 +1,43 @@
+<h1>Listing feature_model_metadata</h1>
+
+<table>
+  <tr>
+    <th>Feature model</th>
+    <th>Description</th>
+    <th>Creator</th>
+    <th>Email</th>
+    <th>Date</th>
+    <th>Department</th>
+    <th>Organisation</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th>Website</th>
+    <th>Reference</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @feature_model_metadata.each do |feature_model_metadatum| %>
+  <tr>
+    <td><%= feature_model_metadatum.feature_model_id %></td>
+    <td><%= feature_model_metadatum.description %></td>
+    <td><%= feature_model_metadatum.creator %></td>
+    <td><%= feature_model_metadatum.email %></td>
+    <td><%= feature_model_metadatum.date %></td>
+    <td><%= feature_model_metadatum.department %></td>
+    <td><%= feature_model_metadatum.organisation %></td>
+    <td><%= feature_model_metadatum.address %></td>
+    <td><%= feature_model_metadatum.phone %></td>
+    <td><%= feature_model_metadatum.website %></td>
+    <td><%= feature_model_metadatum.reference %></td>
+    <td><%= link_to 'Show', feature_model_metadatum %></td>
+    <td><%= link_to 'Edit', edit_feature_model_metadatum_path(feature_model_metadatum) %></td>
+    <td><%= link_to 'Destroy', feature_model_metadatum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Feature model metadatum', new_feature_model_metadatum_path %>

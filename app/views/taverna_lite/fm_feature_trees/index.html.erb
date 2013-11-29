@@ -1,0 +1,33 @@
+<h1>Listing fm_feature_trees</h1>
+
+<table>
+  <tr>
+    <th>Feature model</th>
+    <th>Parent node</th>
+    <th>Name</th>
+    <th>Feature type</th>
+    <th>Cardinality lower bound</th>
+    <th>Cardinality upper bound</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @fm_feature_trees.each do |fm_feature_tree| %>
+  <tr>
+    <td><%= fm_feature_tree.feature_model_id %></td>
+    <td><%= fm_feature_tree.parent_node_id %></td>
+    <td><%= fm_feature_tree.name %></td>
+    <td><%= fm_feature_tree.feature_type_id %></td>
+    <td><%= fm_feature_tree.cardinality_lower_bound %></td>
+    <td><%= fm_feature_tree.cardinality_upper_bound %></td>
+    <td><%= link_to 'Show', fm_feature_tree %></td>
+    <td><%= link_to 'Edit', edit_fm_feature_tree_path(fm_feature_tree) %></td>
+    <td><%= link_to 'Destroy', fm_feature_tree, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Fm feature tree', new_fm_feature_tree_path %>

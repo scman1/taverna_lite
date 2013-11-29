@@ -34,56 +34,61 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface provided to support the
+# BioVeL Taverna Lite is a prototype interface provided to support the
 # inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
+require 'test_helper'
 
-TavernaLite::Engine.routes.draw do
-  resources :feature_constraints
-
-
-  resources :feature_trees
-
-
-  resources :feature_model_metadata
-
-
-  resources :feature_models
-
-
-  resources :fm_feature_trees
-
-
-  resources :alternative_components
-
-  resources :workflow_components do
-    member do
-      post "replace"
+module TavernaLite
+  class FeatureConstraintsControllerTest < ActionController::TestCase
+    setup do
+      @feature_constraint = feature_constraints(:one)
     end
-  end
 
-  resources :workflow_profiles do
-    member do
-      put "annotate_processor"
-      put "update_profile"
-      post "save_as"
-      get "copy"
+    test "should get index" do
+      get :index
+      assert_response :success
+      assert_not_nil assigns(:feature_constraints)
     end
-  end
-  resources :workflow_ports do
-    member do
-      post "download"
-      post "save_custom_inputs"
-      post "save_custom_outputs"
+
+    test "should get new" do
+      get :new
+      assert_response :success
     end
-  end
-  resources :workflow_errors do
-    member do
-      post "save_custom_errors"
+
+    test "should create feature_constraint" do
+      assert_difference('FeatureConstraint.count') do
+        post :create, feature_constraint: { cnf_clause: @feature_constraint.cnf_clause }
+      end
+
+      assert_redirected_to feature_constraint_path(assigns(:feature_constraint))
+    end
+
+    test "should show feature_constraint" do
+      get :show, id: @feature_constraint
+      assert_response :success
+    end
+
+    test "should get edit" do
+      get :edit, id: @feature_constraint
+      assert_response :success
+    end
+
+    test "should update feature_constraint" do
+      put :update, id: @feature_constraint, feature_constraint: { cnf_clause: @feature_constraint.cnf_clause }
+      assert_redirected_to feature_constraint_path(assigns(:feature_constraint))
+    end
+
+    test "should destroy feature_constraint" do
+      assert_difference('FeatureConstraint.count', -1) do
+        delete :destroy, id: @feature_constraint
+      end
+
+      assert_redirected_to feature_constraints_path
     end
   end
 end

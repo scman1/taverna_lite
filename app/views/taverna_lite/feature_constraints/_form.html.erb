@@ -1,0 +1,21 @@
+<%= form_for(@feature_constraint) do |f| %>
+  <% if @feature_constraint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@feature_constraint.errors.count, "error") %> prohibited this feature_constraint from being saved:</h2>
+
+      <ul>
+      <% @feature_constraint.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :cnf_clause %><br />
+    <%= f.text_field :cnf_clause %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Feature model:</b>
+  <%= @feature_tree.feature_model_id %>
+</p>
+
+<p>
+  <b>Parent node:</b>
+  <%= @feature_tree.parent_node_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @feature_tree.name %>
+</p>
+
+<p>
+  <b>Feature type:</b>
+  <%= @feature_tree.feature_type_id %>
+</p>
+
+<p>
+  <b>Cardinality lower bound:</b>
+  <%= @feature_tree.cardinality_lower_bound %>
+</p>
+
+<p>
+  <b>Cardinality upper bound:</b>
+  <%= @feature_tree.cardinality_upper_bound %>
+</p>
+
+
+<%= link_to 'Edit', edit_feature_tree_path(@feature_tree) %> |
+<%= link_to 'Back', feature_trees_path %>

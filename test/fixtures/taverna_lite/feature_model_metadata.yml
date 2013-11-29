@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  feature_model_id: 1
+  description: MyString
+  creator: MyString
+  email: MyString
+  date: MyString
+  department: MyString
+  organisation: MyString
+  address: MyString
+  phone: MyString
+  website: MyString
+  reference: MyString
+
+two:
+  feature_model_id: 1
+  description: MyString
+  creator: MyString
+  email: MyString
+  date: MyString
+  department: MyString
+  organisation: MyString
+  address: MyString
+  phone: MyString
+  website: MyString
+  reference: MyString

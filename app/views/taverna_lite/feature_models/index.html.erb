@@ -1,0 +1,23 @@
+<h1>Listing feature_models</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @feature_models.each do |feature_model| %>
+  <tr>
+    <td><%= feature_model.name %></td>
+    <td><%= link_to 'Show', feature_model %></td>
+    <td><%= link_to 'Edit', edit_feature_model_path(feature_model) %></td>
+    <td><%= link_to 'Destroy', feature_model, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Feature model', new_feature_model_path %>

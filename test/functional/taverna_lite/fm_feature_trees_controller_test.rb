@@ -34,56 +34,61 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface provided to support the
+# BioVeL Taverna Lite is a prototype interface provided to support the
 # inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
+require 'test_helper'
 
-TavernaLite::Engine.routes.draw do
-  resources :feature_constraints
-
-
-  resources :feature_trees
-
-
-  resources :feature_model_metadata
-
-
-  resources :feature_models
-
-
-  resources :fm_feature_trees
-
-
-  resources :alternative_components
-
-  resources :workflow_components do
-    member do
-      post "replace"
+module TavernaLite
+  class FmFeatureTreesControllerTest < ActionController::TestCase
+    setup do
+      @fm_feature_tree = fm_feature_trees(:one)
     end
-  end
 
-  resources :workflow_profiles do
-    member do
-      put "annotate_processor"
-      put "update_profile"
-      post "save_as"
-      get "copy"
+    test "should get index" do
+      get :index
+      assert_response :success
+      assert_not_nil assigns(:fm_feature_trees)
     end
-  end
-  resources :workflow_ports do
-    member do
-      post "download"
-      post "save_custom_inputs"
-      post "save_custom_outputs"
+
+    test "should get new" do
+      get :new
+      assert_response :success
     end
-  end
-  resources :workflow_errors do
-    member do
-      post "save_custom_errors"
+
+    test "should create fm_feature_tree" do
+      assert_difference('FmFeatureTree.count') do
+        post :create, fm_feature_tree: { cardinality_lower_bound: @fm_feature_tree.cardinality_lower_bound, cardinality_upper_bound: @fm_feature_tree.cardinality_upper_bound, feature_model_id: @fm_feature_tree.feature_model_id, feature_type_id: @fm_feature_tree.feature_type_id, name: @fm_feature_tree.name, parent_node_id: @fm_feature_tree.parent_node_id }
+      end
+
+      assert_redirected_to fm_feature_tree_path(assigns(:fm_feature_tree))
+    end
+
+    test "should show fm_feature_tree" do
+      get :show, id: @fm_feature_tree
+      assert_response :success
+    end
+
+    test "should get edit" do
+      get :edit, id: @fm_feature_tree
+      assert_response :success
+    end
+
+    test "should update fm_feature_tree" do
+      put :update, id: @fm_feature_tree, fm_feature_tree: { cardinality_lower_bound: @fm_feature_tree.cardinality_lower_bound, cardinality_upper_bound: @fm_feature_tree.cardinality_upper_bound, feature_model_id: @fm_feature_tree.feature_model_id, feature_type_id: @fm_feature_tree.feature_type_id, name: @fm_feature_tree.name, parent_node_id: @fm_feature_tree.parent_node_id }
+      assert_redirected_to fm_feature_tree_path(assigns(:fm_feature_tree))
+    end
+
+    test "should destroy fm_feature_tree" do
+      assert_difference('FmFeatureTree.count', -1) do
+        delete :destroy, id: @fm_feature_tree
+      end
+
+      assert_redirected_to fm_feature_trees_path
     end
   end
 end
