@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class FeatureModelsControllerTest < ActionController::TestCase
     setup do
-      @feature_model = feature_models(:one)
+      @feature_model = taverna_lite_feature_models(:one)
     end
 
     test "should get index" do

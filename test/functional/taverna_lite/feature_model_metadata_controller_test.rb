@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class FeatureModelMetadataControllerTest < ActionController::TestCase
     setup do
-      @feature_model_metadatum = feature_model_metadata(:one)
+      @feature_model_metadatum = taverna_lite_feature_model_metadata(:one)
     end
 
     test "should get index" do

@@ -48,28 +48,28 @@ module TavernaLite
     setup do
       @workflow_port = taverna_lite_workflow_ports(:one)
     end
-    test "just test put" do
-      # test using this hash
-      # {"workflow_id"=>"1", "selected_tab"=>"components",
-      #  "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
-      #  "description_for_name"=>"The name for greeting string",
-      #  "name"=>"Dorothy!", "type_for_name"=>"1", "display_for_name"=>"1"},
-      #  "commit"=>"Save", "id"=>"1"}
-      # try 01: breaks after ["utf8"=>"✓",], remove and retry
-      # try 02: forgot to change id to 1, change and retry
-      # try 03: successful, will try removing non essential vars,
-      #         start with autenticity token and retry
-      # try 04: successful, all remaining vars are used in the method so will
-      #         leave as it is for now
-      # THIS TEST IS TOO FLAKY, IT DEPENDS ON THE STATE OF THE DUMMY APP.
-      # DO NOT DEPEND ON IT
-      put :save_custom_inputs, {"workflow_id"=>"1","selected_tab"=>"components",
-        "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
-        "description_for_name"=>"Your name for the greeting",
-        "name"=>"World!", "type_for_name"=>"1", "display_for_name"=>"1"},
-        "commit"=>"Save", "id"=>"1"}
-      assert_redirected_to edit_workflow_profile_path(1)
-    end
+#    test "just test put" do
+#      # test using this hash
+#      # {"workflow_id"=>"1", "selected_tab"=>"components",
+#      #  "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
+#      #  "description_for_name"=>"The name for greeting string",
+#      #  "name"=>"Dorothy!", "type_for_name"=>"1", "display_for_name"=>"1"},
+#      #  "commit"=>"Save", "id"=>"1"}
+#      # try 01: breaks after ["utf8"=>"✓",], remove and retry
+#      # try 02: forgot to change id to 1, change and retry
+#      # try 03: successful, will try removing non essential vars,
+#      #         start with autenticity token and retry
+#      # try 04: successful, all remaining vars are used in the method so will
+#      #         leave as it is for now
+#      # THIS TEST IS TOO FLAKY, IT DEPENDS ON THE STATE OF THE DUMMY APP.
+#      # DO NOT DEPEND ON IT
+#      put :save_custom_inputs, "workflow_id"=>"1","selected_tab"=>"components",
+#        "selected_choice"=>"inputs", "file_uploads"=>{"name_for_name"=>"name",
+#        "description_for_name"=>"Your name for the greeting",
+#        "name"=>"World!", "type_for_name"=>"1", "display_for_name"=>"1"},
+#        "commit"=>"Save", "id"=>"1"
+#      assert_redirected_to edit_workflow_profile_path(1)
+#    end
 
 #    test "should not update workflow_port if no changes" do
 #      old_port = @workflow_port

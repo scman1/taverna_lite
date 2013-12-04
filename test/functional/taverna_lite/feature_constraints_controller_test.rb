@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class FeatureConstraintsControllerTest < ActionController::TestCase
     setup do
-      @feature_constraint = feature_constraints(:one)
+      @feature_constraint = taverna_lite_feature_constraints(:one)
     end
 
     test "should get index" do

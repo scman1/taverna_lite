@@ -46,7 +46,7 @@ require 'test_helper'
 module TavernaLite
   class FeatureTreesControllerTest < ActionController::TestCase
     setup do
-      @feature_tree = feature_trees(:one)
+      @feature_tree = taverna_lite_feature_trees(:one)
     end
 
     test "should get index" do

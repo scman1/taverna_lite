@@ -630,7 +630,7 @@ module TavernaLite
       assert_operator(outs_count,:>=,t2f_outs_count)
     end #test 14 add an output_port for FirstProcessor:FirstPort any processor
 
-    test "25 add an output_port for FirstProcessor:FirstPort any component" do
+    test "15 add an output_port for FirstProcessor:FirstPort any component" do
       proc_name = ""
       proc_port = ""
       port_name=""
@@ -698,7 +698,7 @@ module TavernaLite
       assert_operator(outs_count,:>=,t2f_outs_count)
     end #test 15 add an output_port for FirstProcessor:FirstPort any component
 
-    test "26 add an output_port for FirstProcessor:FirstPort any component" do
+    test "16 add an output_port for FirstProcessor:FirstPort any component" do
       proc_name = "StageMatrixFromCensus"
       proc_port = "report"
       port_name="Matrix_Gen_Report"
@@ -754,7 +754,7 @@ module TavernaLite
       # expect less outputs than those reported reported by t2flow
       # t2flow gem cannot read all the outputs in a component
       assert_operator(outs_count,:>=,t2f_outs_count)
-    end #test 15 add an output_port for FirstProcessor:FirstPort any component
+    end #test 16 add an output_port for FirstProcessor:FirstPort any component
 
 
     # Test of swap component
