@@ -630,7 +630,7 @@ module TavernaLite
       assert_operator(outs_count,:>=,t2f_outs_count)
     end #test 14 add an output_port for FirstProcessor:FirstPort any processor
 
-    test "15 add an output_port for FirstProcessor:FirstPort any component" do
+    test "25 add an output_port for FirstProcessor:FirstPort any component" do
       proc_name = ""
       proc_port = ""
       port_name=""
@@ -698,8 +698,67 @@ module TavernaLite
       assert_operator(outs_count,:>=,t2f_outs_count)
     end #test 15 add an output_port for FirstProcessor:FirstPort any component
 
+    test "26 add an output_port for FirstProcessor:FirstPort any component" do
+      proc_name = "StageMatrixFromCensus"
+      proc_port = "report"
+      port_name="Matrix_Gen_Report"
+      description="plain text report of the tables used for generating matrix"
+      example=""
+      port_type=2
+      wf_reader = T2flowGetters.new
+      writer = T2flowWriter.new
+      writer.add_wf_port(@workflow_05, proc_name, proc_port,  port_name,
+        description, example, port_type)
+      # first get processor outputs
+      proc_outs = wf_reader.get_processors_outputs(@workflow_05)
+      # get t2flow model to check things returned from t2flow_getter
+      file_data = File.open(@workflow_05)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      t2f_all_outs_count = t2_model.all_sinks.count
+      t2f_outs_count = t2_model.sinks.count
+      t2f_links_count = t2_model.datalinks.count
+      t2f_links = t2_model.datalinks
+
+      # the number of outputs should be the same
+      connection_count = 0
+      outs_count = 0
+      proc_outs.each { |port_k,port_v|
+        port_k
+        proc_outs[port_k][:ports].each { |k,v|
+          outs_count += 1
+          unless v[:connections].nil? then
+            connection_count += v[:connections].count
+            source = port_k + ":" + k
+            connection_exists = false
+            # assert that each connection reported is real
+            v[:connections].each {|sink|
+              t2f_links.each{|t2_link|
+                if (t2_link.sink == sink && t2_link.source == source)
+                  connection_exists = true
+                  break
+                end
+              }
+              assert connection_exists
+            }
+          end
+        }
+      }
+      # t2flow should have a new output
+      assert_equal(5, t2f_outs_count)
+      # @worklfow_01 had 12 inner connections + 1 added now it has 5
+      assert_equal(13, connection_count)
+      # expect less links than those reported by t2flow
+      assert_operator(connection_count,:<=,t2f_links_count)
+      # @worklfow_01 has 15 ports this number should not change
+      assert_equal(15, outs_count)
+      # expect less outputs than those reported reported by t2flow
+      # t2flow gem cannot read all the outputs in a component
+      assert_operator(outs_count,:>=,t2f_outs_count)
+    end #test 15 add an output_port for FirstProcessor:FirstPort any component
+
+
     # Test of swap component
-    test "16 Swap component " do
+    test "17 Swap component " do
       writer = T2flowWriter.new
       processor_name="Read_Census_Data_From_CSV_File"
       replacement_id= @wf_component.id
@@ -708,7 +767,7 @@ module TavernaLite
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
-    end #test 16xp
+    end #test 17xp
 
   end
 end

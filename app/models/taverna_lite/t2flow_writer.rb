@@ -430,7 +430,7 @@ module TavernaLite
     def map_exists(maps, processor_port)
       exists = false
       XPath.match(maps,"map[@from='#{processor_port}' and @to='#{processor_port}']").map {|x|
-          unless x.nil?
+          if !x.nil? && x == true
             exists = true
           end
       }
@@ -439,9 +439,9 @@ module TavernaLite
     def port_exists(ports, processor_port)
       exists = false
       XPath.match(ports,"port/name='#{processor_port}'").map {|x|
-          unless x.nil?
-            exists = true
-          end
+        if !x.nil? && x == true
+          exists = true
+        end
       }
       exists
     end
