@@ -323,6 +323,25 @@ module TavernaLite
         f.write document.root
       end
     end #method: remove_wf_port
+    def remove_port(document, port_name,port_type=1)
+      # find the port node
+      path_to_port = 'inputPorts'
+      unless port_type == 1
+        path_to_port = 'outputPorts'
+      end
+      # get the collection of ports
+      ports = document.root.elements[Top_dataflow].elements[path_to_port]
+      # find the port to remove
+      port_node = nil
+      ports.elements.each {|a_port|
+        if a_port.elements["name"].text == port_name
+          port_node = a_port
+          break
+        end
+      }
+      # remove the port node
+      port_node.parent.delete(port_node)
+    end
 
     def remove_datalinks_for_port(doc, port_name, port_type)
       dl_port_path = 'source/port'
@@ -520,18 +539,23 @@ module TavernaLite
 
     def remove_datalinks_for_processor(doc, processor_name)
       dl_source_path = 'source/processor'
-      dl_pink_path = 'sink/processor'
+      dl_sink_path = 'sink/processor'
 
       # loop through all datalinks containing port_name and delete if found
       datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
       datalinks.children.each do |x|
         if x.class == REXML::Element
-          # if it has source links remove them
           if (!x.elements[dl_source_path].nil? &&
             x.elements[dl_source_path].text == processor_name)
-            datalinks.delete(x) ||
-            (!x.elements[dl_sink_path].nil? &&
+            # if it has source links, remove linked outputs and processors
+            if x.elements['sink'].attributes['type']=='dataflow'
+              port_name = x.elements['sink/port'].text
+              remove_port(doc, port_name,port_type=2)
+            end
+            datalinks.delete(x)
+          elsif (!x.elements[dl_sink_path].nil? &&
             x.elements[dl_sink_path].text == processor_name)
+            # if it has sink links, just remove
             datalinks.delete(x)
           end
         end
