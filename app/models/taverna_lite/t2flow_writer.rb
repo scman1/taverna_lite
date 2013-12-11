@@ -484,6 +484,59 @@ module TavernaLite
       config_bean.elements['familyName'].text = replacement_component.family
       config_bean.elements['componentName'].text = replacement_component.name
       config_bean.elements['componentVersion'].text = replacement_component.version.to_s
-    end # method replace_workflow_components
+    end # method replace_workflow_component
+
+    def remove_processor(xmlFile,processor_name)
+      # get the workflow file and parse it as an XML document
+      xml_file = File.new(xmlFile)
+      document = Document.new(xml_file)
+      #remove the component
+      remove_workflow_processor(document,processor_name)
+      #label the workflow as produced by taverna lite
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(xmlFile, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+
+    # remove a processor from a workflow
+    def remove_workflow_processor(doc,processor_name)
+      processors = doc.root.elements[Top_dataflow].elements["processors"]
+      path_to_procesor_name = 'name'
+      processor_node = nil
+      processors.children.each do |x|
+        if x.class == REXML::Element
+          if x.elements[path_to_procesor_name].text == processor_name
+            processor_node = x
+          end
+        end
+      end
+      # remove the port node
+      processor_node.parent.delete(processor_node)
+      # remove the datalinks referencing the port
+      remove_datalinks_for_processor(doc, processor_name)
+    end # method remove_workflow_processor
+
+    def remove_datalinks_for_processor(doc, processor_name)
+      dl_source_path = 'source/processor'
+      dl_pink_path = 'sink/processor'
+
+      # loop through all datalinks containing port_name and delete if found
+      datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
+      datalinks.children.each do |x|
+        if x.class == REXML::Element
+          # if it has source links remove them
+          if (!x.elements[dl_source_path].nil? &&
+            x.elements[dl_source_path].text == processor_name)
+            datalinks.delete(x) ||
+            (!x.elements[dl_sink_path].nil? &&
+            x.elements[dl_sink_path].text == processor_name)
+            datalinks.delete(x)
+          end
+        end
+      end
+    end # remove_datalinks_for_port
+
   end # class
 end # module

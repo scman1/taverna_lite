@@ -106,6 +106,18 @@ module TavernaLite
       to_there = fixtures_path+'/test_workflows/test_result/'+filename
       FileUtils.cp from_here, to_there
       @workflow_05 = to_there
+      # MatrixEigenBootstrapComp.t2flow
+      # This file contains only workflow components, it has:
+      #  - 11 outputs,
+      #  - 26 inner links (not counting links form workflow input ports)
+      #  - 23 processor output ports (17 of them used)
+      #  - 9 processors (all components)
+      fixtures_path = ActiveSupport::TestCase.fixture_path
+      filename ='MatrixEigenBootstrapComp.t2flow'
+      from_here =fixtures_path+'/test_workflows/'+filename
+      to_there = fixtures_path+'/test_workflows/test_result/'+filename
+      FileUtils.cp from_here, to_there
+      @workflow_06 = to_there
       @wf_component = taverna_lite_workflow_components(:tl_workflowcomponent_03)
     end # Test setup
     test "01 should update_workflow_annotations" do
@@ -768,6 +780,16 @@ module TavernaLite
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
     end #test 17xp
+
+    # Test of delete component simple
+    test "18 Delete a component with one output and no downstream link " do
+      writer = T2flowWriter.new
+      processor_name="EigenAnalysisToCSV"
+      writer.remove_processor(@workflow_06,processor_name)
+      file_data = File.open(@workflow_06)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(t2_model, nil)
+    end #test 18
 
   end
 end

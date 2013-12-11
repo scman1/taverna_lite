@@ -14,6 +14,9 @@ module TavernaLite
 
   mattr_accessor :result_class
 
+  # need also access to the class that stores tokens for my_experiment
+  mattr_accessor :consumer_token_class
+
   # To save having to call constantize on theresults from the accessor classes
   # all the time, override the classes getter method inside the TavernaLite
   # module to always call constantize on the saved value before returning the
@@ -30,4 +33,10 @@ module TavernaLite
   def self.result_class
     @@result_class.constantize
   end
+
+  # need also access to the class that stores tokens for my_experiment
+  def self.consumer_token_class
+    @@consumer_token_class.constantize
+  end
+
 end
