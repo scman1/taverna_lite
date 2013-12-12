@@ -99,7 +99,7 @@ module TavernaLite
       #  - 4 outputs,
       #  - 12 inner links (not counting links form workflow input ports)
       #  - 15 processor output ports (9 of them used)
-      #  - 7 processors (all components)
+      #  - 6 processors (all components)
       fixtures_path = ActiveSupport::TestCase.fixture_path
       filename ='MatrixModelBootstrapComponents.t2flow'
       from_here =fixtures_path+'/test_workflows/'+filename
@@ -120,6 +120,7 @@ module TavernaLite
       FileUtils.cp from_here, to_there
       @workflow_06 = to_there
       @wf_component = taverna_lite_workflow_components(:tl_workflowcomponent_03)
+      @wf_component2 = taverna_lite_workflow_components(:two)
     end # Test setup
     test "01 should update_workflow_annotations" do
       author = "Stian Soiland Reyes"
@@ -800,7 +801,7 @@ module TavernaLite
     end #test 18
 
     # Test of delete component complex
-    test "29 Delete a component with two downstream processors" do
+    test "19 Delete a component with two downstream processors" do
       writer = T2flowWriter.new
       processor_name="EigenAnalysis"
       writer.remove_processor(@workflow_06,processor_name)
@@ -820,15 +821,16 @@ module TavernaLite
 
     # Test of delete component simple
     test "20 Add a component" do
+      @wf_component2
       writer = T2flowWriter.new
-      processor_name="EigenAnalysisToCSV"
-      writer.add_processor(@workflow_06,processor_name)
-      file_data = File.open(@workflow_06)
+      processor_name="EigenAnalysis_2"
+      writer.add_component_processor(@workflow_05,processor_name,@wf_component2)
+      file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
       # After add the workflow should change:
-      #  - from 8 to 9 processors (1 added)
-      assert_equal(9, t2_model.processors.count)
+      #  - from 6 to 7 processors (1 added)
+      assert_equal(7, t2_model.processors.count)
     end #test 20
   end
 end

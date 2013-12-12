@@ -53,12 +53,14 @@ one:
   registry: MyString
 
 two:
-  workflow_id: 1
+  workflow_id: 24
   license_id: 1
   version: 1
-  family: MyString
-  name: MyString
-  registry: MyString
+  family: "POPMOD"
+  name: "EigenAnalysis"
+  registry: "http://www.myexperiment.org"
+  created_at: "2013-09-24 14:49:25"
+  updated_at: "2013-09-27 16:00:45"
 
 # need to seed the test DB with the details of the workflow components
 

@@ -572,5 +572,193 @@ module TavernaLite
         end
       }
     end # remove_control_links_for_processor
+
+    def add_component_processor(workflow_file,processor_name,component)
+      component
+      # parse the workflow file as an XML document
+      document = get_xml_document(workflow_file)
+      # add the component
+      add_wf_processor(document, processor_name, component)
+      # add links to inputs
+      # add links to outputs
+      # label the workflow as produced by taverna lite
+      document.root.attributes["producedBy"] = TLVersion
+      # save workflow in the host app passing the file
+      File.open(workflow_file, "w:UTF-8") do |f|
+        f.write document.root
+      end
+    end
+
+    # add a workflow port uses XPATH
+    def add_wf_processor(document, name, component)
+      #, processor_port="", port_name="",
+      #port_description="", port_example="", port_type=2)
+      root = document.root
+
+      processors = root.elements[Top_dataflow].elements["processors"]
+
+      # Build the processor node
+      new_processor = Element.new("processor")
+      # Add the name for the processor, if empty use the same as component name
+      proc_name = Element.new("name")
+      if name.nil? || name == ""
+        proc_name.text = component.name
+      else
+        proc_name.text = name
+      end
+
+      new_processor.add_element(proc_name)
+
+      # Add element for procesor inputs
+      processor_inputs = Element.new("inputPorts")
+      # this can be null at the beginning since it is not connected
+      new_processor.add_element(processor_inputs)
+
+      # Add element for procesor outputs
+      processor_outputs = Element.new("outputPorts")
+      # this can be null at the beginning since it is not connected
+      new_processor.add_element(processor_outputs)
+
+      # Add element for procesor annotations
+      processor_annotations = Element.new("annotations")
+      # this can be null at the beginning since it is not annotated
+      new_processor.add_element(processor_annotations)
+
+      # Build element for procesor activities
+      processor_activities = Element.new("activities")
+      # build an activity node for the component
+      activity_node=build_activity_for_component(component)
+      # add the activity node to activities
+      processor_activities.add_element(activity_node)
+      # add activities to processor
+      new_processor.add_element(processor_activities)
+
+      # Build element for dispatch stack
+      processor_dispatch_stack = build_dispatch_stack_for_component()
+      # add dispatch stack to processor
+      new_processor.add_element(processor_dispatch_stack)
+
+      # Build element for iteration stack
+      processor_iteration_stack = build_iteration_stack_for_component()
+      # add iteration stack to processor
+      new_processor.add_element(processor_iteration_stack)
+
+      # add the processor to the workflow
+      processors.add_element(new_processor)
+    end
+
+    # Constant to build activity node
+    Component_Activity = "<activity>
+     <raven>
+       <group>net.sf.taverna.t2.component</group>
+       <artifact>component-activity</artifact>
+       <version>1.1.2</version>
+     </raven>
+     <class>net.sf.taverna.t2.component.ComponentActivity</class>
+     <inputMap />
+     <outputMap />
+     <configBean encoding='xstream'>
+       <net.sf.taverna.t2.component.ComponentActivityConfigurationBean xmlns=''>
+         <registryBase/>
+         <familyName/>
+         <componentName/>
+         <componentVersion/>
+       </net.sf.taverna.t2.component.ComponentActivityConfigurationBean>
+     </configBean>
+     <annotations />
+    </activity>"
+    def build_activity_for_component(component)
+      nw_activity = Document.new(Component_Activity)
+      cb_path = "activity/configBean"
+      cb_path += "/net.sf.taverna.t2.component.ComponentActivityConfigurationBean"
+      config_bean = nw_activity.elements[cb_path]
+      #put component info in the child node
+      config_bean.elements['registryBase'].text = component.registry
+      config_bean.elements['familyName'].text = component.family
+      config_bean.elements['componentName'].text = component.name
+      config_bean.elements['componentVersion'].text = component.version.to_s
+      return nw_activity.root
+    end
+
+    # Constant to build dispatch stack node
+    Component_Dispatch_Stack="<dispatchStack>
+      <dispatchLayer>
+        <raven>
+          <group>net.sf.taverna.t2.core</group>
+          <artifact>workflowmodel-impl</artifact>
+          <version>1.4</version>
+        </raven>
+        <class>
+          net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize
+        </class>
+        <configBean encoding='xstream'>
+          <net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns=''>
+            <maxJobs>1</maxJobs>
+          </net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig>
+        </configBean>
+      </dispatchLayer>
+      <dispatchLayer>
+        <raven>
+          <group>net.sf.taverna.t2.core</group>
+          <artifact>workflowmodel-impl</artifact>
+          <version>1.4</version>
+        </raven>
+        <class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class>
+        <configBean encoding='xstream'><null xmlns='' /></configBean>
+      </dispatchLayer>
+      <dispatchLayer>
+        <raven>
+          <group>net.sf.taverna.t2.core</group>
+          <artifact>workflowmodel-impl</artifact>
+          <version>1.4</version>
+        </raven>
+        <class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class>
+        <configBean encoding='xstream'>
+          <null xmlns='' />
+        </configBean>
+      </dispatchLayer>
+      <dispatchLayer>
+        <raven>
+          <group>net.sf.taverna.t2.core</group>
+          <artifact>workflowmodel-impl</artifact>
+          <version>1.4</version>
+        </raven>
+        <class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class>
+        <configBean encoding='xstream'>
+          <net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns=''>
+            <backoffFactor>1.0</backoffFactor>
+            <initialDelay>1000</initialDelay>
+            <maxDelay>5000</maxDelay>
+            <maxRetries>0</maxRetries>
+          </net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig>
+        </configBean>
+      </dispatchLayer>
+      <dispatchLayer>
+        <raven>
+          <group>net.sf.taverna.t2.core</group>
+          <artifact>workflowmodel-impl</artifact>
+          <version>1.4</version>
+        </raven>
+        <class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class>
+        <configBean encoding='xstream'>
+          <null xmlns='' />
+        </configBean>
+      </dispatchLayer>
+    </dispatchStack>"
+    def build_dispatch_stack_for_component()
+      nw_dispatch = Document.new(Component_Dispatch_Stack)
+      return nw_dispatch.root
+    end
+
+    # Constant to build iteration strategy node
+    Component_Iteration_Strategy = "<iterationStrategyStack>
+        <iteration>
+           <strategy />
+        </iteration>
+      </iterationStrategyStack>"
+    def build_iteration_stack_for_component()
+      nw_strategy = Document.new(Component_Iteration_Strategy)
+      return nw_strategy.root
+    end
   end # class
 end # module
