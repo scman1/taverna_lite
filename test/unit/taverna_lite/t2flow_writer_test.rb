@@ -108,9 +108,9 @@ module TavernaLite
       @workflow_05 = to_there
       # MatrixEigenBootstrapComp.t2flow
       # This file contains only workflow components, it has:
-      #  - 11 outputs,
-      #  - 26 inner links (not counting links form workflow input ports)
-      #  - 23 processor output ports (17 of them used)
+      #  - 11 outputs
+      #  - 26 data links
+      #  - 23 processor output ports (18 of them used)
       #  - 9 processors (all components)
       fixtures_path = ActiveSupport::TestCase.fixture_path
       filename ='MatrixEigenBootstrapComp.t2flow'
@@ -789,7 +789,30 @@ module TavernaLite
       file_data = File.open(@workflow_06)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
+      # After delete the workflow should change:
+      #  - from 11 to 10 outputs (1 deleted)
+      assert_equal(10, t2_model.sinks.count)
+      #  - from 26 to 24 data links (2 deleted)
+      assert_equal(24, t2_model.datalinks.count)
+      #  - from 9 to 8 processors (1 deleted)
+      assert_equal(8, t2_model.processors.count)
     end #test 18
 
+    # Test of delete component complex
+    test "19 Delete a component with two downstream processors" do
+      writer = T2flowWriter.new
+      processor_name="EigenAnalysis"
+      writer.remove_processor(@workflow_06,processor_name)
+      file_data = File.open(@workflow_06)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(t2_model, nil)
+      # After delete the workflow should change:
+      #  - from 11 to 4 outputs (7 deleted)
+      assert_equal(4, t2_model.sinks.count)
+      #  - from 26 to 15 data links (9 deleted)
+      assert_equal(15, t2_model.datalinks.count)
+      #  - from 9 to 6 processors (3 deleted)
+      assert_equal(6, t2_model.processors.count)
+    end #test 19
   end
 end

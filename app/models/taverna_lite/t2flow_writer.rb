@@ -98,9 +98,9 @@ module TavernaLite
     # Refactored methods using xpath only (REXML)
     Top_dataflow = "dataflow[@role='top']"
     # Save workflow annotations
-    def save_wf_annotations(xml_filename, author, description, title, name)
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
+    def save_wf_annotations(workflow_file, author, description, title, name)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
       top_df = document.root.elements[Top_dataflow]
       # add annotations (title, author, description)
       insert_node_annotation(top_df, "author", author)
@@ -112,7 +112,7 @@ module TavernaLite
       name_node.text = name
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
     end # Save workflow annotations
@@ -145,9 +145,10 @@ module TavernaLite
     end
 
     # save workflow port annotaions using XPATH
-    def save_wf_port_annotations(xml_filename, port_name, new_name, description, example_val,port_type=1)
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
+    def save_wf_port_annotations(workflow_file, port_name, new_name, description,
+      example_val,port_type=1)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
       # find the port node
       path_to_port = 'inputPorts'
       unless port_type == 1
@@ -177,7 +178,7 @@ module TavernaLite
         end
         document.root.attributes["producedBy"] = TLVersion
         # save workflow in the host app passing the file
-        File.open(xml_filename, "w:UTF-8") do |f|
+        File.open(workflow_file, "w:UTF-8") do |f|
           f.write document.root
         end
       end
@@ -260,11 +261,10 @@ module TavernaLite
     end # change_datalinks_for_processor
 
     # saves wf_processor annotations and renames processor
-    def save_wf_processor_annotations(xml_filename, processor_name,
+    def save_wf_processor_annotations(workflow_file, processor_name,
       new_name, description)
-
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
       # find the port node in the top dataflow
       processors = document.root.elements[Top_dataflow].elements["processors"]
       path_to_procesor_name = 'name'
@@ -289,40 +289,30 @@ module TavernaLite
       end
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
     end# method: save_wf_processor_annotations
 
     # remove a workflow port uses XPATH
-    def remove_wf_port(xml_filename, port_name,port_type=1)
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
-      # find the port node
-      path_to_port = 'inputPorts'
-      unless port_type == 1
-        path_to_port = 'outputPorts'
-      end
-      # get the collection of ports
-      ports = document.root.elements[Top_dataflow].elements[path_to_port]
-      # find the port to remove
-      port_node = nil
-      ports.elements.each {|a_port|
-        if a_port.elements["name"].text == port_name
-          port_node = a_port
-          break
-        end
-      }
-      # remove the port node
-      port_node.parent.delete(port_node)
-      # remove the datalinks referencing the port
-      remove_datalinks_for_port(document, port_name, port_type)
+    def remove_wf_port(workflow_file, port_name,port_type=1)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
+      # remove port
+      remove_port(document, port_name,port_type)
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
     end #method: remove_wf_port
+
+    #get the parsed xml document
+    def get_xml_document(workflow_file)
+      xml_file = File.new(workflow_file)
+      document = Document.new(xml_file)
+    end
+
     def remove_port(document, port_name,port_type=1)
       # find the port node
       path_to_port = 'inputPorts'
@@ -340,7 +330,11 @@ module TavernaLite
         end
       }
       # remove the port node
-      port_node.parent.delete(port_node)
+      unless port_node.nil?
+        port_node.parent.delete(port_node)
+      end
+      # remove the datalinks referencing the port
+      remove_datalinks_for_port(document, port_name, port_type)
     end
 
     def remove_datalinks_for_port(doc, port_name, port_type)
@@ -360,11 +354,10 @@ module TavernaLite
     end # remove_datalinks_for_port
 
     # add a workflow port uses XPATH
-    def add_wf_port(xml_filename, processor_name, processor_port, port_name="",
+    def add_wf_port(workflow_file, processor_name, processor_port, port_name="",
       port_description="", port_example="", port_type=2)
-
-      xml_file = File.new(xml_filename)
-      document = Document.new(xml_file)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
       root = document.root
       # 01 Add the port
       outputs = root.elements[Top_dataflow].elements["outputPorts"]
@@ -439,12 +432,13 @@ module TavernaLite
       document.root.attributes["producedBy"] = TLVersion
 
       # save workflow in the host app passing the file
-      File.open(xml_filename, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         document.write f
       end
       # pending:
       # - add annotations (description and example)
-      save_wf_port_annotations(xml_filename, port_name, port_name, port_description, port_example,2)
+      save_wf_port_annotations(workflow_file, port_name, port_name,
+        port_description, port_example,2)
     end
     def map_exists(maps, processor_port)
       exists = false
@@ -466,16 +460,15 @@ module TavernaLite
     end
 
     # replace a component
-    def replace_component(xmlFile,processor_name,replacement_id)
-      # get the workflow file and parse it as an XML document
-      xml_file = File.new(xmlFile)
-      document = Document.new(xml_file)
+    def replace_component(workflow_file,processor_name,replacement_id)
+      # parse workflow file as an XML document
+      document = get_xml_document(workflow_file)
       #replace the component
       replace_workflow_components(document,processor_name,replacement_id)
       #label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
-      File.open(xmlFile, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
     end
@@ -505,16 +498,15 @@ module TavernaLite
       config_bean.elements['componentVersion'].text = replacement_component.version.to_s
     end # method replace_workflow_component
 
-    def remove_processor(xmlFile,processor_name)
-      # get the workflow file and parse it as an XML document
-      xml_file = File.new(xmlFile)
-      document = Document.new(xml_file)
+    def remove_processor(workflow_file,processor_name)
+      # parse the workflow file as an XML document
+      document = get_xml_document(workflow_file)
       #remove the component
       remove_workflow_processor(document,processor_name)
       #label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
-      File.open(xmlFile, "w:UTF-8") do |f|
+      File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
     end
@@ -531,10 +523,10 @@ module TavernaLite
           end
         end
       end
-      # remove the port node
-      processor_node.parent.delete(processor_node)
       # remove the datalinks referencing the port
       remove_datalinks_for_processor(doc, processor_name)
+      # remove the port node
+      processor_node.parent.delete(processor_node)
     end # method remove_workflow_processor
 
     def remove_datalinks_for_processor(doc, processor_name)
@@ -548,9 +540,17 @@ module TavernaLite
           if (!x.elements[dl_source_path].nil? &&
             x.elements[dl_source_path].text == processor_name)
             # if it has source links, remove linked outputs and processors
+            # check if the output is connected to a workflow output, if it is,
+            # remove corresponding output
             if x.elements['sink'].attributes['type']=='dataflow'
               port_name = x.elements['sink/port'].text
               remove_port(doc, port_name,port_type=2)
+            end
+            # check if the output is connected to a processor, if it is, remove
+            # corresponding processor
+            if x.elements['sink'].attributes['type']=='processor'
+              proc_name = x.elements['sink/processor'].text
+              remove_workflow_processor(doc, proc_name)
             end
             datalinks.delete(x)
           elsif (!x.elements[dl_sink_path].nil? &&
@@ -560,7 +560,7 @@ module TavernaLite
           end
         end
       end
-    end # remove_datalinks_for_port
+    end # remove_datalinks_for_processor
 
   end # class
 end # module
