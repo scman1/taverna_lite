@@ -523,44 +523,54 @@ module TavernaLite
           end
         end
       end
-      # remove the datalinks referencing the port
+      # remove the datalinks referencing the processor
       remove_datalinks_for_processor(doc, processor_name)
+      # remove control links referencing the processor
+      remove_control_link_for_processor(doc, processor_name)
       # remove the port node
       processor_node.parent.delete(processor_node)
     end # method remove_workflow_processor
 
     def remove_datalinks_for_processor(doc, processor_name)
-      dl_source_path = 'source/processor'
-      dl_sink_path = 'sink/processor'
-
-      # loop through all datalinks containing port_name and delete if found
+      dl_source_path = 'datalink/source/processor'
+      dl_sink_path = 'datalink/sink/processor'
       datalinks = doc.root.elements[Top_dataflow].elements["datalinks"]
-      datalinks.children.each do |x|
-        if x.class == REXML::Element
-          if (!x.elements[dl_source_path].nil? &&
-            x.elements[dl_source_path].text == processor_name)
-            # if it has source links, remove linked outputs and processors
-            # check if the output is connected to a workflow output, if it is,
-            # remove corresponding output
-            if x.elements['sink'].attributes['type']=='dataflow'
-              port_name = x.elements['sink/port'].text
-              remove_port(doc, port_name,port_type=2)
-            end
-            # check if the output is connected to a processor, if it is, remove
-            # corresponding processor
-            if x.elements['sink'].attributes['type']=='processor'
-              proc_name = x.elements['sink/processor'].text
-              remove_workflow_processor(doc, proc_name)
-            end
-            datalinks.delete(x)
-          elsif (!x.elements[dl_sink_path].nil? &&
-            x.elements[dl_sink_path].text == processor_name)
-            # if it has sink links, just remove
-            datalinks.delete(x)
+      datalinks.elements.each(dl_source_path) { |x|
+        if x.text == processor_name
+          dl = x.parent.parent
+          # check if the output is connected to a workflow output, if it is,
+          # remove corresponding output
+          if dl.elements['sink'].attributes["type"] == 'dataflow'
+            port_name = dl.elements['sink/port'].text
+            remove_port(doc, port_name,port_type=2)
           end
+          # check if the output is connected to a processor, if it is, remove
+          # corresponding processor
+          if dl.elements['sink'].attributes["type"] == 'processor'
+            proc_name = dl.elements['sink/processor'].text
+            remove_workflow_processor(doc, proc_name)
+          end
+          datalinks.delete(dl)
         end
-      end
+      }
+      # if it has sink links, just remove them
+      datalinks.elements.each(dl_sink_path) { |x|
+        if x.text == processor_name
+          datalinks.delete(x.parent.parent)
+        end
+      }
     end # remove_datalinks_for_processor
 
+    def remove_control_link_for_processor(doc, processor_name)
+      condition_path = 'condition'
+      controllinks = doc.root.elements[Top_dataflow].elements["conditions"]
+      controllinks.elements.each(condition_path) { |x|
+        if x.attributes['control'] == processor_name
+          controllinks.delete(x)
+        elsif x.attributes['target'] == processor_name
+          controllinks.delete(x)
+        end
+      }
+    end # remove_control_links_for_processor
   end # class
 end # module
