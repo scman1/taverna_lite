@@ -369,31 +369,7 @@ module TavernaLite
       outputs.add_element(new_port)
 
       # 02 Add a datalink for the port
-      datalinks = root.elements[Top_dataflow].elements["datalinks"]
-      sink_port = Element.new("port")
-      sink_port.text = port_name
-
-      new_sink = Element.new("sink")
-      new_sink.add_element(sink_port)
-      new_sink.attributes["type"] = "dataflow"
-
-      source_processor = Element.new("processor")
-      source_processor.text = processor_name
-
-      source_port = Element.new("port")
-      source_port.text = processor_port
-
-      new_source = Element.new("source")
-      new_source.add_element(source_processor)
-      new_source.add_element(source_port)
-
-      new_source.attributes["type"] = "processor"
-
-      new_datalink = Element.new("datalink")
-      new_datalink.add_element(new_sink)
-      new_datalink.add_element(new_source)
-
-      datalinks.add_element(new_datalink)
+      add_output_datalinks(document,port_name,processor_name,processor_port)
 
       #03 add the output map to the processor
       #04 add port to processor (expose it)
@@ -440,6 +416,36 @@ module TavernaLite
       save_wf_port_annotations(workflow_file, port_name, port_name,
         port_description, port_example,2)
     end
+
+    def add_output_datalinks(document,port_name,processor_name,processor_port)
+      root = document.root
+      datalinks = root.elements[Top_dataflow].elements["datalinks"]
+      sink_port = Element.new("port")
+      sink_port.text = port_name
+
+      new_sink = Element.new("sink")
+      new_sink.add_element(sink_port)
+      new_sink.attributes["type"] = "dataflow"
+
+      source_processor = Element.new("processor")
+      source_processor.text = processor_name
+
+      source_port = Element.new("port")
+      source_port.text = processor_port
+
+      new_source = Element.new("source")
+      new_source.add_element(source_processor)
+      new_source.add_element(source_port)
+
+      new_source.attributes["type"] = "processor"
+
+      new_datalink = Element.new("datalink")
+      new_datalink.add_element(new_sink)
+      new_datalink.add_element(new_source)
+
+      datalinks.add_element(new_datalink)
+    end
+
     def map_exists(maps, processor_port)
       exists = false
       XPath.match(maps,"map[@from='#{processor_port}' and @to='#{processor_port}']").map {|x|
@@ -573,13 +579,18 @@ module TavernaLite
       }
     end # remove_control_links_for_processor
 
-    def add_component_processor(workflow_file,processor_name,component)
-      component
+    def add_component_processor(workflow_file, processor_name, component,
+      input_links=[], output_links=[])
       # parse the workflow file as an XML document
       document = get_xml_document(workflow_file)
       # add the component
       add_wf_processor(document, processor_name, component)
       # add links to inputs
+      # connect the processor if input links are provided
+      unless input_links.empty?
+        puts "need to connect these: "
+        puts input_links
+      end
       # add links to outputs
       # label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
@@ -591,7 +602,7 @@ module TavernaLite
 
     # add a workflow port uses XPATH
     def add_wf_processor(document, name, component)
-      #, processor_port="", port_name="",
+      #processor_port="", port_name="",
       #port_description="", port_example="", port_type=2)
       root = document.root
 

@@ -819,12 +819,32 @@ module TavernaLite
       assert_equal(1, t2_model.coordinations.count)
     end #test 19
 
-    # Test of delete component simple
+    # Test of add component without connecting it
     test "20 Add a component" do
       @wf_component2
       writer = T2flowWriter.new
-      processor_name="EigenAnalysis_2"
+      processor_name="EigenAnalysis"
       writer.add_component_processor(@workflow_05,processor_name,@wf_component2)
+      file_data = File.open(@workflow_05)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(t2_model, nil)
+      # After add the workflow should change:
+      #  - from 6 to 7 processors (1 added)
+      assert_equal(7, t2_model.processors.count)
+    end #test 20
+    # Test of add component connecting its inputs
+    test "21 Add a component and connect inputs" do
+      @wf_component2
+      writer = T2flowWriter.new
+      processor_name="EigenAnalysis"
+      # input links are provided as a set of nested arrays.
+      # each array contains source,sink, pair
+      # where source|sink = [processor:]port
+      input_links = [
+        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix"],
+        ["Label","EigenAnalysis:speciesName"]]
+      writer.add_component_processor(@workflow_05,processor_name,@wf_component2,
+        input_links)
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
