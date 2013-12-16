@@ -841,8 +841,8 @@ module TavernaLite
       # each array contains source,sink, pair
       # where source|sink = [processor:]port
       input_links = [
-        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix"],
-        ["Label","EigenAnalysis:speciesName"]]
+        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
+        ["Label","EigenAnalysis:speciesName","0"]]
       writer.add_component_processor(@workflow_05,processor_name,@wf_component2,
         input_links)
       file_data = File.open(@workflow_05)
@@ -851,6 +851,8 @@ module TavernaLite
       # After add the workflow should change:
       #  - from 6 to 7 processors (1 added)
       assert_equal(7, t2_model.processors.count)
+      #  - from 15 to 17 data links (9 deleted)
+      assert_equal(17, t2_model.datalinks.count)
     end #test 20
   end
 end

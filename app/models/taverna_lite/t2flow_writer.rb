@@ -369,7 +369,8 @@ module TavernaLite
       outputs.add_element(new_port)
 
       # 02 Add a datalink for the port
-      add_output_datalinks(document,port_name,processor_name,processor_port)
+      no_proc = ""
+      add_datalink(document,no_proc,port_name,processor_name,processor_port)
 
       #03 add the output map to the processor
       #04 add port to processor (expose it)
@@ -417,27 +418,38 @@ module TavernaLite
         port_description, port_example,2)
     end
 
-    def add_output_datalinks(document,port_name,processor_name,processor_port)
+    def add_datalink(document, to_processor_name, to_port_name,
+      from_processor_name, from_port_name)
+      # get the datalinks element
       root = document.root
       datalinks = root.elements[Top_dataflow].elements["datalinks"]
       sink_port = Element.new("port")
-      sink_port.text = port_name
+      sink_port.text = to_port_name
 
       new_sink = Element.new("sink")
       new_sink.add_element(sink_port)
-      new_sink.attributes["type"] = "dataflow"
-
-      source_processor = Element.new("processor")
-      source_processor.text = processor_name
-
-      source_port = Element.new("port")
-      source_port.text = processor_port
+      if to_processor_name==""
+        new_sink.attributes["type"] = "dataflow"
+      else
+        new_sink.attributes["type"] = "processor"
+        sink_processor = Element.new("processor")
+        sink_processor.text = to_processor_name
+        new_sink.add_element(sink_processor)
+      end
 
       new_source = Element.new("source")
-      new_source.add_element(source_processor)
+      source_port = Element.new("port")
+      source_port.text = from_port_name
       new_source.add_element(source_port)
 
-      new_source.attributes["type"] = "processor"
+      if from_processor_name==""
+        new_source.attributes["type"] = "dataflow"
+      else
+        new_source.attributes["type"] = "processor"
+        source_processor = Element.new("processor")
+        source_processor.text = from_processor_name
+        new_source.add_element(source_processor)
+      end
 
       new_datalink = Element.new("datalink")
       new_datalink.add_element(new_sink)
@@ -588,8 +600,7 @@ module TavernaLite
       # add links to inputs
       # connect the processor if input links are provided
       unless input_links.empty?
-        puts "need to connect these: "
-        puts input_links
+        link_processor_inputs(document,input_links)
       end
       # add links to outputs
       # label the workflow as produced by taverna lite
@@ -600,6 +611,91 @@ module TavernaLite
       end
     end
 
+    def link_processor_inputs(document,input_links)
+      input_links.each { |il|
+        link_source=il[0].split(":")
+        link_sink=il[1].split(":")
+        link_depth=il[2].split(":")
+        if link_source.length>1
+          from_proc = link_source[0]
+          from_port = link_source[1]
+        else
+          from_port=link_source[0]
+          from_proc=""
+        end
+        if link_sink.length>1
+          to_proc = link_sink[0]
+          to_port = link_sink[1]
+        else
+          to_port=link_sink[0]
+          to_proc=""
+        end
+        if link_depth.length>1
+          port_depth=link_depth[0]
+          port_granular=link_depth[1]
+        else
+          port_depth=link_depth[0]
+          port_granular=""
+        end
+        add_datalink(document, to_proc, to_port, from_proc, from_port)
+        add_input_port_and_mapping(document, to_proc, to_port,port_depth,
+          port_granular)
+      }
+    end
+    def add_input_port_and_mapping(document, to_proc, to_port, depth, granular="")
+      # get the processor element
+      root = document.root
+      processors = root.elements[Top_dataflow].elements["processors"]
+      processors.elements.each("processor/name") { |prn|
+        if prn.text == to_proc then
+          the_processor = prn.parent
+          input_maps = the_processor.elements["activities/activity/inputMap"]
+          #check if map exists, if not add else skip this
+          unless map_exists(input_maps, to_port)
+            new_map = Element.new("map")
+            new_map.attributes["from"] = to_port
+            new_map.attributes["to"] = to_port
+            input_maps.add_element(new_map)
+          end
+          input_ports = the_processor.elements["inputPorts"]
+          #check if port exists, if not add else skip this
+          unless port_exists(input_ports, to_port)
+            new_inport = Element.new("port")
+            new_inname = Element.new("name")
+            new_inname.text = to_port
+            new_depth = Element.new("depth")
+            new_depth.text = depth
+            new_inport.add_element(new_inname)
+            new_inport.add_element(new_depth)
+            input_ports.add_element(new_inport)
+          end
+          strategy_path="iterationStrategyStack/iteration/strategy"
+          strategy = the_processor.elements[strategy_path]
+          if strategy.elements["cross/port"].nil?
+            new_cross = Element.new("cross")
+            new_inport = Element.new("port")
+            new_inport.attributes["name"]=to_port
+            new_inport.attributes["depth"]=depth
+            new_cross.add_element(new_inport)
+            strategy.add_element(new_cross)
+          else
+            cross_ports = strategy.elements["cross"]
+            exists = false
+            cross_ports.elements.each {|cpt|
+              if cpt.attributes["name"] == to_port
+                exists = true
+              end
+            }
+            if !exists
+              new_inport = Element.new("port")
+              new_inport.attributes["name"]=to_port
+              new_inport.attributes["depth"]=depth
+              cross_ports.add_element(new_inport)
+            end
+          end
+        end
+      }
+    end
     # add a workflow port uses XPATH
     def add_wf_processor(document, name, component)
       #processor_port="", port_name="",
