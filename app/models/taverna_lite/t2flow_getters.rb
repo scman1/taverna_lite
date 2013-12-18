@@ -267,9 +267,19 @@ module TavernaLite
         sk_name = sk.name
         sink_node=outputs.elements["port/name[text()='#{sk_name}']"].parent
         dl = datalinks.elements["datalink/sink[@type='dataflow']/port[text()='#{sk_name}']"].parent.parent
-        from_proc = dl.elements["source/processor"].text()
+        unless dl.elements["source"].attributes["type"] =='dataflow'
+          from_proc = dl.elements["source/processor"].text()
+        else
+          from_proc = ""
+        end
         from_port = dl.elements["source/port"].text()
-        proc_port=processors.elements["processor/name[text()='#{from_proc}']"].parent.elements["outputPorts/port/name[text()='#{from_port}']"].parent
+        unless from_proc == ""
+          proc_port=processors.elements["processor/name[text()='#{from_proc}']"].parent.elements["outputPorts/port/name[text()='#{from_port}']"].parent
+        else
+          # sinks can also come directly from input ports
+          # for those cases:
+          proc_port=inputs.elements["port/name[text()='#{from_port}']"].parent
+        end
         wfp = WorkflowPort.new()
         wfp.name = sk_name
         wfp.description = sk.descriptions

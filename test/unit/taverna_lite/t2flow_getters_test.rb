@@ -308,7 +308,7 @@ module TavernaLite
     end
 
     test "06 get components list from workflow" do
-      # first get processor components
+      # first get workflow components
       wf_reader = T2flowGetters.new
       components_list = wf_reader.get_workflow_components(@workflow_04)
       # the workflow has 6 components
@@ -321,7 +321,7 @@ module TavernaLite
       }
     end # test 06
     test "07 get ports list from workflow" do
-      # first get processor components
+      # first get workflow ports
       wf_reader = T2flowGetters.new
       ports_list = wf_reader.get_workflow_ports(@workflow_04)
       file_data = File.open(@workflow_04)
