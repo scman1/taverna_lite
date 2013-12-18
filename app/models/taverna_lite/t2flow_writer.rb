@@ -642,6 +642,7 @@ module TavernaLite
           port_granular)
       }
     end
+
     def add_input_port_and_mapping(document, to_proc, to_port, depth, granular="")
       # get the processor element
       root = document.root

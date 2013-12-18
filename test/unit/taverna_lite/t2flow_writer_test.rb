@@ -853,6 +853,6 @@ module TavernaLite
       assert_equal(7, t2_model.processors.count)
       #  - from 15 to 17 data links (9 deleted)
       assert_equal(17, t2_model.datalinks.count)
-    end #test 20
+    end #test 21
   end
 end

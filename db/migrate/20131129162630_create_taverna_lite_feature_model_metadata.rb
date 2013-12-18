@@ -12,7 +12,6 @@ class CreateTavernaLiteFeatureModelMetadata < ActiveRecord::Migration
       t.string :phone
       t.string :website
       t.string :reference
-
       t.timestamps
     end
   end

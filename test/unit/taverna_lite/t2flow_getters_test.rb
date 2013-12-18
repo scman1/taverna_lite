@@ -69,6 +69,7 @@ module TavernaLite
       # MatrixModelBootstrapComponents.t2flow
       # This file contains only workflow components, it has:
       #  - 4 outputs,
+      #  - 3 inputs,
       #  - 12 inner links (not counting links form workflow input ports)
       #  - 15 processor output ports (9 of them used)
       #  - 7 processors (all components)
@@ -81,6 +82,7 @@ module TavernaLite
       # Bootstrap_of_observations.t2flow
       # This file contains only rsheell processors, it has:
       #  - 5 outputs,
+      #  - 6 inputs,
       #  - 10 inner links (not counting links form workflow input ports)
       #  - 9 processor output ports (7 of them used)
       #  - 5 processors (all rshell)
@@ -318,5 +320,51 @@ module TavernaLite
         assert_not_nil(comp_v[1],"workflow in component is nil")
       }
     end # test 06
+    test "07 get ports list from workflow" do
+      # first get processor components
+      wf_reader = T2flowGetters.new
+      ports_list = wf_reader.get_workflow_ports(@workflow_04)
+      file_data = File.open(@workflow_04)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+
+      t2f_outs = t2_model.sinks
+      t2f_ins = t2_model.sources
+
+      # assert that all returned ports are the same as those reported by model
+      ports_list.each { |port_k, port_v|
+        found = false
+        if port_v.port_type_id==1
+          t2f_ins.each {|port_in|
+            if port_in.name == port_v.name
+              found = true
+              break
+            end
+          }
+        elsif port_v.port_type_id==2
+          t2f_outs.each {|port_out|
+            if port_out.name == port_v.name
+              found = true
+              break
+            end
+          }
+          assert(found)
+        end
+      }
+      t2f_ins.each {|port_in|
+         # assert that the port was recovered and asigned a correct type
+        assert(ports_list.include?(port_in.name), port_in.name +
+          " input port is missing")
+        assert_equal(1, ports_list[port_in.name].port_type_id )
+      }
+      t2f_outs.each {|port_out|
+         # assert that the port was recovered and asigned a correct type
+        assert(ports_list.include?(port_out.name), port_out.name +
+          " input port is missing")
+        assert_equal(2, ports_list[port_out.name].port_type_id )
+      }
+
+      # the workflow has same number of inputs and outputs components
+      assert_equal(t2f_outs.count+t2f_ins.count, ports_list.count)
+    end # test 07
   end
 end

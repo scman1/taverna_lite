@@ -233,5 +233,56 @@ module TavernaLite
       }
       return components
     end
+    # Get the workflow ports with depths as TL objects
+    def get_workflow_ports(xml_filename)
+      ports = {}
+      xml_file = File.open(xml_filename)
+      document = Document.new(xml_file)
+      model = T2Flow::Parser.new.parse(xml_file)
+      sources = model.sources
+      sinks = model.sinks
+
+      # get inputs, outputs, datalinks and processors from workflow file
+      inputs = document.root.elements[Top_dataflow].elements["inputPorts"]
+      outputs = document.root.elements[Top_dataflow].elements["outputPorts"]
+      datalinks = document.root.elements[Top_dataflow].elements["datalinks"]
+      processors = document.root.elements[Top_dataflow].elements["processors"]
+      # get depths for inputs (granular should always be same as depth?)
+      sources.each{|sc|
+        sc_name = sc.name
+        port_node=inputs.elements["port/name[text()='#{sc_name}']"].parent
+        wfp = WorkflowPort.new()
+        wfp.name = sc_name
+        wfp.description = sc.descriptions
+        wfp.example = sc.example_values
+        wfp.example_type_id = 1 # 1 = string, default t2flow has only string samples
+        wfp.display_control_id = 1 # default is 1 = value or file
+        wfp.port_type_id = 1 # 1 for input 2 for output
+        wfp.show = 1 # 1 show, default always show
+        wfp.depth = port_node.elements["depth"].text
+        wfp.granular_depth = port_node.elements["granularDepth"].text
+        ports[sc_name] = wfp
+      }
+      sinks.each{|sk|
+        sk_name = sk.name
+        sink_node=outputs.elements["port/name[text()='#{sk_name}']"].parent
+        dl = datalinks.elements["datalink/sink[@type='dataflow']/port[text()='#{sk_name}']"].parent.parent
+        from_proc = dl.elements["source/processor"].text()
+        from_port = dl.elements["source/port"].text()
+        proc_port=processors.elements["processor/name[text()='#{from_proc}']"].parent.elements["outputPorts/port/name[text()='#{from_port}']"].parent
+        wfp = WorkflowPort.new()
+        wfp.name = sk_name
+        wfp.description = sk.descriptions
+        wfp.example = sk.example_values
+        wfp.example_type_id = 1 # 1 = string, default t2flow has only string samples
+        wfp.display_control_id = 1 # default is 1 = value or file
+        wfp.port_type_id = 2 # 1 for input 2 for output
+        wfp.show = 1 # 1 show, default always show
+        wfp.depth = proc_port.elements["depth"].text
+        wfp.granular_depth = proc_port.elements["granularDepth"].text
+        ports[sk_name] = wfp
+      }
+      ports
+    end
   end # class
 end # module
