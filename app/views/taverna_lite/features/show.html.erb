@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Feature model:</b>
+  <%= @feature.feature_model_id %>
+</p>
+
+<p>
+  <b>Parent node:</b>
+  <%= @feature.parent_node_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @feature.name %>
+</p>
+
+<p>
+  <b>Feature type:</b>
+  <%= @feature.feature_type_id %>
+</p>
+
+<p>
+  <b>Cardinality lower bound:</b>
+  <%= @feature.cardinality_lower_bound %>
+</p>
+
+<p>
+  <b>Cardinality upper bound:</b>
+  <%= @feature.cardinality_upper_bound %>
+</p>
+
+<p>
+  <b>Component:</b>
+  <%= @feature.component_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_feature_path(@feature) %> |
+<%= link_to 'Back', features_path %>

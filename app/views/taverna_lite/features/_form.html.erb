@@ -1,0 +1,47 @@
+<%= form_for(@feature) do |f| %>
+  <% if @feature.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@feature.errors.count, "error") %> prohibited this feature from being saved:</h2>
+
+      <ul>
+      <% @feature.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :feature_model_id %><br />
+    <%= f.select :feature_model_id,  options_for_select(@feature_models, :feature_model_id) %>
+  </div>
+  <div class="field">
+    <%= f.label :parent_node_id %><br />
+    <%= f.number_field :parent_node_id %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :feature_type %><br />
+    <%= f.select :feature_type_id,
+           options_for_select([["Root", 1],["Mandatory", 2], ["XOR", 3],
+                               ["OR", 4], ["Optional", 5]], :feature_type_id) %>
+  </div>
+  <div class="field">
+    <%= f.label :cardinality_lower_bound %><br />
+    <%= f.number_field :cardinality_lower_bound, :value => "1" %>
+  </div>
+  <div class="field">
+    <%= f.label :cardinality_upper_bound %><br />
+    <%= f.number_field :cardinality_upper_bound, :value => "1" %>
+  </div>
+  <div class="field">
+    <%= f.label :component_id %><br />
+    <%= f.number_field :component_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

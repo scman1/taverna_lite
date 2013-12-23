@@ -1,4 +1,4 @@
 module TavernaLite
-  module FeatureTreesHelper
+  module FeaturesHelper
   end
 end

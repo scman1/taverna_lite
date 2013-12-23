@@ -1,0 +1,37 @@
+<h1>Listing features</h1>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Model</th>
+    <th>Parent</th>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Cardinality lower bound</th>
+    <th>Cardinality upper bound</th>
+    <th>Component</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @features.each do |feature| %>
+  <tr>
+    <td><%= feature.id %></td>
+    <td><%= feature.feature_model_id %></td>
+    <td><%= feature.parent_node_id %></td>
+    <td><%= feature.name %></td>
+    <td><%= feature.feature_type_id %></td>
+    <td><%= feature.cardinality_lower_bound %></td>
+    <td><%= feature.cardinality_upper_bound %></td>
+    <td><%= feature.component_id %></td>
+    <td><%= link_to 'Show', feature %></td>
+    <td><%= link_to 'Edit', edit_feature_path(feature) %></td>
+    <td><%= link_to 'Destroy', feature, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Feature', new_feature_path %>

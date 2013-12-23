@@ -7,6 +7,7 @@ one:
   feature_type_id: 1
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
+  component_id: 1
 
 two:
   feature_model_id: 1
@@ -15,3 +16,4 @@ two:
   feature_type_id: 1
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
+  component_id: 1

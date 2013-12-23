@@ -43,19 +43,13 @@
 # through the grant agreement number 283359.
 
 TavernaLite::Engine.routes.draw do
-  resources :feature_constraints
-
-
-  resources :feature_trees
+  resources :features
 
 
   resources :feature_model_metadata
 
 
   resources :feature_models
-
-
-  resources :fm_feature_trees
 
 
   resources :alternative_components

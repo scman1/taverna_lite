@@ -1,7 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-one:
-  cnf_clause: MyString
-
-two:
-  cnf_clause: MyString

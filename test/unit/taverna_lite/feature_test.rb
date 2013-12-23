@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module TavernaLite
-  class FeatureTreeTest < ActiveSupport::TestCase
+  class FeatureTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

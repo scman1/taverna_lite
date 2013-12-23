@@ -143,17 +143,25 @@ module TavernaLite
       wf_components.each do |component|
         unless component[1][1].nil? then
           proc_name = component[0]
-          name = component[1][0].name # the name of the component
-          wfc_db = TavernaLite::WorkflowComponent.find_by_name(name) # get component in db
+          c_name = component[1][0].name # the name of the component
+          # need to find alternatives using the version, family and registry
+          c_version = component[1][0].version
+          c_family = component[1][0].family
+          c_registry = component[1][0].registry
+          # get component from DB
+          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
+            c_family, c_registry, c_version)
           # find alternatives registered in DB
-          alternatives = TavernaLite::AlternativeComponent.where(:component_id=>wfc_db.id)
-          # get details of alternative components
-          unless alternatives.nil? then
-            component_alternatives[proc_name] = []
-            alternatives.each do |alt_comp|
-              a_wfc = TavernaLite::WorkflowComponent.find(alt_comp.alternative_id)
-              wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
-              component_alternatives[proc_name]<<[a_wfc,wf]
+          unless wfc_db.nil?()
+            alternatives = TavernaLite::AlternativeComponent.where(:component_id=>wfc_db.id)
+            # get details of alternative components
+            unless alternatives.nil? then
+              component_alternatives[proc_name] = []
+              alternatives.each do |alt_comp|
+                a_wfc = TavernaLite::WorkflowComponent.find(alt_comp.alternative_id)
+                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                component_alternatives[proc_name]<<[a_wfc,wf]
+              end
             end
           end
         end

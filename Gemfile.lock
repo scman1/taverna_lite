@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    taverna_lite (0.4.8)
+    taverna_lite (0.4.9)
       jquery-ui-rails (~> 4.0.2)
       rails (~> 3.2.14)
       taverna-t2flow (~> 0.4.3)
