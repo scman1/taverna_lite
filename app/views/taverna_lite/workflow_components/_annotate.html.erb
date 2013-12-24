@@ -43,7 +43,13 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
+
 <div>
+  <%= image_tag "taverna_lite/pencil.png", :alt => "(Edit)"%>
+  Annotate processor
+  <%= button_tag image_tag('taverna_lite/help.png'),
+    :id=>"edit_opener_#{processor.name}", :style=>"padding: 0; border: none;
+    background: none;", :alt => "Annotate Processor Help" %>
 <%= form_for :processor_annotations,
       :url =>{:controller => 'workflow_profiles', :action => 'annotate_processor'},
       :method => :put, :disable_with => "Saving..." do |f| -%>
@@ -128,11 +134,19 @@
     <%= submit_tag 'Save' %>
   </div>
 <% end -%> <!--form-->
+  <div id="edit_dialog_<%= "#{processor.name}" -%>" title="Edit Processor">
+    <%= render :partial=>'taverna_lite/workflow_components/annotation_instructions'%>
+  </div>
 <script>
   $('form').submit(function() {
     if (!ValidateForm()){
       return false; // prevents normal behaviour
     }
   });
- </script>
+  $( "#edit_dialog_<%= "#{processor.name}" -%>" ).dialog({ autoOpen: false });
+  $( "#edit_opener_<%= "#{processor.name}" -%>" ).click(function() {
+    $("#edit_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
+  });
+</script>
 </div><!--Processor Annotations div-->

@@ -58,5 +58,6 @@
 //= require jquery.ui.button
 //= require jquery.ui.tabs
 //= require jquery.ui.accordion
+//= require jquery.ui.dialog
 //= require_tree .
 //= require jquery_ujs

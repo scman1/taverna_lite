@@ -58,7 +58,7 @@
           $(this).siblings().removeClass("ui-selected");
           var index = $( "#selectable li" ).index( this );
           var namex = $(this).attr('id');
-          result.append('Edit ').append( namex );
+          result.append( namex );
           showcomp(namex+"_component");
           showcompalter(namex+"_alternatives");
         });
