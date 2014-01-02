@@ -192,7 +192,7 @@
       :partial=>'taverna_lite/workflow_components/add_output_instructions')%>
   </div>
   <div id="swap_dialog_<%= "#{processor.name}" -%>"
-   title="Add Outputs">
+   title="Swap Component Help">
     <%= render(
       :partial=>'taverna_lite/workflow_components/swap_instructions')%>
   </div>
@@ -205,14 +205,17 @@
   $( "#edit_dialog_<%= "#{processor.name}" -%>" ).dialog({ autoOpen: false });
   $( "#edit_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#edit_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
   });
   $( "#add_output_dialog_<%= "#{processor.name}" -%>" ).dialog({autoOpen: false });
   $( "#add_output_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#add_output_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
   });
   $( "#swap_dialog_<%= "#{processor.name}" -%>" ).dialog({autoOpen: false });
   $( "#swap_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#swap_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
   });
   $( "#annotate_<%= "#{processor.name}" -%>" ).accordion({
     active: false, collapsible: true, heightStyle: "content" });
