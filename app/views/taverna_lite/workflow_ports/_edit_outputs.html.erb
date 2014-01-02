@@ -151,7 +151,14 @@
   <%= render(:partial=>'taverna_lite/workflow_ports/output_instructions')%>
 </div>
 <script>
-  $( "#outputs_dialog" ).dialog({ autoOpen: false });
+  $( "#outputs_dialog" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
   $( "#outputs_dialog_opener" ).click(function() {
     $("#outputs_dialog" ).dialog( "open" );
     return false;

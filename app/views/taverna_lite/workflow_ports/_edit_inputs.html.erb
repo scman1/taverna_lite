@@ -49,7 +49,7 @@
 <% if @sources.count>0 %>
   <%= button_tag image_tag('taverna_lite/help.png'),
     :id=>"inputs_dialog_opener", :style=>"padding: 0; border: none;
-    background: none;", :alt => "Customise Input Help" %>
+    background: none; float: right;", :alt => "Customise Input Help" %>
 <%= form_for :port_annotations,
       :url => {:controller => 'workflow_ports', :action => 'save_custom_inputs'},
       :html => {:multipart => true, :id=>"edit_inputs"},
@@ -142,7 +142,14 @@
   <%= render(:partial=>'taverna_lite/workflow_ports/input_instructions')%>
 </div>
 <script>
-  $( "#inputs_dialog" ).dialog({ autoOpen: false });
+  $( "#inputs_dialog" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
   $( "#inputs_dialog_opener" ).click(function() {
     $("#inputs_dialog" ).dialog( "open" );
     return false;

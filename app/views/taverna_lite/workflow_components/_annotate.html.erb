@@ -58,7 +58,7 @@
       Annotate processor
       <%= button_tag image_tag('taverna_lite/help.png'),
         :id=>"edit_opener_#{processor.name}", :style=>"padding: 0; border: none;
-        background: none;", :alt => "Annotate Processor Help" %>
+        background: none; float: right;", :alt => "Annotate Processor Help" %>
     </h3>
     <div>
       <dl class='list_any'>
@@ -88,7 +88,8 @@
       Add Outputs
       <%= button_tag image_tag('taverna_lite/help.png'),
         :id=>"add_output_opener_#{processor.name}", :style=>"padding: 0;
-        border: none; background: none;", :alt => "Add Output Help" %>
+        border: none; background: none;float: right;",
+        :alt => "Add Output Help" %>
     </h3>
     <div>
       <span class="more_options">processor outputs
@@ -141,7 +142,8 @@
         Swap Component
         <%= button_tag image_tag('taverna_lite/help.png'),
           :id=>"swap_opener_#{processor.name}", :style=>"padding: 0;
-          border: none; background: none;", :alt => "Swap Component Help" %>
+          border: none; background: none; float: right;",
+          :alt => "Swap Component Help" %>
       </h3>
       <div>
       <% @component_alternatives[processor.name].each do |item| %>
@@ -202,17 +204,38 @@
       return false; // prevents normal behaviour
     }
   });
-  $( "#edit_dialog_<%= "#{processor.name}" -%>" ).dialog({ autoOpen: false });
+  $( "#edit_dialog_<%= "#{processor.name}" -%>" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
   $( "#edit_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#edit_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
     return false;
   });
-  $( "#add_output_dialog_<%= "#{processor.name}" -%>" ).dialog({autoOpen: false });
+  $( "#add_output_dialog_<%= "#{processor.name}" -%>" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
   $( "#add_output_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#add_output_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
     return false;
   });
-  $( "#swap_dialog_<%= "#{processor.name}" -%>" ).dialog({autoOpen: false });
+  $( "#swap_dialog_<%= "#{processor.name}" -%>" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
   $( "#swap_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#swap_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
     return false;
