@@ -47,6 +47,9 @@
 <div id="Outputs_component" class="div_component" style="display:none;">
 
 <% if @sinks.count>0 %>
+  <%= button_tag image_tag('taverna_lite/help.png'),
+    :id=>"outputs_dialog_opener", :style=>"padding: 0; border: none;
+    background: none;float: right;", :alt => "Customise Output Help" %>
 <%= form_for :port_annotations,
       :url => {:controller => 'workflow_ports', :action => 'save_custom_outputs'},
       :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
@@ -144,7 +147,15 @@
   </p>
 <% end %>
 </div>
+<div id="outputs_dialog" title="Customise Inputs Help" >
+  <%= render(:partial=>'taverna_lite/workflow_ports/output_instructions')%>
+</div>
 <script>
+  $( "#outputs_dialog" ).dialog({ autoOpen: false });
+  $( "#outputs_dialog_opener" ).click(function() {
+    $("#outputs_dialog" ).dialog( "open" );
+    return false;
+  });
   $('form').submit(function() {
     if (!ValidateForm()){
       return false; // prevents normal behaviour
