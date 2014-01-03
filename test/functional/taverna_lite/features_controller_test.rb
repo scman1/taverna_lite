@@ -3,7 +3,7 @@ require 'test_helper'
 module TavernaLite
   class FeaturesControllerTest < ActionController::TestCase
     setup do
-      @feature = features(:one)
+      @feature = taverna_lite_features(:one)
     end
 
     test "should get index" do

@@ -43,7 +43,7 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="component_details" style="float: left; width: 70%;">
+<div id="component_details" style="float: left; width: 74%;">
   <% if @processors.count > 0 %>
     <h3>
       <span id="select-result">Select a component to view its description</span>
@@ -53,7 +53,7 @@
     <% @processors.each do |proc| %>
     <div id="<%= proc.name %>_component" class="div_component"
       style="display: none;">
-      <%= render :partial=>'taverna_lite/workflow_components/annotate',
+      <%= render :partial=>'taverna_lite/workflow_components/customise',
        :locals => {:processor => proc, :proc_outs=>@processor_ports}%>
       <% if @wf_components.count > 0 && @wf_components.has_key?(proc.name) %>
         <h4>COMPONENT DETAILS</h4>

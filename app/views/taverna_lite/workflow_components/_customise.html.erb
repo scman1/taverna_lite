@@ -136,7 +136,8 @@
         <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
       </table>
     </div><!--Advanced Anotations div-->
-    <% unless @component_alternatives[processor.name].count == 0 %>
+    <% unless (@component_alternatives[processor.name].nil? ||
+      @component_alternatives[processor.name].count == 0) %>
       <h3>
         <%= image_tag "taverna_lite/arrow_switch.png", :alt => "Swap Component"%>
         Swap Component
