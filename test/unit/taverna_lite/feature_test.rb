@@ -55,6 +55,8 @@ module TavernaLite
       @readPlainText = taverna_lite_features(:nine)
       # text table to R is optional, has no children and its instantiated
       @textTableToR = taverna_lite_features(:twelve)
+      # eigen analsyis is or, has no children and its instantiated
+      @eigenAnalysis = taverna_lite_features(:thirtyfour)
     end
 
     test "00 get parent for root" do
@@ -88,12 +90,37 @@ module TavernaLite
       x.each { |ft|
         assert_equal 5, ft.feature_type_id
       }
-    end
+    end # test 05
+
+    # test what you get when the feature is instantiated and what when it is not
     test "06 test if feature is instantiated" do
       assert @textTableToR.instantiated
       assert_not_nil @textTableToR.component_id
       assert !@readPlainText.instantiated
-      assert_equal 0, @readPlainText.component_id
+      assert_equal 0, @readPlainText.component_id # this should  be nil
+      #assert_equal nil, @readPlainText.component_id # problem with YML or test?
+    end # test 06
+
+    test "07 get alternatives to instantiated features" do
+      alternative_features = @textTableToR.alternatives
+      # total eight alternatives to replace this feature
+      assert_equal 8, alternative_features.count
+      i = j = 0
+      alternative_features.each {|ft|
+        if ft.parent == @textTableToR.parent
+          i += 1
+        else
+          j += 1
+        end
+      }
+      # 5 different versions of the same component (optional features)
+      assert_equal 4, i
+      # plus 2 other components with 2 and 1 versions each (xor features)
+      assert_equal 4, j
+    end
+    test "08 get features that can be added" do
+      additional_features = @eigenAnalysis.additional
+      assert_equal 8, additional_features.count
     end
   end
 end

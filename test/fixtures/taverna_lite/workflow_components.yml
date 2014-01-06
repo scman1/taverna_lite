@@ -64,79 +64,560 @@ two:
 
 # need to seed the test DB with the details of the workflow components
 
-tl_workflowcomponent_01:
-  id: 1
-  workflow_id: 9
+wfc_01:
+  id: 67
+  workflow_id: 268
   license_id: 1
   version: 7
-  family: "POPMOD"
-  name: "StageMatrixFromCensus"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-09-24 14:49:25"
-  updated_at: "2013-09-27 16:00:45"
+  family: 'BayesianPhylogeneticInference'
+  name: 'ConsensusTree'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_02:
-  id: 2
-  workflow_id: 10
+wfc_02:
+  id: 68
+  workflow_id: 269
+  license_id: 1
+  version: 6
+  family: 'BayesianPhylogeneticInference'
+  name: 'ConVergenceTreeDiagnosticGeoKS'
+  registry: 'http://www.myexperiment.org'
+
+wfc_03:
+  id: 64
+  workflow_id: 265
+  license_id: 1
+  version: 2
+  family: 'BayesianPhylogeneticInference'
+  name: 'Launch_GUI'
+  registry: 'http://www.myexperiment.org'
+
+wfc_04:
+  id: 69
+  workflow_id: 270
   license_id: 1
   version: 4
-  family: "POPMOD"
-  name: "RExpressionToPlainText"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-09-24 14:55:59"
-  updated_at: "2013-11-04 11:49:33"
+  family: 'BayesianPhylogeneticInference'
+  name: 'MrBayes'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_03:
-  id: 3
-  workflow_id: 8
+wfc_05:
+  id: 65
+  workflow_id: 266
+  license_id: 1
+  version: 5
+  family: 'BayesianPhylogeneticInference'
+  name: 'MrBayesPPtest'
+  registry: 'http://www.myexperiment.org'
+
+wfc_06:
+  id: 70
+  workflow_id: 271
+  license_id: 1
+  version: 8
+  family: 'BayesianPhylogeneticInference'
+  name: 'SelectingEvolutionaryModelWithPartFinder'
+  registry: 'http://www.myexperiment.org'
+
+wfc_07:
+  id: 66
+  workflow_id: 267
   license_id: 1
   version: 4
-  family: "POPMOD"
-  name: "TextTableToR"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-09-24 14:56:54"
-  updated_at: "2013-09-27 16:00:34"
+  family: 'BayesianPhylogeneticInference'
+  name: 'TreeVisualizationItol'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_04:
-  id: 4
-  workflow_id: 11
+wfc_08:
+  id: 71
+  workflow_id: 272
   license_id: 1
   version: 3
-  family: "POPMOD"
-  name: "CSVTableToR"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-09-25 13:22:51"
-  updated_at: "2013-11-04 12:09:43"
+  family: 'GBIF transforms'
+  name: 'Extract_citations'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_05:
-  id: 5
-  workflow_id: 12
+wfc_09:
+  id: 73
+  workflow_id: 274
+  license_id: 1
+  version: 2
+  family: 'GBIF transforms'
+  name: 'Extract_data_providers'
+  registry: 'http://www.myexperiment.org'
+
+wfc_10:
+  id: 72
+  workflow_id: 273
+  license_id: 1
+  version: 2
+  family: 'GBIF transforms'
+  name: 'Extract_positions'
+  registry: 'http://www.myexperiment.org'
+
+wfc_11:
+  id: 34
+  workflow_id: 205
+  license_id: 1
+  version: 2
+  family: 'JSTInteraction'
+  name: 'JSTAsync1'
+  registry: 'http://www.myexperiment.org'
+
+wfc_12:
+  id: 35
+  workflow_id: 206
+  license_id: 1
+  version: 2
+  family: 'JSTInteraction'
+  name: 'JSTAsync2'
+  registry: 'http://www.myexperiment.org'
+
+wfc_13:
+  id: 33
+  workflow_id: 199
+  license_id: 1
+  version: 3
+  family: 'JSTInteraction'
+  name: 'JSTWebDav3Input'
+  registry: 'http://www.myexperiment.org'
+
+wfc_14:
+  id: 26
+  workflow_id: 189
   license_id: 1
   version: 1
-  family: "POPMOD"
-  name: "SpreadsheetTableToR"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-09-25 13:26:00"
-  updated_at: "2013-09-25 13:26:00"
+  family: 'POPMOD'
+  name: 'BootstrapOfObservTrans'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_06:
+wfc_15:
+  id: 24
+  workflow_id: 187
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'CalculateCohenCumulative'
+  registry: 'http://www.myexperiment.org'
+
+wfc_16:
+  id: 22
+  workflow_id: 185
+  license_id: 1
+  version: 1
+  family: 'POPMOD'
+  name: 'CalculateKeyfitzDelta'
+  registry: 'http://www.myexperiment.org'
+
+wfc_17:
+  id: 4
+  workflow_id: 121
+  license_id: 1
+  version: 1
+  family: 'POPMOD'
+  name: 'CSVTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_18:
+  id: 27
+  workflow_id: 191
+  license_id: 1
+  version: 3
+  family: 'POPMOD'
+  name: 'CSVTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_19:
+  id: 55
+  workflow_id: 256
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'CSVTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_20:
+  id: 25
+  workflow_id: 188
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'DefineStageAbundances'
+  registry: 'http://www.myexperiment.org'
+
+wfc_21:
+  id: 20
+  workflow_id: 183
+  license_id: 1
+  version: 1
+  family: 'POPMOD'
+  name: 'EigenAnalysis'
+  registry: 'http://www.myexperiment.org'
+
+wfc_22:
+  id: 31
+  workflow_id: 196
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'EigenAnalysis'
+  registry: 'http://www.myexperiment.org'
+
+wfc_23:
   id: 6
-  workflow_id: 21
+  workflow_id: 132
   license_id: 1
   version: 1
-  family: "POPMOD"
-  name: "RExpressionToCSV"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-11-04 12:16:09"
-  updated_at: "2013-11-04 12:16:09"
+  family: 'POPMOD'
+  name: 'RExpressionToCSV'
+  registry: 'http://www.myexperiment.org'
 
-tl_workflowcomponent_07:
-  id: 7
-  workflow_id: 20
+wfc_24:
+  id: 2
+  workflow_id: 120
+  license_id: 1
+  version: 3
+  family: 'POPMOD'
+  name: 'RExpressionToPlainText'
+  registry: 'http://www.myexperiment.org'
+
+tl_workflowcomponent_02:
+  id: 30
+  workflow_id: 195
+  license_id: 1
+  version: 4
+  family: 'POPMOD'
+  name: 'RExpressionToPlainText'
+  registry: 'http://www.myexperiment.org'
+
+wfc_26:
+  id: 63
+  workflow_id: 264
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'RExpressionToPlainText'
+  registry: 'http://www.myexperiment.org'
+
+wfc_27:
+  id: 21
+  workflow_id: 184
   license_id: 1
   version: 1
-  family: "POPMOD"
-  name: "BootstrapOfObservTrans"
-  registry: "http://www.myexperiment.org"
-  created_at: "2013-11-04 12:16:09"
-  updated_at: "2013-11-04 12:16:09"
+  family: 'POPMOD'
+  name: 'SensitivityAndElasticity'
+  registry: 'http://www.myexperiment.org'
+
+wfc_28:
+  id: 5
+  workflow_id: 122
+  license_id: 1
+  version: 1
+  family: 'POPMOD'
+  name: 'SpreadsheetTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_29:
+  id: 1
+  workflow_id: 119
+  license_id: 1
+  version: 4
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+tl_workflowcomponent_01:
+  id: 28
+  workflow_id: 192
+  license_id: 1
+  version: 7
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+wfc_31:
+  id: 56
+  workflow_id: 257
+  license_id: 1
+  version: 6
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+wfc_32:
+  id: 57
+  workflow_id: 258
+  license_id: 1
+  version: 5
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+wfc_33:
+  id: 58
+  workflow_id: 259
+  license_id: 1
+  version: 3
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+wfc_34:
+  id: 59
+  workflow_id: 260
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'StageMatrixFromCensus'
+  registry: 'http://www.myexperiment.org'
+
+wfc_35:
+  id: 3
+  workflow_id: 118
+  license_id: 1
+  version: 3
+  family: 'POPMOD'
+  name: 'TextTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_36:
+  id: 29
+  workflow_id: 193
+  license_id: 1
+  version: 6
+  family: 'POPMOD'
+  name: 'TextTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_37:
+  id: 60
+  workflow_id: 261
+  license_id: 1
+  version: 5
+  family: 'POPMOD'
+  name: 'TextTableToR'
+  registry: 'http://www.myexperiment.org'
+
+tl_workflowcomponent_03:
+  id: 61
+  workflow_id: 262
+  license_id: 1
+  version: 4
+  family: 'POPMOD'
+  name: 'TextTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_39:
+  id: 62
+  workflow_id: 263
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'TextTableToR'
+  registry: 'http://www.myexperiment.org'
+
+wfc_40:
+  id: 23
+  workflow_id: 186
+  license_id: 1
+  version: 1
+  family: 'POPMOD'
+  name: 'TransientDynamics'
+  registry: 'http://www.myexperiment.org'
+
+wfc_41:
+  id: 36
+  workflow_id: 210
+  license_id: 1
+  version: 2
+  family: 'POPMOD'
+  name: 'TransientDynamics'
+  registry: 'http://www.myexperiment.org'
+
+wfc_42:
+  id: 43
+  workflow_id: 228
+  license_id: 1
+  version: 1
+  family: 'Population Model Analysis Family'
+  name: 'Fundamental matrix'
+  registry: 'http://www.myexperiment.org'
+
+wfc_43:
+  id: 44
+  workflow_id: 229
+  license_id: 1
+  version: 2
+  family: 'Population Model Analysis Family'
+  name: 'ref'
+  registry: 'http://www.myexperiment.org'
+
+wfc_44:
+  id: 32
+  workflow_id: 198
+  license_id: 1
+  version: 5
+  family: 'SCAPE Audio and Video Characterisation Component'
+  name: 'Characterise using FFprobe'
+  registry: 'http://www.myexperiment.org'
+
+wfc_45:
+  id: 47
+  workflow_id: 248
+  license_id: 1
+  version: 5
+  family: 'SCAPE Audio and Video Characterisation Component'
+  name: 'Characterise using FFprobe'
+  registry: 'http://www.myexperiment.org'
+
+wfc_46:
+  id: 53
+  workflow_id: 254
+  license_id: 1
+  version: 4
+  family: 'SCAPE Audio and Video Characterisation Component'
+  name: 'Characterise using FFprobe'
+  registry: 'http://www.myexperiment.org'
+
+wfc_47:
+  id: 54
+  workflow_id: 255
+  license_id: 1
+  version: 3
+  family: 'SCAPE Audio and Video Characterisation Component'
+  name: 'Characterise using FFprobe'
+  registry: 'http://www.myexperiment.org'
+
+wfc_48:
+  id: 12
+  workflow_id: 164
+  license_id: 1
+  version: 2
+  family: 'SCAPE Audio QA Object Comparison'
+  name: 'xcorrSound waveform-compare Wav File Comparison'
+  registry: 'http://www.myexperiment.org'
+
+wfc_49:
+  id: 16
+  workflow_id: 179
+  license_id: 1
+  version: 2
+  family: 'SCAPE Image Characterisation Component'
+  name: 'Extract Image Dimensions with SIPS'
+  registry: 'http://www.myexperiment.org'
+
+wfc_50:
+  id: 19
+  workflow_id: 182
+  license_id: 1
+  version: 6
+  family: 'SCAPE Image Characterisation Component'
+  name: 'Extract JPEG-2000 dimensions'
+  registry: 'http://www.myexperiment.org'
+
+wfc_51:
+  id: 17
+  workflow_id: 180
+  license_id: 1
+  version: 2
+  family: 'SCAPE Image Characterisation Component'
+  name: 'Extract PNG dimensions'
+  registry: 'http://www.myexperiment.org'
+
+wfc_52:
+  id: 18
+  workflow_id: 181
+  license_id: 1
+  version: 1
+  family: 'SCAPE Image Characterisation Component'
+  name: 'Extract TIFF dimensions'
+  registry: 'http://www.myexperiment.org'
+
+wfc_53:
+  id: 38
+  workflow_id: 223
+  license_id: 1
+  version: 5
+  family: 'SCAPE Image Migration Action'
+  name: 'Convert TIFF to JPEG-2000'
+  registry: 'http://www.myexperiment.org'
+
+wfc_54:
+  id: 37
+  workflow_id: 220
+  license_id: 1
+  version: 3
+  family: 'SCAPE Image Migration Action'
+  name: 'Convert TIFF to PNG'
+  registry: 'http://www.myexperiment.org'
+
+wfc_55:
+  id: 42
+  workflow_id: 227
+  license_id: 1
+  version: 3
+  family: 'SCAPE Utility Components'
+  name: 'MeasuresDocBuilder'
+  registry: 'http://www.myexperiment.org'
+
+wfc_56:
+  id: 39
+  workflow_id: 224
+  license_id: 1
+  version: 1
+  family: 'SCAPE Utility Components'
+  name: 'MeasuresDocCombiner'
+  registry: 'http://www.myexperiment.org'
+
+wfc_57:
+  id: 40
+  workflow_id: 225
+  license_id: 1
+  version: 1
+  family: 'SCAPE Utility Components'
+  name: 'MeasuresDocCombiner'
+  registry: 'http://www.myexperiment.org'
+
+wfc_58:
+  id: 41
+  workflow_id: 226
+  license_id: 1
+  version: 1
+  family: 'SCAPE Utility Components'
+  name: 'MeasuresDocCombiner'
+  registry: 'http://www.myexperiment.org'
+
+wfc_59:
+  id: 9
+  workflow_id: 161
+  license_id: 1
+  version: 1
+  family: 'Task Data'
+  name: 'Task Data Pattern (BeanShell)'
+  registry: 'http://www.myexperiment.org'
+
+wfc_60:
+  id: 13
+  workflow_id: 170
+  license_id: 1
+  version: 2
+  family: 'Test components'
+  name: 'echoer'
+  registry: 'http://www.myexperiment.org'
+
+wfc_61:
+  id: 15
+  workflow_id: 178
+  license_id: 1
+  version: 3
+  family: 'Test components'
+  name: 'echoer'
+  registry: 'http://www.myexperiment.org'
+
+wfc_62:
+  id: 10
+  workflow_id: 162
+  license_id: 1
+  version: 2
+  family: 'Test components'
+  name: 'nested_echo'
+  registry: 'http://www.myexperiment.org'

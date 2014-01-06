@@ -102,7 +102,7 @@ workflow_03:
   author: "Maria Paula Balcázar-Vargas"
   description: "This workflow was created based on Package ‘popbio’..."
   name: "creation_of_a_stage_matrix_model"
-  workflow_file: "creation_of_a_stage_matrix_model_from_demographic_m..."
+  workflow_file: "creation_of_a_stage_matrix_model.t2flow"
   my_experiment_id: 3276
   user_id: 1
   is_shared: nil
@@ -290,3 +290,107 @@ workflow_17:
   is_shared: nil
   created_at: "2013-11-04 12:15:28"
   updated_at: "2013-11-04 12:15:28"
+
+workflow_18:
+  id: 121
+  name: "Convert_CSV_Table_in"
+  title: "Convert CSV Table into R expression"
+  description: "Takes a csv table as input and produces a matrix (R..."
+  author: "Jonathan Giddy"
+  workflow_file: "convert_csv_table_into_r_expression_158272.t2flow"
+  created_at: "2013-09-27 11:44:06"
+  updated_at: "2013-09-27 11:44:06"
+  my_experiment_id: "0"
+  user_id: 1
+  is_shared: false
+
+workflow_19:
+  id: 120
+  name: "Plain_Text_from_R_ex"
+  title: "Plain Text from R exp"
+  description: "Takes an R expression (matrix) as input and produce..."
+  author: "Jonathan Giddy"
+  workflow_file: "display_text_from_r_expression_961358.t2flow"
+  created_at: "2013-09-27 11:43:48"
+  updated_at: "2013-09-27 11:43:48"
+  my_experiment_id: "0"
+  user_id: 1
+  is_shared: false
+
+workflow_20:
+  id: 119
+  name: "Stage_Matrix_From_Ce"
+  title: "Stage Matrix From Census Data Interactive"
+  description: "This workflow component will take an r-expression c..."
+  author: "Jonathan Giddy"
+  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2..."
+  created_at: "2013-09-27 11:43:26"
+  updated_at: "2013-09-27 11:43:26"
+  user_id: 1
+  is_shared: false
+
+workflow_21:
+  id: 189
+  name: "Bootstrap_of_observe"
+  title: "Bootstrap of observed census transitions."
+  description: "The goal of a demographic analysis is very often to..."
+  author: "This Workflow was created by:\nMaria Paula Balcázar-..."
+  workflow_file: "bootstrapofobservtrans.t2flow"
+  created_at: "2013-12-11 11:03:06"
+  updated_at: "2013-12-11 11:03:06"
+  my_experiment_id: "http://www.myexperiment.org/workflows/3863"
+  user_id: 1
+  is_shared: false
+
+workflow_22:
+  id: 192
+  name: "Stage_Matrix_From_Ce"
+  title: "Stage Matrix From Census Data Interactive"
+  description: "This workflow component will take an r-expression c..."
+  author: "Jonathan Giddy"
+  workflow_file: "stagematrixfromcensus.t2flow"
+  created_at: "2013-12-11 11:03:07"
+  updated_at: "2013-12-11 11:03:07"
+  my_experiment_id: "http://www.myexperiment.org/workflows/3820"
+  user_id: 1
+  is_shared: false
+
+workflow_23:
+  id: 191
+  name: "Convert_CSV_Table_in"
+  title: "Convert CSV Table into R expression"
+  description: "Takes a csv table as input and produces a matrix (R..."
+  author: "Jonathan Giddy"
+  workflow_file: "csvtabletor.t2flow"
+  created_at: "2013-12-11 11:03:06"
+  updated_at: "2013-12-11 11:03:06"
+  my_experiment_id: "http://www.myexperiment.org/workflows/3836"
+  user_id: 1
+  is_shared: false
+
+
+workflow_24:
+  id: 195
+  name: "Plain_Text_from_R_ex"
+  title: "Plain Text from R expression"
+  description: "Takes an R expression (matrix) as input and produce..."
+  author: "Jonathan Giddy"
+  workflow_file: "rexpressiontoplaintext.t2flow"
+  created_at: "2013-12-11 11:03:07"
+  updated_at: "2013-12-11 11:03:07"
+  my_experiment_id: "http://www.myexperiment.org/workflows/3815"
+  user_id: 1
+  is_shared: false
+
+workflow_25:
+  id: 132
+  name: "R_Expression_to_CSV"
+  title: "R Expression to CSV"
+  description: "Takes an R Expression as input and produces a CSV file"
+  author: "ANH"
+  workflow_file: "r_expression_to_csv.t2flow"
+  created_at: "2013-10-21 12:59:49"
+  updated_at: "2013-10-21 12:59:49"
+  my_experiment_id: "http://www.myexperiment.org/workflows/3817"
+  user_id: 1
+  is_shared: false

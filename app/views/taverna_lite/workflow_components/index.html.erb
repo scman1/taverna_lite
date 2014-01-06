@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th>id</id>
     <th>Workflow</th>
     <th>License</th>
     <th>Version</th>
@@ -15,6 +16,7 @@
 
 <% @workflow_components.each do |workflow_component| %>
   <tr>
+    <td><%= workflow_component.id %></td>
     <td><%= workflow_component.workflow_id %></td>
     <td><%= workflow_component.license_id %></td>
     <td><%= workflow_component.version %></td>

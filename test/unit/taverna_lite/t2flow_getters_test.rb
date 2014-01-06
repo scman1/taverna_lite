@@ -124,14 +124,9 @@ module TavernaLite
       t2f_outs_count = t2_model.all_sinks.count
       t2f_links_count = t2_model.datalinks.count
       t2f_links = t2_model.datalinks
-      # the number of outputs should be the same
-      #puts "\n*****************************************************************"
-      #puts "PROCESSORS: " + proc_outs.count.to_s
       connection_count = 0
       outs_count = 0
-      #puts proc_outs
       proc_outs.each { |port_k,port_v|
-        port_k
         proc_outs[port_k][:ports].each { |k,v|
           outs_count += 1
           unless v[:connections].nil? then
@@ -159,14 +154,8 @@ module TavernaLite
       assert_equal(15,outs_count)
       # expect less outputs than those reported reported by t2flow
       assert_operator(outs_count,:<=,t2f_outs_count)
-
-      #puts "FROM GETTERS: " + connection_count.to_s
-      #puts "FROM T2FLOW:  " + outputs02.count.to_s
-      #outputs02.each do |sink|
-      #  puts sink.name
-      #end
-      # puts "*****************************************************************\n"
     end
+
     test "02 get processor ports and connections from workflow components" do
       processor = "StageMatrixFromCensus"
       port = "report"

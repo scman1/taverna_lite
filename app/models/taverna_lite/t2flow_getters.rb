@@ -162,16 +162,15 @@ module TavernaLite
     def get_component_outputs(component)
       ports = {}
       #should read from the repository but for the moment get it from local copy
-      component = TavernaLite::WorkflowComponent.find(:all,
-                     :conditions=>{
+      wf_components = TavernaLite::WorkflowComponent.all(:conditions=>{
                        :family=>component["familyName"],
                        :registry=>component["registryBase"],
                        :version=>component["componentVersion"],
                        :name=>component["componentName"]})
 
-      unless component.empty? then
-        component = component[0]
-        wfp=TavernaLite::WorkflowProfile.new(:workflow_id=>component.workflow_id)
+      unless wf_components.empty? then
+        wf_component = wf_components[0]
+        wfp=TavernaLite::WorkflowProfile.new(:workflow_id=>wf_component.workflow_id)
         component_ports = wfp.get_custom_outputs
         component_ports.each { |cpt|
           ports[cpt.name] = {:description=>cpt.description,

@@ -162,7 +162,7 @@ twelve:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 118
+  component_id: 3
 
 thirteen:
   id: 13
@@ -172,7 +172,7 @@ thirteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 193
+  component_id: 29
 
 fourteen:
   id: 14
@@ -182,7 +182,7 @@ fourteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 261
+  component_id: 60
 
 fifteen:
   id: 15
@@ -192,7 +192,7 @@ fifteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 262
+  component_id: 61
 
 sixteen:
   id: 16
@@ -202,7 +202,7 @@ sixteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 263
+  component_id: 62
 
 seventeen:
   id: 17
@@ -212,7 +212,7 @@ seventeen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 121
+  component_id: 4
 
 eighteen:
   id: 18
@@ -222,7 +222,7 @@ eighteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 191
+  component_id: 27
 
 nineteen:
   id: 19
@@ -232,7 +232,7 @@ nineteen:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 256
+  component_id: 55
 
 twenty:
   id: 20
@@ -242,7 +242,7 @@ twenty:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 122
+  component_id: 5
 
 twentyone:
   id: 21
@@ -252,7 +252,7 @@ twentyone:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 119
+  component_id: 1
 
 twentytwo:
   id: 22
@@ -262,7 +262,7 @@ twentytwo:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 192
+  component_id: 28
 
 tewntythree:
   id: 23
@@ -272,7 +272,7 @@ tewntythree:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 257
+  component_id: 56
 
 twentyfour:
   id: 24
@@ -282,7 +282,7 @@ twentyfour:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 258
+  component_id: 57
 
 twentyfive:
   id: 25
@@ -292,7 +292,7 @@ twentyfive:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 259
+  component_id: 58
 
 twentysix:
   id: 26
@@ -302,7 +302,7 @@ twentysix:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 260
+  component_id: 59
 
 twentyseven:
   id: 27
@@ -382,7 +382,7 @@ thirtyfour:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 183
+  component_id: 20
 
 thirtyfive:
   id: 35
@@ -392,7 +392,7 @@ thirtyfive:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 196
+  component_id: 31
 
 thirtysix:
   id: 36
@@ -402,7 +402,7 @@ thirtysix:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 186
+  component_id: 23
 
 thirtyseven:
   id: 37
@@ -412,7 +412,7 @@ thirtyseven:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 210
+  component_id: 36
 
 thirtyeight:
   id: 38
@@ -422,7 +422,7 @@ thirtyeight:
   feature_type_id: 5
   cardinality_lower_bound: 1
   cardinality_upper_bound: 1
-  component_id: 189
+  component_id: 26
 
 thirtynine:
   id: 39

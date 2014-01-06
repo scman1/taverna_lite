@@ -52,6 +52,7 @@ module TavernaLite
       end
       Feature.find(parent_node_id)
     end
+    # if instantiated, feature must point to a component
     def instantiated
       return !component_id.nil? && component_id != 0
     end
@@ -66,6 +67,56 @@ module TavernaLite
     end
     def optional
       Feature.find_all_by_parent_node_id_and_feature_type_id(id,5)
+    end
+    def alternatives
+      feature_alternatives = []
+      unless instantiated
+        return feature_alternatives
+      end
+      # get all siblings if node is optional
+      if self.feature_type_id == 5
+        parent.optional.each{ |ft|
+          unless ft.id == self.id
+            feature_alternatives << ft
+          end
+        }
+      end
+      # get alternatives if parent is xor
+      if parent.feature_type_id == 3
+        parent.parent.xor.each { |xoft|
+          unless xoft==parent
+            xoft.optional.each {|ft|
+              feature_alternatives << ft
+            }
+          end
+        }
+      end
+      return feature_alternatives
+    end
+    def additional
+      feature_additionals =[]
+      unless instantiated
+        return feature_additionals
+      end
+      # get all siblings if node is optional
+      if self.feature_type_id == 5
+        parent.optional.each{ |ft|
+          unless ft.id == self.id
+            feature_additionals << ft
+          end
+        }
+      end
+      # get additionals if parent is or
+      if parent.feature_type_id == 4
+        parent.parent.or.each { |oft|
+          unless oft==parent
+            oft.optional.each {|ft|
+              feature_additionals << ft
+            }
+          end
+        }
+      end
+      return feature_additionals
     end
   end
 end
