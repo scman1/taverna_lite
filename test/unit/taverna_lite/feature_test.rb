@@ -120,7 +120,7 @@ module TavernaLite
     end
     test "08 get features that can be added" do
       additional_features = @eigenAnalysis.additional
-      assert_equal 8, additional_features.count
+      assert_equal 4, additional_features.count
     end
   end
 end

@@ -21,3 +21,4 @@ shell_commands.txt
 basic_profile*
 component_profile*
 adding_fm.txt
+test/fixtures/*.txt
