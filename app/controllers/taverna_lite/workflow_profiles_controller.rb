@@ -53,9 +53,11 @@ module TavernaLite
       @workflow = TavernaLite.workflow_class.find(params[:id])
       @author = TavernaLite.author_class.find(@workflow.user_id) # This should be current user
       #find or create the profile
-      @workflow_profile = WorkflowProfile.find_by_author_id_and_workflow_id(@author.id,@workflow.id)
+      @workflow_profile =
+        WorkflowProfile.find_by_author_id_and_workflow_id(@author.id,@workflow.id)
       if @workflow_profile == nil
-        @workflow_profile = WorkflowProfile.new(:author_id => @author.id, :workflow_id => @workflow.id)
+        @workflow_profile =
+          WorkflowProfile.new(:author_id => @author.id, :workflow_id => @workflow.id)
         @workflow_profile.save
       end
       # get inputs from the model and any customisation if they exist
@@ -70,10 +72,12 @@ module TavernaLite
       #get the workflow processors to display structure
       @processors = @workflow_profile.get_processors
       @ordered_processors = @workflow_profile.get_processors_in_order
-      @wf_components = get_workflow_components(@workflow_profile.id)
-      @component_alternatives = get_component_alternatives(@wf_components)
+      @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
+      unless @wf_components.nil? || @wf_components.count == 0
+        @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
+      end
       # get all the processors outputs to enable add ouput
-      @processor_ports = get_processor_ports(@workflow.id)
+      @processor_ports = get_processor_ports(@workflow.id) # need to move the definition of this method out of controller
     end
 
     def update_profile
@@ -127,7 +131,7 @@ module TavernaLite
         format.json { head :no_content }
        end
     end
-
+    private
     # Get the components for a given workflow
     def get_workflow_components(id)
       workflow_profile = WorkflowProfile.find(id)
