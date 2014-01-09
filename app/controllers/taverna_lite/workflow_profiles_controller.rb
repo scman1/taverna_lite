@@ -60,12 +60,10 @@ module TavernaLite
           WorkflowProfile.new(:author_id => @author.id, :workflow_id => @workflow.id)
         @workflow_profile.save
       end
-      # get inputs from the model and any customisation if they exist
-      @sources, @source_descriptions = @workflow_profile.get_inputs
-      @custom_inputs = @workflow_profile.get_custom_inputs
-      # get outputs from the model and any customisation if they exist
-      @sinks, @sink_descriptions = @workflow_profile.get_outputs
-      @custom_outputs = @workflow_profile.get_custom_outputs
+      # gets inputs from the model and any customisation if they exist
+      @inputs = @workflow_profile.inputs
+      # gets outputs from the model and any customisation if they exist
+      @outputs = @workflow_profile.outputs
       #get errors and error codes
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes

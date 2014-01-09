@@ -48,9 +48,9 @@ module TavernaLite
     def save_custom_inputs
       action = params[:commit]
       @workflow = Workflow.find(params[:id])
-      @workflow_profile = WorkflowProfile.new()
+      @workflow_profile = WorkflowProfile.find_by_workflow_id(params[:id])
       @workflow_profile.workflow_id = @workflow.id
-      @ports_list, @port_desc_list = @workflow_profile.get_inputs
+      @ports_list = @workflow_profile.inputs
 
       if action == 'Save'
         save_ports
@@ -68,10 +68,10 @@ module TavernaLite
     def save_custom_outputs
       action = params[:commit]
       @workflow = Workflow.find(params[:id])
-      @workflow_profile = WorkflowProfile.new()
+      @workflow_profile = WorkflowProfile.find_by_workflow_id(params[:id])
       @workflow_profile.workflow_id = @workflow.id
       # get outputs from the model and any customisation if they exist
-      @ports_list, @port_desc_list = @workflow_profile.get_outputs
+      @ports_list = @workflow_profile.outputs
 
       selected_tab = params[:selected_tab]
       selected_choice = params[:selected_choice]
@@ -89,8 +89,8 @@ module TavernaLite
     end
 
     def save_ports(port_type=1)
-      @port_desc_list.each do |indiv_in|
-        port_name = indiv_in[0]
+      @ports_list.each do |indiv_in|
+        port_name = indiv_in.name
         file_for_i = "file_for_"+port_name
         display_i = "display_for_"+port_name
         type_i = "type_for_"+port_name
@@ -99,6 +99,9 @@ module TavernaLite
         show_i = "show_"+port_name
         delete_i = "delete_"+port_name
         delete_port = params[:port_annotations][delete_i] == '1'
+        puts "*****************************************************************"
+        puts port_name
+        puts "*****************************************************************"
         unless delete_port then
           # verify if customised input exists
           condition = "port_type_id = ? and name = ? and workflow_id = ?"

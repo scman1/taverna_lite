@@ -46,7 +46,7 @@
 
 <div id="Outputs_component" class="div_component" style="display:none;">
 
-<% if @sinks.count>0 %>
+<% if @outputs.count>0 %>
   <%= button_tag image_tag('taverna_lite/help.png'),
     :id=>"outputs_dialog_opener", :style=>"padding: 0; border: none;
     background: none;float: right;", :alt => "Customise Output Help" %>
@@ -56,11 +56,11 @@
   <%= hidden_field_tag "workflow_id", @workflow.id %>
   <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'outputs' %>
-  <% @custom_outputs.each do |item| %>
+  <% @outputs.each do |item| %>
      <!-- Use sinks to get the original sample and descriptio values -->
      <% portname = item.name %>
-     <% example_value = @sinks[portname].blank? ? "": @sinks[portname] -%>
-     <% descr= @sink_descriptions[portname].blank? ? "" : @sink_descriptions[portname] -%>
+     <% example_value = item.example.blank? ? "": item.example -%>
+     <% descr= item.description.blank? ? "" : item.description -%>
     <div class="port_details">
     <h3> <%= portname %></h3>
     <div class='basic_annotation'>

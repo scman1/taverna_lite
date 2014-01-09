@@ -48,7 +48,7 @@
     <b>Workflow Activities</b>
   </div>
   <ol id="selectable">
-    <%if @sources.count > 0 %>
+    <%if @inputs.count > 0 %>
       <li class="ui-widget-content"  id="Inputs">
         <div style="float: left;width:20%">
           <%= image_tag "taverna_lite/inputport.png", :alt => "input",
@@ -114,7 +114,7 @@
         </div>
       </li>
     <% end %>
-    <%if @sinks.count > 0 %>
+    <%if @outputs.count > 0 %>
       <li id="Outputs" class="ui-widget-content" >
         <div style="float: left;width:20%">
           <%= image_tag "taverna_lite/outputport.png", :alt => "output",

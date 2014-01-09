@@ -46,7 +46,7 @@
 
 <div id="Inputs_component" class="div_component" style="display:none;">
 
-<% if @sources.count>0 %>
+<% if @inputs.count>0 %>
   <%= button_tag image_tag('taverna_lite/help.png'),
     :id=>"inputs_dialog_opener", :style=>"padding: 0; border: none;
     background: none; float: right;", :alt => "Customise Input Help" %>
@@ -57,11 +57,11 @@
   <%= hidden_field_tag "workflow_id", @workflow.id %>
   <%= hidden_field_tag "selected_tab", 'components' %>
   <%= hidden_field_tag "selected_choice", 'inputs' %>
-   <% @custom_inputs.each do |item| %>
+  <% @inputs.each do |item| %>
      <!-- Get the original sample and description values from t2flow -->
      <% portname = item.name %>
-     <% example_value = @sources[portname].blank? ? "": @sources[portname] -%>
-     <% descr= @source_descriptions[portname].blank? ? "" : @source_descriptions[portname] -%>
+     <% example_value = item.example.blank? ? "": item.example -%>
+     <% descr = item.description.blank? ? "" : item.description -%>
      <div class="port_details">
      <h3> <%= portname %> </h3>
      <div class='basic_annotation'>
