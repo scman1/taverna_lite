@@ -68,8 +68,7 @@ module TavernaLite
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes
       #get the workflow processors to display structure
-      @processors = @workflow_profile.get_processors
-      @ordered_processors = @workflow_profile.get_processors_in_order
+      @processors = @workflow_profile.processors
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
@@ -129,7 +128,7 @@ module TavernaLite
         format.json { head :no_content }
        end
     end
-    private
+
     # Get the components for a given workflow
     def get_workflow_components(id)
       workflow_profile = WorkflowProfile.find(id)
@@ -182,7 +181,7 @@ module TavernaLite
     def annotate_processor
       @workflow = TavernaLite.workflow_class.find(params[:id])
       action = params[:commit]
-      #works for now but will need changes if saving all at once is enabled
+      # works for now but will need changes if saving all at once is enabled
       processor_name =  params[:processor_annotations][:processor_name]
       new_name =  params[:processor_annotations]["name_for_#{processor_name}"]
       description = params[:processor_annotations]["description_for_#{processor_name}"]
@@ -193,14 +192,25 @@ module TavernaLite
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
       processor_ports = params[:processor_annotations]["#{processor_name}_ports"]
-      the_ports = processor_ports.split(",")
-      the_ports.each do |p|
-        customise =  params[:processor_annotations]["add_#{p}"]
-        if customise == "1"
-          port_name=params[:processor_annotations]["name_for_port_#{p}"]
-          port_description=params[:processor_annotations]["description_for_port_#{p}"]
-          port_example=params[:processor_annotations]["example_for_port_#{p}"]
-          writer.add_wf_port(xmlFile, new_name, p, port_name, port_description,  port_example)
+      unless processor_ports.nil?
+        # add a new workflow port
+        the_ports = processor_ports.split(",")
+        the_ports.each do |p|
+          customise =  params[:processor_annotations]["add_#{p}"]
+          if customise == "1"
+            port_name=params[:processor_annotations]["name_for_port_#{p}"]
+            port_description=params[:processor_annotations]["description_for_port_#{p}"]
+            port_example=params[:processor_annotations]["example_for_port_#{p}"]
+            writer.add_wf_port(xmlFile, new_name, p, port_name, port_description,  port_example)
+            wfp = WorkflowPort.new()
+            wfp.name = port_name
+            wfp.description = port_description
+            wfp.example = port_example
+            wfp.workflow_id = @workflow.id
+            wfp.workflow_profile_id = WorkflowProfile.find_by_workflow_id(@workflow.id).id
+            wfp.port_type_id = 2
+            wfp.save
+          end
         end
       end
       respond_to do |format|

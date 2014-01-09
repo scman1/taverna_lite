@@ -260,14 +260,7 @@ module TavernaLite
       return collect
     end
 
-    def get_processors
-      # get the workflow t2flow model
-      wf_model = get_model
-      # collect the workflow processors and their descriptions
-      return wf_model.processors()
-    end
-
-    def get_processors_in_order
+    def processors
       # get the workflow t2flow model
       wf_model = get_model
       processor_names = get_processors_order(wf_model)
@@ -346,10 +339,6 @@ module TavernaLite
       # return the sorted array in reverse order
       sorted_array.reverse
     end
-
-
-
-    private
   end
 end
 

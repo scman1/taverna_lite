@@ -83,59 +83,63 @@
         </dd>
       </dl>
     </div><!--Basic Anotations div-->
-    <h3>
-      <%= image_tag "taverna_lite/output_add.png", :alt => "Add Outputs"%>
-      Add Outputs
-      <%= button_tag image_tag('taverna_lite/help.png'),
-        :id=>"add_output_opener_#{processor.name}", :style=>"padding: 0;
-        border: none; background: none;float: right;",
-        :alt => "Add Output Help" %>
-    </h3>
-    <div>
-      <span class="more_options">processor outputs
-        <%= proc_outs[processor.name][:ports].count%></span>
-      <table class="processor_out_ports">
-        <tr>
-          <th>port</th>
-          <th>Connected to</th>
-          <th>Add New Output</th>
-        </tr>
-        <% proc_ports = "" %>
-        <% proc_outs[processor.name][:ports].each do |port_k,port_v|
-          portname = port_k
-          unless proc_ports==""
-            proc_ports += "," + portname
-          else
-            proc_ports = portname
-          end
-          %>
-          <tr class="<%= cycle("", "alt")%>">
-            <td><%= port_k %></td>
-            <td>
-              <% port_v[:connections].each do |c| %>
-                <%= unless c == "" then c else "NOT CONNECTED"end%>
-                <br/>
-              <% end %>
-            </td>
-            <td>
-              <%= f.check_box "add_#{portname}", :checked => false %>
-              <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%><br/>
-              <b>Output Name:</b>
-              <%= f.text_field "name_for_port_#{portname}",
-                :value => processor.name+"_"+portname, :style =>'width:95%' %>
-              <b>Output Description</b>
-              <%= f.text_area "description_for_port_#{portname}", :value => port_v[:description],
-                :rows => 3, :style =>'width:95%'  %>
-               <b>Output Example Value</b>
-               <%= f.text_area "example_for_port_#{portname}", :value => port_v[:example],
-                 :rows => 3, :style =>'width:95%'  %>
-             </td>
-           </tr>
-           <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
-        <% end %>
-        <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
-      </table>
-    </div><!--Advanced Anotations div-->
+    <% unless proc_outs[processor.name][:ports].nil? -%>
+      <h3>
+        <%= image_tag "taverna_lite/output_add.png", :alt => "Add Outputs"%>
+        Add Outputs
+        <%= button_tag image_tag('taverna_lite/help.png'),
+          :id=>"add_output_opener_#{processor.name}", :style=>"padding: 0;
+          border: none; background: none;float: right;",
+          :alt => "Add Output Help" %>
+      </h3>
+      <div>
+        <span class="more_options">processor outputs
+          <%= proc_outs[processor.name][:ports].count%></span>
+        <table class="processor_out_ports">
+          <tr>
+            <th>port</th>
+            <th>Connected to</th>
+            <th>Add New Output</th>
+          </tr>
+          <% proc_ports = "" %>
+          <% proc_outs[processor.name][:ports].each do |port_k,port_v|
+            portname = port_k
+            unless proc_ports==""
+              proc_ports += "," + portname
+            else
+              proc_ports = portname
+            end
+            %>
+            <tr class="<%= cycle("", "alt")%>">
+              <td><%= port_k %></td>
+              <td>
+                <% port_v[:connections].each do |c| %>
+                  <%= unless c == "" then c else "NOT CONNECTED"end%>
+                  <br/>
+                <% end %>
+              </td>
+              <td>
+                <%= f.check_box "add_#{portname}", :checked => false %>
+                <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%><br/>
+                <b>Output Name:</b>
+                <%= f.text_field "name_for_port_#{portname}",
+                  :value => processor.name+"_"+portname, :style =>'width:95%' %>
+                <b>Output Description</b>
+                <%= f.text_area "description_for_port_#{portname}", :value => port_v[:description],
+                  :rows => 3, :style =>'width:95%'  %>
+                 <b>Output Example Value</b>
+                 <%= f.text_area "example_for_port_#{portname}", :value => port_v[:example],
+                   :rows => 3, :style =>'width:95%'  %>
+               </td>
+             </tr>
+             <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
+          <% end %>
+          <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
+        </table>
+      </div><!--Advanced Anotations div-->
+    <% else %>
+      This processor has no outputs
+    <% end -%>
     <% unless (@component_alternatives.nil? ||
       @component_alternatives[processor.name].nil? ||
       @component_alternatives[processor.name].count == 0) %>

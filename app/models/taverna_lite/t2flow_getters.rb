@@ -136,6 +136,7 @@ module TavernaLite
 
       processors.each{ |proc|
         if proc.name == name then
+            unless proc.outputs.nil?
             processor[:type] = proc.type
             proc.outputs.each { |output|
               description = ""
@@ -152,6 +153,7 @@ module TavernaLite
                 :example=>example, :workflow_port => nil}
             }
            processor[:ports] = ports
+           end
           break
         end
       }
@@ -185,6 +187,7 @@ module TavernaLite
       datalinks = T2Flow::Parser.new.parse(xml_file).datalinks
       all_processor_outputs.each { |processor_key, a_processor|
         processor_name = processor_key
+        unless a_processor[:ports].nil?
         a_processor[:ports].each { |port_key, a_port|
           port_name = port_key
           link_source = processor_name + ":" + port_name
@@ -195,6 +198,7 @@ module TavernaLite
             end
           }
         }
+        end
       }
     end # method get_port_links
 
