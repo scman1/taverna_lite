@@ -185,6 +185,7 @@ module TavernaLite
       processor_name =  params[:processor_annotations][:processor_name]
       new_name =  params[:processor_annotations]["name_for_#{processor_name}"]
       description = params[:processor_annotations]["description_for_#{processor_name}"]
+      replace_with = params[:processor_annotations]["replace_#{processor_name}_with"]
       selected_tab = params[:selected_tab]
       selected_choice = params[:selected_choice]
       if action == "Reset" then description = "" end
@@ -212,6 +213,10 @@ module TavernaLite
             wfp.save
           end
         end
+      end
+      comp_in_proc_id = params[:component_id]
+      if replace_with != comp_in_proc_id
+        writer.replace_component(@workflow.workflow_filename,processor_name,replace_with)
       end
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}

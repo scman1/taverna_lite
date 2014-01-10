@@ -225,12 +225,17 @@ module TavernaLite
             wfc.family = config_bean.elements['familyName'].text
             wfc.name = config_bean.elements['componentName'].text
             wfc.version = config_bean.elements['componentVersion'].text
-            wfc_db = WorkflowComponent.find_by_name(wfc.name)
             wf = nil
-            unless wfc_db.nil?
-              wf =  TavernaLite.workflow_class.find(wfc_db.workflow_id)
-            end
-            components[processor_name] = [wfc, wf]
+            # get additional component info, if component is registered locally.
+            # (should get this from my experiment)
+            # need to find by name, family, registry and version to guarantee
+            # the component in the db corresponds to the one in t2flow
+            wfc_db = WorkflowComponent.find_by_name_and_registry_and_family_and_version(wfc.name,wfc.registry,wfc.family,wfc.version)
+           unless wfc_db.nil?
+             wfc = wfc_db
+             wf =  TavernaLite.workflow_class.find(wfc_db.workflow_id)
+           end
+           components[processor_name] = [wfc, wf]
           end
         }
       }

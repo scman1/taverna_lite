@@ -152,6 +152,23 @@
           :alt => "Swap Component Help" %>
       </h3>
       <div>
+      <!-- First presnet the currenly selected component -->
+        <%= hidden_field_tag "component_id", comp_in_proc.id %>
+        <div class="replaceable" id="<%= comp_in_proc.name%>">
+          <span style="float: left;width:20%">
+            <%= image_tag "taverna_lite/taverna-component.png",
+              :size => "48x48", :alt => "<<COMPONENT>>",
+              :class=>"componenticon" %>
+          </span> <!--image div -->
+            <b>
+              <% alternative_comp = comp_in_proc.id.to_s %>
+              <%=f.radio_button("replace_#{processor.name}_with", alternative_comp, :checked=>true) %>
+              <%= comp_in_proc.name %>(V.<%= comp_in_proc.version %>)</b><br/>
+          <b>Family:</b><%= comp_in_proc.family %><br/>
+          <b>Registry: </b><%= comp_in_proc.registry %><br/>
+          <b>Description: </b><%= comp_in_proc.workflow.title %><br/>
+        </div><!--component alternative div-->
+      <!-- now present the alternative components -->
       <% @component_alternatives[processor.name].each do |item| %>
          <% componentname = item[0].name %>
           <div class="replaceable" id="<%= item[0].name%>">
@@ -160,26 +177,13 @@
                 :size => "48x48", :alt => "<<COMPONENT>>",
                 :class=>"componenticon" %>
             </span> <!--image div -->
-            <span class="desc_div">
-              <b><%= componentname %>(V.<%= item[0].version %>)</b><br/>
+              <b>
+                <% alternative_comp = item[0].id.to_s %>
+                <%=f.radio_button("replace_#{processor.name}_with", alternative_comp) %>
+                <%= componentname %>(V.<%= item[0].version %>)</b><br/>
               <b>Family:</b><%= item[0].family %><br/>
               <b>Registry: </b><%= item[0].registry %><br/>
               <b>Description: </b><%= item[1].title %><br/>
-            </span> <!--description div -->
-            <span class="action_div">
-              <%= form_for 'replace_#{componentname}',
-                :url => {:controller => 'workflow_components', :action => 'replace'},
-                :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
-              <%= hidden_field_tag "processor_name", processor.name %>
-              <%= hidden_field_tag "component_id", item[0].id %>
-              <%= hidden_field_tag "workflow_id", @workflow.id %>
-                <span title="Replace selected component"
-                  alt="Replace selected component"
-                  style="float:center; padding:5px;margin-top: 3px;">
-                    <%= submit_tag 'Replace' %>
-                </span> <!--buton div -->
-              <% end -%> <!--form-->
-            </span>
           </div><!--component alternative div-->
       <% end %>
       </div>
