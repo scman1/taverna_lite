@@ -51,9 +51,6 @@ TavernaLite::Engine.routes.draw do
 
   resources :feature_models
 
-
-  resources :alternative_components
-
   resources :workflow_components do
     member do
       post "replace"
