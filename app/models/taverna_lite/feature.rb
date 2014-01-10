@@ -93,6 +93,7 @@ module TavernaLite
       end
       return feature_alternatives
     end
+
     def additional
       feature_additionals =[]
       unless instantiated

@@ -154,15 +154,20 @@ module TavernaLite
             c_family, c_registry, c_version)
           # find alternatives registered in DB
           unless wfc_db.nil?()
-            alternatives = TavernaLite::AlternativeComponent.where(:component_id=>wfc_db.id)
-            # get details of alternative components
-            unless alternatives.nil? then
+            alt_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].alternatives
+            unless alt_features.nil?
               component_alternatives[proc_name] = []
-              alternatives.each do |alt_comp|
-                a_wfc = TavernaLite::WorkflowComponent.find(alt_comp.alternative_id)
+              alt_features.each { |af|
+                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
                 wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                puts "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
+                puts alt_features.count
+                puts proc_name
+                puts "COMPONENT: " + a_wfc.name
+                puts "WORKFLOW: " + wf.name
+                puts "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
                 component_alternatives[proc_name]<<[a_wfc,wf]
-              end
+              }
             end
           end
         end
