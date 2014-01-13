@@ -63,7 +63,11 @@ module TavernaLite
     end
 
     def outputs
-      return workflow_ports.where(:port_type_id=>2)
+      ports = workflow_ports.where(:port_type_id=>2)
+      if ports.nil? or ports.blank?
+        ports = get_customised_ports(2)
+      end
+      return ports
     end
 
     def get_custom_inputs
@@ -90,6 +94,7 @@ module TavernaLite
           missing_port = WorkflowPort.new()
           missing_port.name = port_x.name
           missing_port.workflow_id = workflow.id
+          missing_port.workflow_profile_id = self.id
           missing_port.port_type_id = port_type       # id of inputs
           missing_port.display_control_id = 1         # default display control
           example_values = port_x.example_values
