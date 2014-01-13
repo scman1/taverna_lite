@@ -62,30 +62,30 @@ module TavernaLite
 
     test "should create feature_model_metadatum" do
       assert_difference('FeatureModelMetadatum.count') do
-        post :create, feature_model_metadatum: { address: @feature_model_metadatum.address, creator: @feature_model_metadatum.creator, date: @feature_model_metadatum.date, department: @feature_model_metadatum.department, description: @feature_model_metadatum.description, email: @feature_model_metadatum.email, feature_model_id: @feature_model_metadatum.feature_model_id, organisation: @feature_model_metadatum.organisation, phone: @feature_model_metadatum.phone, reference: @feature_model_metadatum.reference, website: @feature_model_metadatum.website }
+        post :create, :feature_model_metadatum => { :address => @feature_model_metadatum.address, :creator => @feature_model_metadatum.creator, :date => @feature_model_metadatum.date, :department => @feature_model_metadatum.department, :description => @feature_model_metadatum.description, :email => @feature_model_metadatum.email, :feature_model_id => @feature_model_metadatum.feature_model_id, :organisation => @feature_model_metadatum.organisation, :phone => @feature_model_metadatum.phone, :reference => @feature_model_metadatum.reference, :website => @feature_model_metadatum.website }
       end
 
       assert_redirected_to feature_model_metadatum_path(assigns(:feature_model_metadatum))
     end
 
     test "should show feature_model_metadatum" do
-      get :show, id: @feature_model_metadatum
+      get :show, :id => @feature_model_metadatum
       assert_response :success
     end
 
     test "should get edit" do
-      get :edit, id: @feature_model_metadatum
+      get :edit, :id => @feature_model_metadatum
       assert_response :success
     end
 
     test "should update feature_model_metadatum" do
-      put :update, id: @feature_model_metadatum, feature_model_metadatum: { address: @feature_model_metadatum.address, creator: @feature_model_metadatum.creator, date: @feature_model_metadatum.date, department: @feature_model_metadatum.department, description: @feature_model_metadatum.description, email: @feature_model_metadatum.email, feature_model_id: @feature_model_metadatum.feature_model_id, organisation: @feature_model_metadatum.organisation, phone: @feature_model_metadatum.phone, reference: @feature_model_metadatum.reference, website: @feature_model_metadatum.website }
+      put :update, :id => @feature_model_metadatum, :feature_model_metadatum => { :address => @feature_model_metadatum.address, :creator => @feature_model_metadatum.creator, :date => @feature_model_metadatum.date, :department => @feature_model_metadatum.department, :description => @feature_model_metadatum.description, :email => @feature_model_metadatum.email, :feature_model_id => @feature_model_metadatum.feature_model_id, :organisation => @feature_model_metadatum.organisation, :phone => @feature_model_metadatum.phone, :reference => @feature_model_metadatum.reference, :website => @feature_model_metadatum.website }
       assert_redirected_to feature_model_metadatum_path(assigns(:feature_model_metadatum))
     end
 
     test "should destroy feature_model_metadatum" do
       assert_difference('FeatureModelMetadatum.count', -1) do
-        delete :destroy, id: @feature_model_metadatum
+        delete :destroy, :id => @feature_model_metadatum
       end
 
       assert_redirected_to feature_model_metadata_path

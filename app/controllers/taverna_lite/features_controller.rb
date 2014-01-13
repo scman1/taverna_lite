@@ -9,7 +9,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @features }
+        format.json { render :json => @features }
       end
     end
 
@@ -20,7 +20,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # show.html.erb
-        format.json { render json: @feature }
+        format.json { render :json => @feature }
       end
     end
 
@@ -33,7 +33,7 @@ module TavernaLite
         @feature_models<<[fm.name,fm.id]}
       respond_to do |format|
         format.html # new.html.erb
-        format.json { render json: @feature }
+        format.json { render :json => @feature }
       end
     end
 
@@ -52,11 +52,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature.save
-          format.html { redirect_to @feature, notice: 'Feature was successfully created.' }
-          format.json { render json: @feature, status: :created, location: @feature }
+          format.html { redirect_to @feature, :notice => 'Feature was successfully created.' }
+          format.json { render :json => @feature, :status => :created, :location => @feature }
         else
-          format.html { render action: "new" }
-          format.json { render json: @feature.errors, status: :unprocessable_entity }
+          format.html { render :action => "new" }
+          format.json { render :json => @feature.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -68,11 +68,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature.update_attributes(params[:feature])
-          format.html { redirect_to @feature, notice: 'Feature was successfully updated.' }
+          format.html { redirect_to @feature, :notice => 'Feature was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @feature.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @feature.errors, :status => :unprocessable_entity }
         end
       end
     end

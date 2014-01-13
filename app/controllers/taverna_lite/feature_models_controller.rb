@@ -52,7 +52,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @feature_models }
+        format.json { render :json => @feature_models }
       end
     end
 
@@ -63,7 +63,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # show.html.erb
-        format.json { render json: @feature_model }
+        format.json { render :json => @feature_model }
       end
     end
 
@@ -74,7 +74,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # new.html.erb
-        format.json { render json: @feature_model }
+        format.json { render :json => @feature_model }
       end
     end
 
@@ -90,11 +90,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature_model.save
-          format.html { redirect_to @feature_model, notice: 'Feature model was successfully created.' }
-          format.json { render json: @feature_model, status: :created, location: @feature_model }
+          format.html { redirect_to @feature_model, :notice => 'Feature model was successfully created.' }
+          format.json { render :json => @feature_model, :status => :created, :location => @feature_model }
         else
-          format.html { render action: "new" }
-          format.json { render json: @feature_model.errors, status: :unprocessable_entity }
+          format.html { render :action => "new" }
+          format.json { render :json => @feature_model.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -106,11 +106,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature_model.update_attributes(params[:feature_model])
-          format.html { redirect_to @feature_model, notice: 'Feature model was successfully updated.' }
+          format.html { redirect_to @feature_model, :notice => 'Feature model was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @feature_model.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @feature_model.errors, :status => :unprocessable_entity }
         end
       end
     end

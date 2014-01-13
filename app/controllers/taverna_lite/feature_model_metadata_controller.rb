@@ -52,7 +52,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @feature_model_metadata }
+        format.json { render :json => @feature_model_metadata }
       end
     end
 
@@ -63,7 +63,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # show.html.erb
-        format.json { render json: @feature_model_metadatum }
+        format.json { render :json => @feature_model_metadatum }
       end
     end
 
@@ -74,7 +74,7 @@ module TavernaLite
 
       respond_to do |format|
         format.html # new.html.erb
-        format.json { render json: @feature_model_metadatum }
+        format.json { render :json => @feature_model_metadatum }
       end
     end
 
@@ -90,11 +90,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature_model_metadatum.save
-          format.html { redirect_to @feature_model_metadatum, notice: 'Feature model metadatum was successfully created.' }
-          format.json { render json: @feature_model_metadatum, status: :created, location: @feature_model_metadatum }
+          format.html { redirect_to @feature_model_metadatum, :notice => 'Feature model metadatum was successfully created.' }
+          format.json { render :json => @feature_model_metadatum, :status => :created, :location => @feature_model_metadatum }
         else
-          format.html { render action: "new" }
-          format.json { render json: @feature_model_metadatum.errors, status: :unprocessable_entity }
+          format.html { render :action => "new" }
+          format.json { render :json => @feature_model_metadatum.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -106,11 +106,11 @@ module TavernaLite
 
       respond_to do |format|
         if @feature_model_metadatum.update_attributes(params[:feature_model_metadatum])
-          format.html { redirect_to @feature_model_metadatum, notice: 'Feature model metadatum was successfully updated.' }
+          format.html { redirect_to @feature_model_metadatum, :notice => 'Feature model metadatum was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @feature_model_metadatum.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @feature_model_metadatum.errors, :status => :unprocessable_entity }
         end
       end
     end

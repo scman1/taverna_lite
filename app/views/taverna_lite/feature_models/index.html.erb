@@ -13,7 +13,7 @@
     <td><%= feature_model.name %></td>
     <td><%= link_to 'Show', feature_model %></td>
     <td><%= link_to 'Edit', edit_feature_model_path(feature_model) %></td>
-    <td><%= link_to 'Destroy', feature_model, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Destroy', feature_model, :method => :delete, :data => { :confirm => 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>

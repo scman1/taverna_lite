@@ -62,30 +62,30 @@ module TavernaLite
 
     test "should create feature_model" do
       assert_difference('FeatureModel.count') do
-        post :create, feature_model: { name: @feature_model.name }
+        post :create, :feature_model => { :name => @feature_model.name }
       end
 
       assert_redirected_to feature_model_path(assigns(:feature_model))
     end
 
     test "should show feature_model" do
-      get :show, id: @feature_model
+      get :show, :id => @feature_model
       assert_response :success
     end
 
     test "should get edit" do
-      get :edit, id: @feature_model
+      get :edit, :id => @feature_model
       assert_response :success
     end
 
     test "should update feature_model" do
-      put :update, id: @feature_model, feature_model: { name: @feature_model.name }
+      put :update, :id => @feature_model, :feature_model => { :name => @feature_model.name }
       assert_redirected_to feature_model_path(assigns(:feature_model))
     end
 
     test "should destroy feature_model" do
       assert_difference('FeatureModel.count', -1) do
-        delete :destroy, id: @feature_model
+        delete :destroy, :id => @feature_model
       end
 
       assert_redirected_to feature_models_path
