@@ -48,7 +48,7 @@ module TavernaLite
       :order, :port_type_id, :workflow_id, :depth, :granular_depth
 
     # Each port will be mapped to a workflow_profile in the main application
-    belongs_to :workflow_profile, :class_name =>TavernaLite::WorkflowProfile
+    belongs_to :workflow_profile
 
     # After saving the port, save the example file, if provided
     after_save :store_file

@@ -65,28 +65,6 @@ module TavernaLite
     def outputs
       return workflow_ports.where(:port_type_id=>2)
     end
-#    def get_inputs
-#      sources = {}
-#      descriptions = {}
-#      # get the workflow t2flow model
-#      model = get_model
-#      # collect the sources and their descriptions
-#      model.sources().each{|source|
-#        example_values = source.example_values
-#        if ((!example_values.nil?) && (example_values.size == 1)) then
-#          sources[source.name] = example_values[0]
-#        else
-#          sources[source.name] = ""
-#        end
-#        description_values = source.descriptions
-#        if ((!description_values.nil?) && (description_values.size == 1)) then
-#          descriptions[source.name] = description_values[0]
-#        else
-#          descriptions[source.name] = ""
-#        end
-#      }
-#      return [sources,descriptions]
-#    end
 
     def get_custom_inputs
       get_customised_ports(1)
@@ -136,29 +114,6 @@ module TavernaLite
       # 4 Return the list of custom inputs
       return custom_ports
     end
-
-#    def get_outputs
-#      sinks = {}
-#      descriptions = {}
-#      # get the workflow t2flow model
-#      model = get_model
-#      # collect the sinks and their descriptions
-#      model.sinks().each{|sink|
-#        example_values = sink.example_values
-#        if ((!example_values.nil?) && (example_values.size == 1)) then
-#          sinks[sink.name] = example_values[0]
-#        else
-#          sinks[sink.name] = ""
-#        end
-#        description_values = sink.descriptions
-#        if ((!description_values.nil?) && (description_values.size == 1)) then
-#          descriptions[sink.name] = description_values[0]
-#        else
-#          descriptions[sink.name] = ""
-#        end
-#      }
-#      return [sinks,descriptions]
-#    end
 
     # get the workflow model
     def get_model

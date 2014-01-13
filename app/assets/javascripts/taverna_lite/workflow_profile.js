@@ -120,12 +120,12 @@
     }
   }
 
-  function validate_name(text){    //Allow only letters, numbers and underscore
-    var element = document.getElementById(text);
+  function validate_name(input_field_name){    //Allow only letters, numbers and underscore
+    var element = document.getElementById(input_field_name);
     var ele_value = element.value;
     var patt = new RegExp("^[a-zA-Z0-9_]+$");
     var res = patt.test(ele_value);
-    var errmsg_id="error_for_"+text;
+    var errmsg_id="error_for_"+input_field_name;
     var err_el = document.getElementById(errmsg_id);
     if (!res) {
       err_el.style.display = "block";
