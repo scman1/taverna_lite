@@ -60,7 +60,7 @@
         style="display: none;">
         <%= render :partial=>'taverna_lite/workflow_components/customise',
          :locals => {:processor => proc, :proc_outs=>@processor_ports,
-         :comp_in_proc => wfc}%>
+         :comp_in_proc => wfc, :all_procs => @processor_names }%>
         <% unless wfc.nil? %>
           <h4>COMPONENT DETAILS</h4>
           <dl class='list_any'>

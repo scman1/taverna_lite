@@ -62,13 +62,20 @@ module TavernaLite
       end
       # gets inputs, with customisation if they exist
       @inputs = @workflow_profile.inputs
+      @input_names = []
+      @inputs.each {|p| @input_names << p.name}
       # gets outputs, with customisation if they exist
       @outputs = @workflow_profile.outputs
+      @output_names = []
+      @outputs.each {|p| @output_names << p.name}
       #get errors and error codes
       @workflow_errors = @workflow_profile.get_errors
       @workflow_error_codes = @workflow_profile.get_error_codes
       #get the workflow processors to display structure
       @processors = @workflow_profile.processors
+      puts "*******************************************************************"
+      @processor_names = []
+      @processors.each {|p| @processor_names << p.name}
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller

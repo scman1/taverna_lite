@@ -68,11 +68,10 @@
      <dl class='list_any'>
        <dt class='list_title'>Name:</dt>
        <dd class='list_description'>
+         <% i_names = "'"+(@input_names-[item.name]).join(",")+"'" %>
          <%= f.text_field "name_for_#{portname}", :value => portname,
-           :onkeyup=>"validate_name(this.id);", :style =>'width:95%'%>
-         <% alert_msg = "Name can only contain letters (a-z,A-Z)" +
-              ", numbers (0-9) and underscore(_)" %>
-         <%= content_tag :span, alert_msg, :style=>"display:none",
+           :onkeyup=>"validate_name(this.id, #{i_names});", :style =>'width:95%'%>
+         <%= content_tag :span, "ERROR", :style=>"display:none",
            :id=>"error_for_port_annotations_name_for_#{portname}",
            :class=>"warning_message" %>
        </dd>

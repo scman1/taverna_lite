@@ -104,7 +104,7 @@ module TavernaLite
           # verify if customised input exists
           condition = "port_type_id = ? and name = ? and workflow_id = ?"
           wfps = WorkflowPort.where(condition, port_type, port_name, @workflow.id)
-          wf_prof =  WorkflowPort.find_by_workflow_id(@workflow.id)
+          wf_prof =  WorkflowProfile.find_by_workflow_id(@workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
