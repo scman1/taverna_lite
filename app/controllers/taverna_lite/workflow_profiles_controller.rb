@@ -223,7 +223,8 @@ module TavernaLite
       end
       comp_in_proc_id = params[:component_id]
       if replace_id != comp_in_proc_id
-        #logger.info "Replacing Component in processor " + processor_name +" with component: " + replace_id
+        #logger.info "Replaced component " + comp_in_proc_id + " in processor " +
+        #  processor_name +" with component: " + replace_id
         writer.replace_component(@workflow.workflow_filename,processor_name,replace_id)
       end
       respond_to do |format|

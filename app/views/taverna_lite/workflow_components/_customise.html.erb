@@ -190,9 +190,9 @@
             </span> <!--image div -->
               <b>
                 <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
-                <%= prev_comp %></b><br/>
-              <b>Version:</b><%= prev_ver %><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
-              <b>Family:</b><%= prev_fam %><br/>
+                <%= prev_comp %></b> <br/>
+              <b>Version: </b><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Family: </b><%= prev_fam %><br/>
               <b>Registry: </b><%= prev_reg %><br/>
               <b>Description: </b><%= prev_des %><br/>
           </div><!--component alternative div-->
@@ -215,7 +215,7 @@
               <b>
                 <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
                 <%= prev_comp %></b><br/>
-              <b>Version:</b><%= prev_ver %><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Version: </b> <%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
               <b>Family:</b><%= prev_fam %><br/>
               <b>Registry: </b><%= prev_reg %><br/>
               <b>Description: </b><%= prev_des %><br/>
