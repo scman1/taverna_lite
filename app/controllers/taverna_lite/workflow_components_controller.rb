@@ -126,19 +126,5 @@ module TavernaLite
         format.json { head :no_content }
       end
     end
-
-    # Replace the selected component on the workflow
-    def replace
-      @workflow = Workflow.find(params[:id])
-      @from_op = 'replace'
-      processor_name = params[:processor_name]
-      replacement_id = WorkflowComponent.find(params[:component_id])
-      writer = T2flowWriter.new
-      writer.replace_component(@workflow.workflow_filename,processor_name,replacement_id)
-      respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet replaced'}
-        format.json { head :no_content }
-      end
-    end #method: replace
   end # Class WorkflowComponentsController
 end # Module TavernaLite

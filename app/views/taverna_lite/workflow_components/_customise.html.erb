@@ -162,40 +162,64 @@
           :alt => "Swap Component Help" %>
       </h3>
       <div>
-      <!-- First presnet the currenly selected component -->
-        <%= hidden_field_tag "component_id", comp_in_proc.id %>
-        <div class="replaceable" id="<%= comp_in_proc.name%>">
-          <span style="float: left;width:20%">
-            <%= image_tag "taverna_lite/taverna-component.png",
-              :size => "48x48", :alt => "<<COMPONENT>>",
-              :class=>"componenticon" %>
-          </span> <!--image div -->
-            <b>
-              <% alternative_comp = comp_in_proc.id.to_s %>
-              <%=f.radio_button("replace_#{processor.name}_with", alternative_comp, :checked=>true) %>
-              <%= comp_in_proc.name %>(V.<%= comp_in_proc.version %>)</b><br/>
-          <b>Family:</b><%= comp_in_proc.family %><br/>
-          <b>Registry: </b><%= comp_in_proc.registry %><br/>
-          <b>Description: </b><%= comp_in_proc.workflow.title %><br/>
-        </div><!--component alternative div-->
-      <!-- now present the alternative components -->
+      <!-- present the alternative components -->
+      <% prev_comp = comp_in_proc.name
+         prev_fam = comp_in_proc.family
+         prev_reg = comp_in_proc.registry
+         prev_ver = sel_version = comp_in_proc.version
+         prev_id =  comp_in_proc.id
+         prev_des = comp_in_proc.workflow.title %>
+      <% ver_list = {sel_version=>comp_in_proc.id}%>
+
       <% @component_alternatives[processor.name].each do |item| %>
-         <% componentname = item[0].name %>
-          <div class="replaceable" id="<%= item[0].name%>">
+        <% current_comp = item[0].name
+           current_ver = item[0].version
+           current_fam = item[0].family
+           current_reg = item[0].registry
+           current_des = item[1].description
+           current_id = item[0].id
+           %>
+        <% if current_comp == prev_comp && current_fam == prev_fam && current_reg == prev_reg %>
+          <% ver_list[current_ver] = item[0].id %>
+        <% else %>
+          <div class="replaceable" id="<%= prev_comp %>">
             <span style="float: left;width:20%">
               <%= image_tag "taverna_lite/taverna-component.png",
                 :size => "48x48", :alt => "<<COMPONENT>>",
                 :class=>"componenticon" %>
             </span> <!--image div -->
               <b>
-                <% alternative_comp = item[0].id.to_s %>
-                <%=f.radio_button("replace_#{processor.name}_with", alternative_comp) %>
-                <%= componentname %>(V.<%= item[0].version %>)</b><br/>
-              <b>Family:</b><%= item[0].family %><br/>
-              <b>Registry: </b><%= item[0].registry %><br/>
-              <b>Description: </b><%= item[1].title %><br/>
+                <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
+                <%= prev_comp %></b><br/>
+              <b>Version:</b><%= prev_ver %><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Family:</b><%= prev_fam %><br/>
+              <b>Registry: </b><%= prev_reg %><br/>
+              <b>Description: </b><%= prev_des %><br/>
           </div><!--component alternative div-->
+          <% prev_comp = item[0].name
+           prev_ver = item[0].version
+           prev_fam = item[0].family
+           prev_reg = item[0].registry
+           prev_id = item[0].id
+           prev_des =  item[1].description
+           ver_list = {prev_ver=>prev_id}
+           %>
+        <% end%>
       <% end %>
+                <div class="replaceable" id="<%= prev_comp %>">
+            <span style="float: left;width:20%">
+              <%= image_tag "taverna_lite/taverna-component.png",
+                :size => "48x48", :alt => "<<COMPONENT>>",
+                :class=>"componenticon" %>
+            </span> <!--image div -->
+              <b>
+                <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
+                <%= prev_comp %></b><br/>
+              <b>Version:</b><%= prev_ver %><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Family:</b><%= prev_fam %><br/>
+              <b>Registry: </b><%= prev_reg %><br/>
+              <b>Description: </b><%= prev_des %><br/>
+          </div><!--component alternative div-->
       </div>
     <%end%>
   </div>
