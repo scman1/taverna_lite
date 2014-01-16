@@ -54,6 +54,7 @@ TavernaLite::Engine.routes.draw do
   resources :workflow_components do
     member do
       post "replace"
+      post "remove"
     end
   end
 

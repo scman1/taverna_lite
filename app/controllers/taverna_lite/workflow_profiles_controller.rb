@@ -187,6 +187,12 @@ module TavernaLite
     def annotate_processor
       @workflow = TavernaLite.workflow_class.find(params[:id])
       action = params[:commit]
+      if action == "remove"
+        processor_name = params[:processor_name]
+        writer = T2flowWriter.new
+        writer.remove_processor(@workflow.workflow_filename,processor_name)
+        TavernaLite::WorkflowProfile.find_by_workflow_id(@workflow.id).destroy
+      else
       # works for now but will need changes if saving all at once is enabled
       processor_name =  params[:processor_annotations][:processor_name]
       new_name =  params[:processor_annotations]["name_for_#{processor_name}"]
@@ -227,6 +233,8 @@ module TavernaLite
         #  processor_name +" with component: " + replace_id
         writer.replace_component(@workflow.workflow_filename,processor_name,replace_id)
       end
+      end
+
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
         format.json { head :no_content }
