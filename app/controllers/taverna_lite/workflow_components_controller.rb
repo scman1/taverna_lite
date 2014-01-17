@@ -139,6 +139,7 @@ module TavernaLite
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet replaced'}
         format.json { head :no_content }
       end
+    end
 
     # Remove the selected component from the workflow
     def remove
@@ -151,7 +152,6 @@ module TavernaLite
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet removed'}
         format.json { head :no_content }
       end
-
     end #method: replace
   end # Class WorkflowComponentsController
 end # Module TavernaLite

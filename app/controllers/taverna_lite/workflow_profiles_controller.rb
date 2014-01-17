@@ -73,7 +73,6 @@ module TavernaLite
       @workflow_error_codes = @workflow_profile.get_error_codes
       #get the workflow processors to display structure
       @processors = @workflow_profile.processors
-      puts "*******************************************************************"
       @processor_names = []
       @processors.each {|p| @processor_names << p.name}
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller

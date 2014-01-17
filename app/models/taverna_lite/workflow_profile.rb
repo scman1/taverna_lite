@@ -97,6 +97,7 @@ module TavernaLite
           missing_port.workflow_profile_id = self.id
           missing_port.port_type_id = port_type       # id of inputs
           missing_port.display_control_id = 1         # default display control
+          missing_port.show = true                    # always show if new
           example_values = port_x.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
             missing_port.example = example_values[0]
