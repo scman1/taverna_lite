@@ -43,57 +43,23 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-  <% if @outputs.count>0 %>
-    <p>
-      This workflow has <%= @outputs.count %>
-      <%= "output".pluralize(@outputs.count)%> that can be customised
-    </p>
-    <ul>
-      <li><b>Basic Annotation:</b></li>
-      <ol>
-        <li>
-          Changing the output name
-        </li>
-        <li>
-          Editing/Adding a description for the output
-        </li>
-        <li>
-          Providing an example value
-        </li>
-      </ol>
-      <li><b>Advanced Customisation:</b></li>
-      <ol>
-        <li>
-          Click on the arrow button to show advanced customisation alternatives
-        </li>
-        <li>
-          Providing the expected type of the output
-        </li>
-        <li>
-          Providing an example file
-        </li>
-        <li>
-          Selecting which the example will be shown (value or file)
-        </li>
-        <li>
-          Selecting if the output will be shown (hiden outputs will always be
-          calculated but the display UI will be able to hide them)
-        </li>
-        <li>
-          Selecting if the output will be removed (removed outputs will not be calculated by the server)
-        </li>
-      </ol>
-      <li>
-        <b>Repeat steps above for every output you want to customise</b>
-      </li>
-      <li>
-        <b>Click "Save" to save customised outputs</b>
-      </li>
-    </ul>
-    <b>NOTE:</b> The custom values and/or files can be used when the workflow
-    is shown
-  <%else %>
-    <p>
-      <b> This workflow has no outputs </b>
-    </p>
-  <%end %>
+<ul>
+  <li>
+    This component can be removed.
+  </li>
+  <li>
+    To swap a component:
+  </li>
+  <ol>
+    <li>
+      Select a component
+    </li>
+    <li>
+      Click on the "Remove" button to remove the selected component.
+    </li>
+  </ol>
+</ul>
+<span>
+  <b>NOTE:</b> The component will be removed immediately and the changes
+  saved into the workflow file.
+</span>

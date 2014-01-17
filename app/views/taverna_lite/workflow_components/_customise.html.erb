@@ -113,7 +113,9 @@
               <td><%= port_k %></td>
               <td>
                 <% port_v[:connections].each do |c| %>
-                  <%= unless c == "" then c else "NOT CONNECTED"end%>
+                  <%= unless c == "" then c.include?(":") ? "Component: " +
+                    c.split(":")[0] + " Port: " +
+                    c.split(":")[1] : "Workflow Output: " + c end%> <br/>
                   <br/>
                 <% end %>
               </td>
@@ -259,7 +261,9 @@
               <td><%= port_k %></td>
               <td>
                 <% port_v[:connections].each do |c| %>
-                  <%= unless c == "" then c end%> <br/>
+                  <%= unless c == "" then c.include?(":") ? "Component: " +
+                    c.split(":")[0] + " Port: " +
+                    c.split(":")[1] : "Workflow Output: " + c end%> <br/>
                 <% end %>
               </td>
              </tr>
@@ -305,6 +309,11 @@
     <%= render(
       :partial=>'taverna_lite/workflow_components/swap_instructions')%>
   </div>
+  <div id="remove_dialog_<%= "#{processor.name}" -%>"
+   title="Remove Component Help">
+    <%= render(
+      :partial=>'taverna_lite/workflow_components/remove_instructions')%>
+  </div>
 <script>
   $('form').submit(function() {
     if (!ValidateForm()){
@@ -345,6 +354,18 @@
   });
   $( "#swap_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#swap_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
+  });
+  $( "#remove_dialog_<%= "#{processor.name}" -%>" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
+  $( "#remove_opener_<%= "#{processor.name}" -%>" ).click(function() {
+    $("#remove_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
     return false;
   });
   $( "#annotate_<%= "#{processor.name}" -%>" ).accordion({
