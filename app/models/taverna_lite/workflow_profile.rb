@@ -59,34 +59,20 @@ module TavernaLite
     has_many :workflow_ports, :dependent => :destroy
 
     def inputs
-      return workflow_ports.where(:port_type_id=>1)
+      ports =  workflow_ports.where(:port_type_id=>1)
+      if ports.nil? or ports.blank?
+        ports = get_custom_inputs
+      end
+      return ports
     end
 
     def outputs
-      return workflow_ports.where(:port_type_id=>2)
+      ports = workflow_ports.where(:port_type_id=>2)
+      if ports.nil? or ports.blank?
+        ports = get_custom_outputs
+      end
+      return ports
     end
-#    def get_inputs
-#      sources = {}
-#      descriptions = {}
-#      # get the workflow t2flow model
-#      model = get_model
-#      # collect the sources and their descriptions
-#      model.sources().each{|source|
-#        example_values = source.example_values
-#        if ((!example_values.nil?) && (example_values.size == 1)) then
-#          sources[source.name] = example_values[0]
-#        else
-#          sources[source.name] = ""
-#        end
-#        description_values = source.descriptions
-#        if ((!description_values.nil?) && (description_values.size == 1)) then
-#          descriptions[source.name] = description_values[0]
-#        else
-#          descriptions[source.name] = ""
-#        end
-#      }
-#      return [sources,descriptions]
-#    end
 
     def get_custom_inputs
       get_customised_ports(1)
@@ -106,14 +92,17 @@ module TavernaLite
       else
         ports_list = model.sinks()
       end
+
       ports_list.each{|port_x|
         if (custom_ports).where("name='#{port_x.name}'").count() == 0 then
           # missing input
           missing_port = WorkflowPort.new()
           missing_port.name = port_x.name
           missing_port.workflow_id = workflow.id
+          missing_port.workflow_profile_id = self.id
           missing_port.port_type_id = port_type       # id of inputs
           missing_port.display_control_id = 1         # default display control
+          missing_port.show = true                    # always show
           example_values = port_x.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
             missing_port.example = example_values[0]
@@ -136,29 +125,6 @@ module TavernaLite
       # 4 Return the list of custom inputs
       return custom_ports
     end
-
-#    def get_outputs
-#      sinks = {}
-#      descriptions = {}
-#      # get the workflow t2flow model
-#      model = get_model
-#      # collect the sinks and their descriptions
-#      model.sinks().each{|sink|
-#        example_values = sink.example_values
-#        if ((!example_values.nil?) && (example_values.size == 1)) then
-#          sinks[sink.name] = example_values[0]
-#        else
-#          sinks[sink.name] = ""
-#        end
-#        description_values = sink.descriptions
-#        if ((!description_values.nil?) && (description_values.size == 1)) then
-#          descriptions[sink.name] = description_values[0]
-#        else
-#          descriptions[sink.name] = ""
-#        end
-#      }
-#      return [sinks,descriptions]
-#    end
 
     # get the workflow model
     def get_model

@@ -43,54 +43,54 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-
-  <% if @inputs.count>0 %>
-    <h3>
-      This workflow has <%= @inputs.count %>
-      <%= "input".pluralize(@inputs.count)%> that can be customised
-    </h3>
-    Basic Annotation:
-    <ol>
-      <li>
-        Changing the input name
-      </li>
-      <li>
-        Editing/Adding a description for the input
-      </li>
-      <li>
-        Providing an example value
-      </li>
-    </ol>
-    Advanced Customisation:
-    <ol>
-      <li>
-        Click on the arrow button to show advanced customisation alternatives
-      </li>
-      <li>
-        Providing the expected type of the input
-      </li>
-      <li>
-        Providing an example file
-      </li>
-      <li>
-        Selecting how the input will be requested (value, file or both)
-      </li>
-      <li>
-        Selecting if the input will be shown (hiden inputs will use their example value by default, acting as constants)
-      </li>
-    </ol>
+  <% if @inputs.count > 0 -%>
+    <p>
+    This workflow has <%= @inputs.count %>
+    <%= "input".pluralize(@inputs.count)%> that can be customised<br/>
+    </p>
     <ul>
+      <li><b>Basic Annotation:</b></li>
+      <ol>
+        <li>
+          Edit the input name
+        </li>
+        <li>
+          Edit/Add description for the input
+        </li>
+        <li>
+          Edit/Add example value
+        </li>
+      </ol>
+      <li>Advanced Customisation:</li>
+      <ol>
+        <li>
+          Click on the arrow button to show advanced customisation alternatives
+        </li>
+        <li>
+          Providing the expected type of the input
+        </li>
+        <li>
+          Providing an example file
+        </li>
+        <li>
+          Selecting how the input will be requested (value, file or both)
+        </li>
+        <li>
+          Selecting if the input will be shown (hiden inputs will use their
+          example value by default, acting as constants)
+        </li>
+      </ol>
       <li>
-        Repeat steps above for every input you want to customise
+        <b>Repeat steps above for every input you want to customise</b>
       </li>
       <li>
-        Click "Save" to save customised inputs
+        <b>Click "Save" to save customised inputs</b>
       </li>
     </ul>
     <b>NOTE:</b> The custom values and/or files can be used when the workflow
       is shown and run
-  <%else %>
+  <% else -%>
     <p>
       <b> This workflow has no inputs </b>
     </p>
-  <%end %>
+  <% end -%>

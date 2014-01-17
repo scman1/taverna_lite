@@ -64,11 +64,10 @@
       <dl class='list_any'>
         <dt class='list_title'>Name:</dt>
         <dd class='list_description'>
+          <%p_names = "'"+(all_procs-[processor.name]).join(",")+"'" %>
           <%= f.text_field "name_for_#{processor.name}", :value => processor.name,
-            :onkeyup=>"validate_name(this.id);", :style =>'width:95%'%>
-          <% alert_msg = "Name can only contain letters (a-z,A-Z)" +
-              ", numbers (0-9) and underscore(_)" %>
-          <%= content_tag(:span, alert_msg,
+            :onkeyup=>"validate_name(this.id,#{p_names});", :style =>'width:95%'%>
+          <%= content_tag(:span, "ERROR",
             :id=>"error_for_processor_annotations_name_for_#{processor.name}",
             :class=>"warning_message", :style=>"display:none") %>
         </dd>
@@ -114,7 +113,9 @@
               <td><%= port_k %></td>
               <td>
                 <% port_v[:connections].each do |c| %>
-                  <%= unless c == "" then c else "NOT CONNECTED"end%>
+                  <%= unless c == "" then c.include?(":") ? "Component: " +
+                    c.split(":")[0] + " Port: " +
+                    c.split(":")[1] : "Workflow Output: " + c end%> <br/>
                   <br/>
                 <% end %>
               </td>
@@ -122,11 +123,22 @@
                 <%= f.check_box "add_#{portname}", :checked => false %>
                 <%= image_tag "taverna_lite/add.png", :alt => "Add Output"%><br/>
                 <b>Output Name:</b>
+                <% o_names = "'"+(@output_names-[portname]).join(",")+"'"
+                   new_name = processor.name+"_"+portname
+                   begin
+                     if @output_names.include?(new_name)
+                       new_name = new_name  + "_new"
+                     end
+                   end while (@output_names.include?(new_name)) -%>
                 <%= f.text_field "name_for_port_#{portname}",
-                  :value => processor.name+"_"+portname, :style =>'width:95%' %>
+                  :value => new_name,
+                  :onkeyup=>"validate_name(this.id,#{o_names});", :style =>'width:95%' %>
+                <%= content_tag(:span, "ERROR",
+                 :id=>"error_for_processor_annotations_name_for_port_#{portname}",
+                 :class=>"warning_message", :style=>"display:none") %><br/>
                 <b>Output Description</b>
                 <%= f.text_area "description_for_port_#{portname}", :value => port_v[:description],
-                  :rows => 3, :style =>'width:95%'  %>
+                  :rows => 3, :style =>'width:95%'  %><br/>
                  <b>Output Example Value</b>
                  <%= f.text_area "example_for_port_#{portname}", :value => port_v[:example],
                    :rows => 3, :style =>'width:95%'  %>
@@ -152,40 +164,129 @@
           :alt => "Swap Component Help" %>
       </h3>
       <div>
-      <!-- First presnet the currenly selected component -->
-        <%= hidden_field_tag "component_id", comp_in_proc.id %>
-        <div class="replaceable" id="<%= comp_in_proc.name%>">
-          <span style="float: left;width:20%">
-            <%= image_tag "taverna_lite/taverna-component.png",
-              :size => "48x48", :alt => "<<COMPONENT>>",
-              :class=>"componenticon" %>
-          </span> <!--image div -->
-            <b>
-              <% alternative_comp = comp_in_proc.id.to_s %>
-              <%=f.radio_button("replace_#{processor.name}_with", alternative_comp, :checked=>true) %>
-              <%= comp_in_proc.name %>(V.<%= comp_in_proc.version %>)</b><br/>
-          <b>Family:</b><%= comp_in_proc.family %><br/>
-          <b>Registry: </b><%= comp_in_proc.registry %><br/>
-          <b>Description: </b><%= comp_in_proc.workflow.title %><br/>
-        </div><!--component alternative div-->
-      <!-- now present the alternative components -->
+      <!-- present the alternative components -->
+      <% prev_comp = comp_in_proc.name
+         prev_fam = comp_in_proc.family
+         prev_reg = comp_in_proc.registry
+         prev_ver = sel_version = comp_in_proc.version
+         prev_id =  comp_in_proc.id
+         prev_des = comp_in_proc.workflow.title %>
+      <% ver_list = {sel_version=>comp_in_proc.id}%>
+
       <% @component_alternatives[processor.name].each do |item| %>
-         <% componentname = item[0].name %>
-          <div class="replaceable" id="<%= item[0].name%>">
+        <% current_comp = item[0].name
+           current_ver = item[0].version
+           current_fam = item[0].family
+           current_reg = item[0].registry
+           current_des = item[1].description
+           current_id = item[0].id
+           %>
+        <% if current_comp == prev_comp && current_fam == prev_fam && current_reg == prev_reg %>
+          <% ver_list[current_ver] = item[0].id %>
+        <% else %>
+          <div class="replaceable" id="<%= prev_comp %>">
             <span style="float: left;width:20%">
               <%= image_tag "taverna_lite/taverna-component.png",
                 :size => "48x48", :alt => "<<COMPONENT>>",
                 :class=>"componenticon" %>
             </span> <!--image div -->
               <b>
-                <% alternative_comp = item[0].id.to_s %>
-                <%=f.radio_button("replace_#{processor.name}_with", alternative_comp) %>
-                <%= componentname %>(V.<%= item[0].version %>)</b><br/>
-              <b>Family:</b><%= item[0].family %><br/>
-              <b>Registry: </b><%= item[0].registry %><br/>
-              <b>Description: </b><%= item[1].title %><br/>
+                <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
+                <%= prev_comp %></b> <br/>
+              <b>Version: </b><%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Family: </b><%= prev_fam %><br/>
+              <b>Registry: </b><%= prev_reg %><br/>
+              <b>Description: </b><%= prev_des %><br/>
           </div><!--component alternative div-->
+          <% prev_comp = item[0].name
+           prev_ver = item[0].version
+           prev_fam = item[0].family
+           prev_reg = item[0].registry
+           prev_id = item[0].id
+           prev_des =  item[1].description
+           ver_list = {prev_ver=>prev_id}
+           %>
+        <% end%>
       <% end %>
+                <div class="replaceable" id="<%= prev_comp %>">
+            <span style="float: left;width:20%">
+              <%= image_tag "taverna_lite/taverna-component.png",
+                :size => "48x48", :alt => "<<COMPONENT>>",
+                :class=>"componenticon" %>
+            </span> <!--image div -->
+              <b>
+                <%= f.radio_button("replace_#{processor.name}", prev_comp) %>
+                <%= prev_comp %></b><br/>
+              <b>Version: </b> <%= f.select "replace_#{prev_comp}_ver", ver_list.map{|vs| [vs[0],vs[1]]}  %><br/>
+              <b>Family:</b><%= prev_fam %><br/>
+              <b>Registry: </b><%= prev_reg %><br/>
+              <b>Description: </b><%= prev_des %><br/>
+          </div><!--component alternative div-->
+      </div>
+    <%end%>
+    <% unless (comp_in_proc.nil?) %>
+      <h3>
+        <%= image_tag "taverna_lite/brick_delete.png", :alt => "Remove"%>
+        Remove Component
+        <%= button_tag image_tag('taverna_lite/help.png'),
+          :id=>"remove_opener_#{processor.name}", :style=>"padding: 0;
+          border: none; background: none; float: right;",
+          :alt => "Remove Component Help" %>
+      </h3>
+      <div>
+      <!-- present info about the efects of deleting component -->
+      This component can be removed.<br/>
+      <%= image_tag "taverna_lite/warn_sign.png", :alt => "WARNING: "%>
+      Removing this component will cause the removal of
+      all components and workflow outputs connected to it downstream.<br/>
+      See list of connections below<br/>
+      <% unless proc_outs[processor.name][:ports].nil? -%>
+        <span class="more_options">processor outputs
+          <%= proc_outs[processor.name][:ports].count%></span>
+        <table class="processor_out_ports">
+          <tr>
+            <th>port</th>
+            <th>Connected to</th>
+          </tr>
+          <% proc_ports = "" %>
+          <% proc_outs[processor.name][:ports].each do |port_k,port_v|
+            portname = port_k
+            unless proc_ports==""
+              proc_ports += "," + portname
+            else
+              proc_ports = portname
+            end
+            %>
+            <tr class="<%= cycle("", "alt")%>">
+              <td><%= port_k %></td>
+              <td>
+                <% port_v[:connections].each do |c| %>
+                  <%= unless c == "" then c.include?(":") ? "Component: " +
+                    c.split(":")[0] + " Port: " +
+                    c.split(":")[1] : "Workflow Output: " + c end%> <br/>
+                <% end %>
+              </td>
+             </tr>
+             <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
+          <% end %>
+          <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
+        </table>
+        <div style ='float:right;'>
+        <%= form_for 'remove_#{componentname}',
+          :url => {:controller => 'workflow_components', :action => 'remove'},
+          :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
+          <%= hidden_field_tag "processor_name", processor.name %>
+          <%= hidden_field_tag "workflow_id", @workflow.id %>
+          <span title="Remove selected component"
+            alt="Remove selected component"
+            style="float:center; padding:5px;margin-top: 3px;">
+               <%= submit_tag 'remove' %>
+          </span> <!--buton div -->
+        <% end -%> <!--form-->
+        </div>
+    <% else %>
+      This processor has no outputs
+    <% end -%>
       </div>
     <%end%>
   </div>
@@ -207,6 +308,11 @@
    title="Swap Component Help">
     <%= render(
       :partial=>'taverna_lite/workflow_components/swap_instructions')%>
+  </div>
+  <div id="remove_dialog_<%= "#{processor.name}" -%>"
+   title="Remove Component Help">
+    <%= render(
+      :partial=>'taverna_lite/workflow_components/remove_instructions')%>
   </div>
 <script>
   $('form').submit(function() {
@@ -248,6 +354,18 @@
   });
   $( "#swap_opener_<%= "#{processor.name}" -%>" ).click(function() {
     $("#swap_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
+    return false;
+  });
+  $( "#remove_dialog_<%= "#{processor.name}" -%>" ).dialog({
+    autoOpen: false,
+    position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+  });
+  $( "#remove_opener_<%= "#{processor.name}" -%>" ).click(function() {
+    $("#remove_dialog_<%= "#{processor.name}" -%>" ).dialog( "open" );
     return false;
   });
   $( "#annotate_<%= "#{processor.name}" -%>" ).accordion({

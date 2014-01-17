@@ -95,17 +95,16 @@ module TavernaLite
         display_i = "display_for_"+port_name
         type_i = "type_for_"+port_name
         description_i = "description_for_"+port_name
+        example_i = "description_for_"+port_name
         new_name_i = "name_for_"+port_name
         show_i = "show_"+port_name
         delete_i = "delete_"+port_name
         delete_port = params[:port_annotations][delete_i] == '1'
-        puts "*****************************************************************"
-        puts port_name
-        puts "*****************************************************************"
         unless delete_port then
           # verify if customised input exists
           condition = "port_type_id = ? and name = ? and workflow_id = ?"
           wfps = WorkflowPort.where(condition, port_type, port_name, @workflow.id)
+          wf_prof =  WorkflowProfile.find_by_workflow_id(@workflow.id)
           if wfps.empty?
             @wfp = WorkflowPort.new()
           else
@@ -116,8 +115,10 @@ module TavernaLite
           new_description = params[:port_annotations][description_i]
           new_example = params[:port_annotations][port_name]
           t2flow_changes=false
+
           #get values for customised input
           @wfp.workflow_id = @workflow.id
+          @wfp.workflow_profile_id = wf_prof.id
           @wfp.port_type_id = port_type # 1 = input
           # always save even if there are no changes
           @wfp.old_name = port_name
