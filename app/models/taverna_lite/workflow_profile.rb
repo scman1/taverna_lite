@@ -59,13 +59,17 @@ module TavernaLite
     has_many :workflow_ports, :dependent => :destroy
 
     def inputs
-      return workflow_ports.where(:port_type_id=>1)
+      ports =  workflow_ports.where(:port_type_id=>1)
+      if ports.nil? or ports.blank?
+        ports = get_custom_inputs
+      end
+      return ports
     end
 
     def outputs
       ports = workflow_ports.where(:port_type_id=>2)
       if ports.nil? or ports.blank?
-        ports = get_customised_ports(2)
+        ports = get_custom_outputs
       end
       return ports
     end
@@ -88,6 +92,7 @@ module TavernaLite
       else
         ports_list = model.sinks()
       end
+
       ports_list.each{|port_x|
         if (custom_ports).where("name='#{port_x.name}'").count() == 0 then
           # missing input
@@ -97,7 +102,7 @@ module TavernaLite
           missing_port.workflow_profile_id = self.id
           missing_port.port_type_id = port_type       # id of inputs
           missing_port.display_control_id = 1         # default display control
-          missing_port.show = true                    # always show if new
+          missing_port.show = true                    # always show
           example_values = port_x.example_values
           if ((!example_values.nil?) && (example_values.size == 1)) then
             missing_port.example = example_values[0]
