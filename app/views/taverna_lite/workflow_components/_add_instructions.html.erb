@@ -1,3 +1,4 @@
+<%
 # Copyright (c) 2012-2013 Cardiff University, UK.
 # Copyright (c) 2012-2013 The University of Manchester, UK.
 #
@@ -34,47 +35,43 @@
 #
 # Synopsis
 #
-# BioVeL Taverna Lite  is a prototype interface provided to support the
+# BioVeL Taverna Lite is a prototype interface provided to support the
 # inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
-
-TavernaLite::Engine.routes.draw do
-  resources :features
-
-  resources :feature_model_metadata
-
-  resources :feature_models
-
-  resources :workflow_components do
-    member do
-      post "replace"
-      post "remove"
-    end
-  end
-
-  resources :workflow_profiles do
-    member do
-      get "copy"
-      post "save_as"
-      put "add_processors"
-      put "annotate_processor"
-      put "update_profile"
-    end
-  end
-  resources :workflow_ports do
-    member do
-      post "download"
-      post "save_custom_inputs"
-      post "save_custom_outputs"
-    end
-  end
-  resources :workflow_errors do
-    member do
-      post "save_custom_errors"
-    end
-  end
-end
+%>
+<ul>
+  <li>
+    The components listed here can be added to the workflow.
+  </li>
+  <li>
+    The list is based on the components currently used in the workflow
+  </li>
+  <li>
+    To add a component:
+  </li>
+  <ol>
+    <li>
+      Select a component
+    </li>
+    <li>
+      Click on the select thick box next to the name of the selcetd component.
+    </li>
+    <li>
+      Select the version of the component.
+    </li>
+    <li>
+      Repeat previous steps for all components that need to be added.
+    </li>
+    <li>
+      Click on the "Add" button to add the selected component(s).
+    </li>
+  </ol>
+</ul>
+<span>
+  <b>NOTE:</b> The components will be added immediately and the changes
+  saved into the workflow file.
+</span>

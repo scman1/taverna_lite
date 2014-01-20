@@ -80,6 +80,9 @@ module TavernaLite
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
         @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
+        puts "*****************************************************************"
+        puts @component_additionals.to_s
+        puts "*****************************************************************"
       end
       # get all the processors outputs to enable add ouput
       @processor_ports = get_processor_ports(@workflow.id) # need to move the definition of this method out of controller
