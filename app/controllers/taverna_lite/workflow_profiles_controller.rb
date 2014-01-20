@@ -76,8 +76,10 @@ module TavernaLite
       @processor_names = []
       @processors.each {|p| @processor_names << p.name}
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
+      @component_alternatives = @component_additionals = nil
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
+        @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
       end
       # get all the processors outputs to enable add ouput
       @processor_ports = get_processor_ports(@workflow.id) # need to move the definition of this method out of controller
@@ -173,6 +175,38 @@ module TavernaLite
         end
       end
       return component_alternatives
+    end
+
+    # Get the registered components which can be added based on the list
+    # of components already in the workflow
+    def get_component_additionals(wf_components)
+      component_additionals = {}
+      wf_components.each do |component|
+        unless component[1][1].nil? then
+          proc_name = component[0]
+          c_name = component[1][0].name # the name of the component
+          # need to find alternatives using the version, family and registry
+          c_version = component[1][0].version
+          c_family = component[1][0].family
+          c_registry = component[1][0].registry
+          # get component from DB
+          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
+            c_family, c_registry, c_version)
+          # find alternatives registered in DB
+          unless wfc_db.nil?()
+            add_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].additional
+            unless add_features.nil?
+              component_additionals[proc_name] = []
+              add_features.each { |af|
+                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
+                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                component_additionals[proc_name]<<[a_wfc,wf]
+              }
+            end
+          end
+        end
+      end
+      return component_additionals
     end
 
     # Read the workflow file and get all available workflow ports

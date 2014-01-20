@@ -42,5 +42,5 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 module TavernaLite
-  VERSION = "0.4.10"
+  VERSION = "0.5.1"
 end
