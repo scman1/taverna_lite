@@ -80,9 +80,6 @@ module TavernaLite
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
         @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
-        puts "*****************************************************************"
-        puts @component_additionals.to_s
-        puts "*****************************************************************"
       end
       # get all the processors outputs to enable add ouput
       @processor_ports = get_processor_ports(@workflow.id) # need to move the definition of this method out of controller
@@ -184,31 +181,35 @@ module TavernaLite
     # of components already in the workflow
     def get_component_additionals(wf_components)
       component_additionals = {}
-      wf_components.each do |component|
+      wf_components.each { |component|
         unless component[1][1].nil? then
           proc_name = component[0]
+          comp = component[1][0]
           c_name = component[1][0].name # the name of the component
-          # need to find alternatives using the version, family and registry
+          # need to find components that can be connected to this
+          # component outputs
           c_version = component[1][0].version
           c_family = component[1][0].family
           c_registry = component[1][0].registry
-          # get component from DB
+          # get components from DB
           wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
             c_family, c_registry, c_version)
-          # find alternatives registered in DB
+          # find components registered in DB
           unless wfc_db.nil?()
-            add_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].additional
-            unless add_features.nil?
-              component_additionals[proc_name] = []
-              add_features.each { |af|
-                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
-                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
-                component_additionals[proc_name]<<[a_wfc,wf]
-              }
-            end
+            profile = TavernaLite::WorkflowProfile.find_by_workflow_id(wfc_db.workflow_id)
+            comp_outs_set = (profile.outputs.each.collect {|x| x.example_type_id }).to_set
+            wfprofs = TavernaLite::WorkflowProfile.all
+            wfprofs.each { |prof|
+             comp_ins_set = (prof.inputs.each.collect {|x| x.example_type_id}).to_set
+             if comp_ins_set.subset?(comp_outs_set)
+               a_wfc = TavernaLite::WorkflowComponent.find_by_workflow_id(prof.workflow_id)
+               wf =  prof.workflow
+               component_additionals[proc_name]=[a_wfc,wf]
+             end
+            }
           end
         end
-      end
+      }
       return component_additionals
     end
 

@@ -97,7 +97,8 @@
          <dd class='list_description'>
            <%= f.select "type_for_#{portname}",
              options_for_select([["string", 1],["integer", 2], ["float", 3],
-                                 ["census table", 4]], item.example_type_id) %>
+                                 ["census table", 4],["R Expression", 5]],
+                                item.example_type_id) %>
          </dd>
          <dt class='list_title'>Example File:</dt>
          <dd class='list_description'>

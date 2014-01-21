@@ -43,11 +43,19 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<div id="accordion">
-  <h3>Available Components</h3>
-    <div>
-      List of Additional Components
-    </div>
+<div id="Add_component" class="div_component" style="display:none;">
+<% unless addcomps.nil? %>
+  <div id="accordion">
+    <h3>Available Components</h3>
+      <div>
+        List of Additional Components </br>
+        <% all_procs.each do |procname| %>
+          <%= procname %>
+          <%= addcomps[procname].count %> </br>
+        <% end %>
+      </div>
+  </div>
+<% end %>
 </div>
 <script>
   $(function() {

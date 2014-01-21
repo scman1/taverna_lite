@@ -60,7 +60,6 @@
           var namex = $(this).attr('id');
           result.append( namex );
           showcomp(namex+"_component");
-          showcompalter(namex+"_alternatives");
         });
       }
     });

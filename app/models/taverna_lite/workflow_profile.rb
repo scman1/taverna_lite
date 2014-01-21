@@ -81,6 +81,7 @@ module TavernaLite
     def get_custom_outputs
       get_customised_ports(2)
     end
+
     def get_customised_ports(port_type = 1)
       # 1 Get custom inputs
       custom_ports = WorkflowPort.get_custom_ports(workflow.id, port_type)
@@ -100,7 +101,7 @@ module TavernaLite
           missing_port.name = port_x.name
           missing_port.workflow_id = workflow.id
           missing_port.workflow_profile_id = self.id
-          missing_port.port_type_id = port_type       # id of inputs
+          missing_port.port_type_id = port_type       # id of port type
           missing_port.display_control_id = 1         # default display control
           missing_port.show = true                    # always show
           example_values = port_x.example_values
