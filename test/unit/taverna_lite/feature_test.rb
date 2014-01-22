@@ -118,9 +118,12 @@ module TavernaLite
       # plus 2 other components with 2 and 1 versions each (xor features)
       assert_equal 4, j
     end
+    # need to analise further how to detect features that can be added (i.e.
+    # which can be added to a workflow base on existing components and outputs
+    # available)
     test "08 get features that can be added" do
       additional_features = @eigenAnalysis.additional
-      assert_equal 4, additional_features.count
+      assert_equal 3, additional_features.count
     end
   end
 end

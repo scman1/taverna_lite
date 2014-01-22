@@ -108,7 +108,9 @@
             <%= image_tag "taverna_lite/arrow_switch.png", :alt => "Swap"%>
           <% end %>
           <!-- show remove icon if processor can be removed -->
-          <% if removable %>
+          <% if removable && !(@component_alternatives.nil? ||
+               @component_alternatives[componentname].nil? ||
+               @component_alternatives[componentname].count == 0) %>
             <%= image_tag "taverna_lite/brick_delete.png", :alt => "Remove"%>
           <% end %>
         </div>

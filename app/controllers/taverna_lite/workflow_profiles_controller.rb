@@ -196,6 +196,7 @@ module TavernaLite
             c_family, c_registry, c_version)
           # find components registered in DB
           unless wfc_db.nil?()
+            component_additionals[proc_name]=[]
             profile = TavernaLite::WorkflowProfile.find_by_workflow_id(wfc_db.workflow_id)
             comp_outs_set = (profile.outputs.each.collect {|x| x.example_type_id }).to_set
             wfprofs = TavernaLite::WorkflowProfile.all
@@ -204,7 +205,9 @@ module TavernaLite
              if comp_ins_set.subset?(comp_outs_set)
                a_wfc = TavernaLite::WorkflowComponent.find_by_workflow_id(prof.workflow_id)
                wf =  prof.workflow
-               component_additionals[proc_name]=[a_wfc,wf]
+               unless (a_wfc.nil? || wf.nil?)
+                 component_additionals[proc_name]<<[a_wfc,wf]
+               end
              end
             }
           end
@@ -271,7 +274,6 @@ module TavernaLite
         writer.replace_component(@workflow.workflow_filename,processor_name,replace_id)
       end
       end
-
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
         format.json { head :no_content }
