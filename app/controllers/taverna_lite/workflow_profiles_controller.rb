@@ -209,7 +209,11 @@ module TavernaLite
                a_wfc = TavernaLite::WorkflowComponent.find_by_workflow_id(prof.workflow_id)
                ports_to = []
                comp_ins_set.each { |intype|
-                 ports_to = comp_outs.where(:example_type_id=>intype).collect{|x| proc_name+":" + x.name}
+                 # for now try type matching only
+                 prof.inputs.where(:example_type_id=>intype).each { |in_port|
+                   ports_to << comp_outs.where(:example_type_id=>intype).collect{|x|
+                     ("New_Processor_Name:"+in_port.name + ","+ proc_name+":" + x.name+","+in_port.depth.to_s).split(",")}
+                 }
                }
                unless (a_wfc.nil?)
                  comp_add[proc_name]<<[a_wfc,ports_to]

@@ -52,7 +52,7 @@ one:
   name: MyString
   registry: MyString
 
-two:
+eigenanalysis:
   workflow_id: 24
   license_id: 1
   version: 1

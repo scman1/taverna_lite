@@ -46,33 +46,18 @@
 <div id="Add_component" class="div_component" style="display:none;">
 <% unless addcomps.nil? %>
   <div id="accordion">
-    <h3>Available Components</h3>
+    <% all_procs.each { |procname| %>
+      <h3>Connect a component to <%= procname %></h3>
       <div>
-        List of Additional Components </br>
-        <% all_procs.each { |procname| %>
-          <%= procname %>
-          <% addcomps[procname].each {|item| %>
-            <div class="embeddable" id="<%= item[:name] %>">
-              <span style="float: left;width:20%">
-                <%= image_tag "taverna_lite/taverna-component.png",
-                  :size => "48x48", :alt => "<<COMPONENT>>",
-                  :class=>"componenticon" %>
-              </span> <!--image div -->
-                <b>
-                  <%= check_box_tag("add_to_#{procname}", item[:name]) %>
-                  <%= item[:name] %></b> <br/>
-                <b>Version: </b>
-                <%= select_tag "replace_#{item[:name]}_ver",
-                  options_for_select(item[:versions])  %><br/>
-                <b>Family: </b><%= item[:family] %><br/>
-                <b>Registry: </b><%= item[:registry] %><br/>
-                <b>Description: </b><%= item[:title] %><br/>
-                <b>Can connect to: </b><%= item[:connects_to] %>
-              </div><!--component alternative div-->
-          <% } %>
+        <% addcomps[procname].each {|item| %>
+          <%= render :partial => "taverna_lite/workflow_components/add_component_form",
+            :locals => {:workflow => @workflow, :item=>item,
+            :procname => procname, :all_procs => @processor_names} %>
         <% } %>
       </div>
+    <% } %>
   </div>
+
 <% end %>
 </div>
 <script>

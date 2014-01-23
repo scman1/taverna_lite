@@ -120,7 +120,7 @@ module TavernaLite
       FileUtils.cp from_here, to_there
       @workflow_06 = to_there
       @wf_component = taverna_lite_workflow_components(:tl_workflowcomponent_03)
-      @wf_component2 = taverna_lite_workflow_components(:two)
+      @wfc_eigenanalysis = taverna_lite_workflow_components(:eigenanalysis)
     end # Test setup
     test "01 should update_workflow_annotations" do
       author = "Stian Soiland Reyes"
@@ -821,10 +821,9 @@ module TavernaLite
 
     # Test of add component without connecting it
     test "20 Add a component" do
-      @wf_component2
       writer = T2flowWriter.new
       processor_name="EigenAnalysis"
-      writer.add_component_processor(@workflow_05,processor_name,@wf_component2)
+      writer.add_component_processor(@workflow_05,processor_name,@wfc_eigenanalysis)
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
@@ -834,16 +833,15 @@ module TavernaLite
     end #test 20
     # Test of add component connecting its inputs
     test "21 Add a component and connect inputs" do
-      @wf_component2
       writer = T2flowWriter.new
       processor_name="EigenAnalysis"
       # input links are provided as a set of nested arrays.
-      # each array contains source,sink, pair
+      # each array contains source, sink, and depth
       # where source|sink = [processor:]port
       input_links = [
         ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
         ["Label","EigenAnalysis:speciesName","0"]]
-      writer.add_component_processor(@workflow_05,processor_name,@wf_component2,
+      writer.add_component_processor(@workflow_05,processor_name,@wfc_eigenanalysis,
         input_links)
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)

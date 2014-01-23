@@ -139,7 +139,7 @@ module TavernaLite
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet replaced'}
         format.json { head :no_content }
       end
-    end
+    end  #method: replace
 
     # Remove the selected component from the workflow
     def remove
@@ -152,6 +152,24 @@ module TavernaLite
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet removed'}
         format.json { head :no_content }
       end
-    end #method: replace
+    end #method: remove
+    # Add new component to workflow
+
+    def add
+      @workflow = Workflow.find(params[:id])
+#      @from_op = 'remove'
+#      processor_name = params[:processor_name]
+#      writer = T2flowWriter.new
+#      writer.remove_workflow_processor(@workflow.workflow_filename,processor_name)
+      logger.info "BUSCA ESTO--------------------------------------------------"
+      logger.info params
+      logger.info "BUSCA FIN --------------------------------------------------"
+      respond_to do |format|
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet added'}
+        format.json { head :no_content }
+      end
+    end #method: add
+
+
   end # Class WorkflowComponentsController
 end # Module TavernaLite
