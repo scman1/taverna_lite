@@ -43,7 +43,7 @@
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
 %>
-<%= form_for 'add_new_#{item[:name]}_to_#{procname}',
+<%= form_for "add_to_#{procname}",
   :url => {:controller => 'workflow_components', :action => 'add'},
   :html => {:multipart => true}, :disable_with => "Saving..."  do |f| %>
   <%= hidden_field_tag "processor_name", procname %>
@@ -66,7 +66,7 @@
         <dt class='list_title'>Name:</dt>
         <dd class='list_description'>
           <%p_names = "'"+(all_procs-[procname]).join(",")+"'" %>
-          <%= f.text_field "name_for_new_#{procname}", :value => item[:name],
+          <%= f.text_field "name_new_#{item[:name]}", :value => item[:name],
             :onkeyup=>"validate_name(this.id,#{p_names});", :style =>'width:95%'%>
           <%= content_tag(:span, "ERROR",
             :id=>"error_for_processor_annotations_name_for_#{procname}",
@@ -74,12 +74,12 @@
         </dd>
         <dt class='list_title'>Version:</dt>
         <dd class='list_description'>
-          <%= f.select "add_#{item[:name]}_ver",
+          <%= f.select "component_id",
             options_for_select(item[:versions])  %>
         </dd>
         <dt class='list_title'>Description:</dt>
         <dd class='list_description'>
-          <%= f.text_area "description_for_new_#{procname}",
+          <%= f.text_area "description",
             :value => item[:description], :rows => 3, :style =>'width:95%'  %>
         </dd>
         <dt class='list_title'>Connections:</dt>
@@ -90,7 +90,7 @@
               <dt class='list_title'><%= port_name %><dt>
               <dd class='list_description'>
               <% candidate_ports = port_links.collect { |link| link[1].split(":")[1] } %>
-              <%= f.select "connects_#{item[:name]}_port_#{port_name}",
+              <%= f.select "connects_#{port_name}",
                   options_for_select(candidate_ports)  %>
               </dd>
             <% } %>

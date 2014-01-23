@@ -153,23 +153,49 @@ module TavernaLite
         format.json { head :no_content }
       end
     end #method: remove
-    # Add new component to workflow
 
+    # Add new component to workflow
     def add
       @workflow = Workflow.find(params[:id])
-#      @from_op = 'remove'
-#      processor_name = params[:processor_name]
-#      writer = T2flowWriter.new
-#      writer.remove_workflow_processor(@workflow.workflow_filename,processor_name)
-      logger.info "BUSCA ESTO--------------------------------------------------"
+      @from_op = params[:action]
+      processor_name = params[:processor_name]
+      form_id = "add_to_" + processor_name
+      new_comp = TavernaLite::WorkflowComponent.find(params[form_id]["component_id"])
+      name_field = "name_new_"+new_comp.name
+      new_processor_name = params[form_id][name_field]
+      description = params[form_id]["description"]
+      # need to get links
+      #  input_links = [
+      #    ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
+      #    ["Label","EigenAnalysis:speciesName","0"]]
+      input_links = []
+      params[form_id].each { |k,v|
+        if k.start_with?("connects_")
+          source = new_processor_name +":"+k.sub("connects_","")
+          sink =  processor_name+":"+v
+          input_links << [source,sink,"0"]
+        elsif  k.start_with?("wf_in_")
+          source = k.sub("wf_in_","")
+          sink = new_processor_name+":"+v
+          input_links << [source,sink,"0"]
+        end
+      }
+      writer = T2flowWriter.new
+      writer.add_component_processor(@workflow.workflow_filename,
+       new_processor_name, new_comp, input_links)
+      logger.info "FIND THIS--------------------------------------------------"
       logger.info params
-      logger.info "BUSCA FIN --------------------------------------------------"
+      logger.info @form_op
+      logger.info processor_name
+      logger.info new_comp.name
+      logger.info description
+      logger.info input_links
+      logger.info "FIND ENDS--------------------------------------------------"
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet added'}
         format.json { head :no_content }
       end
     end #method: add
-
 
   end # Class WorkflowComponentsController
 end # Module TavernaLite
