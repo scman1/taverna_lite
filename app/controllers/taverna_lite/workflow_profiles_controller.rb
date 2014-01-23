@@ -180,7 +180,7 @@ module TavernaLite
     # Get the registered components which can be added based on the list
     # of components already in the workflow
     def get_component_additionals(wf_components)
-      component_additionals = {}
+      comp_add = {}
       wf_components.each { |component|
         unless component[1][1].nil? then
           proc_name = component[0]
@@ -196,26 +196,96 @@ module TavernaLite
             c_family, c_registry, c_version)
           # find components registered in DB
           unless wfc_db.nil?()
-            component_additionals[proc_name]=[]
+            comp_add[proc_name]=[]
             profile = TavernaLite::WorkflowProfile.find_by_workflow_id(wfc_db.workflow_id)
             comp_outs_set = (profile.outputs.each.collect {|x| x.example_type_id }).to_set
+            comp_outs = profile.outputs
             wfprofs = TavernaLite::WorkflowProfile.all
             wfprofs.each { |prof|
              comp_ins_set = (prof.inputs.each.collect {|x| x.example_type_id}).to_set
              if comp_ins_set.subset?(comp_outs_set)
+               # need to identify which are the inputs that can be used to
+               # link the component
                a_wfc = TavernaLite::WorkflowComponent.find_by_workflow_id(prof.workflow_id)
-               wf =  prof.workflow
-               unless (a_wfc.nil? || wf.nil?)
-                 component_additionals[proc_name]<<[a_wfc,wf]
+               ports_to = []
+               comp_ins_set.each { |intype|
+                 ports_to = comp_outs.where(:example_type_id=>intype).collect{|x| proc_name+":" + x.name}
+               }
+               unless (a_wfc.nil?)
+                 comp_add[proc_name]<<[a_wfc,ports_to]
                end
              end
             }
           end
         end
       }
-      return component_additionals
+      comp_add = format_additionals_for_output(comp_add)
+      return comp_add
     end
 
+    # Retuns a structure whit the additional components infor ready to be
+    # inserted in the UI
+    def format_additionals_for_output(comps_struct)
+      add_struct={}
+      comps_struct.each {|wf_proc,comps|
+        add_struct[wf_proc]=[]
+        ver_list = {}
+        prev_comp = prev_ver = prev_fam = prev_reg = prev_id =
+        prev_des = prev_tit = prev_outs = nil
+        comps.each do |item|
+          current_comp = item[0].name
+          current_ver = item[0].version
+          current_fam = item[0].family
+          current_reg = item[0].registry
+          current_des = item[0].workflow.description
+          current_tit = item[0].workflow.title
+          current_id = item[0].id
+          current_outs = item[1]
+          if ver_list.empty? then
+            prev_comp = current_comp
+            prev_ver = current_ver
+            prev_fam = current_fam
+            prev_reg = current_reg
+            prev_id = current_id
+            prev_des =  current_des
+            prev_tit = current_tit
+            prev_outs = current_outs
+            ver_list = {prev_ver=>prev_id}
+          elsif (current_comp == prev_comp && current_fam == prev_fam && current_reg == prev_reg)  then
+            ver_list[current_ver] = current_id
+          else
+            add_struct[wf_proc]<< {
+              :family => prev_fam,
+              :name => prev_comp,
+              :registry => prev_reg,
+              :versions => ver_list,
+              :description => prev_des,
+              :title => prev_tit,
+              :connects_to => prev_outs
+            }
+            prev_comp = current_comp
+            prev_ver = current_ver
+            prev_fam = current_fam
+            prev_reg = current_reg
+            prev_id = current_id
+            prev_des =  current_des
+            prev_tit = current_tit
+            prev_outs = current_outs
+            ver_list = {prev_ver=>prev_id}
+          end
+        end
+        add_struct[wf_proc]<< {
+              :family => prev_fam,
+              :name => prev_comp,
+              :registry => prev_reg,
+              :versions => ver_list,
+              :description => prev_des,
+              :title => prev_tit,
+              :connects_to => prev_outs
+        }
+      }
+      return add_struct
+    end
     # Read the workflow file and get all available workflow ports
     def get_processor_ports(workflow_id)
       wf =  TavernaLite.workflow_class.find(workflow_id)

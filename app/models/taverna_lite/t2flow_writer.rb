@@ -591,6 +591,7 @@ module TavernaLite
       }
     end # remove_control_links_for_processor
 
+    # Add a processor containinf a component and link it if links are provided
     def add_component_processor(workflow_file, processor_name, component,
       input_links=[], output_links=[])
       # parse the workflow file as an XML document
