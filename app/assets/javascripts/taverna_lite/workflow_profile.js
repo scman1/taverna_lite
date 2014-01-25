@@ -74,6 +74,9 @@
     if (ele != null)  ele.style.display = "block";
   }
 
+
+
+
   function showcompalter(showdl) {
     var ele = document.getElementById(showdl);
     if (ele == null) {

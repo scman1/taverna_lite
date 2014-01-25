@@ -45,7 +45,7 @@
 %>
 <div id="component_list" style="float: left; width: 24%;">
   <div style="text-align: center;font-size:14px">
-    <b>Workflow Activities</b>
+    <b>Workflow</b>
   </div>
   <ol id="selectable">
     <%if @inputs.count > 0 %>
@@ -142,4 +142,13 @@
       </li>
     <% end %>
   </ol>
+  <div style="float:right;">
+
+  <%= link_to "javascript:show_add()", :class=>"link_img"  do %>
+      <%= image_tag "taverna_lite/brick_new.png",
+        :height => "25",:alt=>"get this workflow",
+        :title=>"get this workflow" %>
+      Add Component
+    <% end %>
+    </div>
 </div><!--components list div-->
