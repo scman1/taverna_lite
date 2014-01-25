@@ -50,9 +50,13 @@
       <h3>Connect a component to <%= procname %></h3>
       <div>
         <% addcomps[procname].each {|item| %>
+          <% unless(item[:connects_to].nil?) %>
           <%= render :partial => "taverna_lite/workflow_components/add_component_form",
-            :locals => {:workflow => @workflow, :item=>item,
+            :locals => {:workflow => workflow, :item=>item,
             :procname => procname, :all_procs => @processor_names} %>
+          <% else %>
+             There are no components available to connect
+          <% end %>
         <% } %>
       </div>
     <% } %>

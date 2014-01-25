@@ -85,6 +85,7 @@
         <dt class='list_title'>Connections:</dt>
         <dd class='list_description'>
             <dl class='list_any'>
+            <% unless(item[:connects_to].nil?) %>
             <% item[:connects_to].each { |port_links|%>
               <% port_name = port_links[0][0].split(":")[1] %>
               <dt class='list_title'><%= port_name %><dt>
@@ -94,6 +95,7 @@
                   options_for_select(candidate_ports)  %>
               </dd>
             <% } %>
+            <% end %>
             </dl>
         </dd>
       </dl>
