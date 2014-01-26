@@ -222,6 +222,9 @@ module TavernaLite
     def processors
       # get the workflow t2flow model
       wf_model = get_model
+      if wf_model.processors.count == 1
+        return [wf_model.processors[0]]
+      end
       processor_names = get_processors_order(wf_model)
       in_order = []
       processor_names.each do |a_processor|
