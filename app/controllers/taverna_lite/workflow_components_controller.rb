@@ -173,11 +173,11 @@ module TavernaLite
         if k.start_with?("connects_")
           source = new_processor_name +":"+k.sub("connects_","")
           sink =  processor_name+":"+v
-          input_links << [source,sink,"0"]
+          input_links << [sink,source,"1"]
         elsif  k.start_with?("wf_in_")
           source = k.sub("wf_in_","")
           sink = new_processor_name+":"+v
-          input_links << [source,sink,"0"]
+          input_links << [sink,source,"1"]
         end
       }
       writer = T2flowWriter.new
@@ -186,10 +186,10 @@ module TavernaLite
       logger.info "FIND THIS--------------------------------------------------"
       logger.info params
       logger.info @form_op
-      logger.info processor_name
-      logger.info new_comp.name
+      logger.info "FROM "+ processor_name
+      logger.info "TO " + new_comp.name
       logger.info description
-      logger.info input_links
+      logger.info "Links " + input_links.to_s
       logger.info "FIND ENDS--------------------------------------------------"
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet added'}
