@@ -130,25 +130,15 @@
         </div>
       </li>
     <% end %>
-    <% unless (@component_additionals.nil? ||  @component_additionals.count < 1) %>
-      <li id="Add" class="ui-widget-content" >
-        <div style="float: left;width:20%">
-          <%= image_tag "taverna_lite/brick_new.png", :alt => "output",
-            :class=>"componenticon"%>
-        </div>
-        <div class="desc_div">
-          <b>Add Components</b><br/>
-        </div>
-      </li>
-    <% end %>
   </ol>
-  <div style="float:right;">
-
-  <%= link_to "javascript:show_add()", :class=>"link_img"  do %>
-      <%= image_tag "taverna_lite/brick_new.png",
-        :height => "25",:alt=>"get this workflow",
-        :title=>"get this workflow" %>
-      Add Component
-    <% end %>
+  <% unless (@component_additionals.nil? ||  @component_additionals.count < 1) %>
+    <div style="margin-left:auto;margin-right:auto;width:55%;">
+      <%= link_to "javascript:show_add('Add')", :class=>"link_img"  do %>
+        <%= image_tag "taverna_lite/brick_new.png",
+          :height => "25",:alt=>"Add component",
+          :title=>"Add component" %>
+        Add Component
+      <% end %>
     </div>
+  <% end %>
 </div><!--components list div-->
