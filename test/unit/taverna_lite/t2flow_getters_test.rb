@@ -107,7 +107,7 @@ module TavernaLite
       component={}
       component["familyName"] = "POPMOD"
       component["registryBase"] = "http://www.myexperiment.org"
-      component["componentVersion"]="7"
+      component["componentVersion"]="1"
       component["componentName"]="StageMatrixFromCensus"
       x = wf_reader.get_component_outputs(component)
       assert !x.nil?

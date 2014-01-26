@@ -172,8 +172,13 @@ module TavernaLite
 
       unless wf_components.empty? then
         wf_component = wf_components[0]
-        wfp=TavernaLite::WorkflowProfile.new(:workflow_id=>wf_component.workflow_id)
-        component_ports = wfp.get_custom_outputs
+        #create and save profile if it does not exist
+        wfp=TavernaLite::WorkflowProfile.find_by_workflow_id(wf_component.workflow_id)
+        if (wfp.nil?)
+          wfp=TavernaLite::WorkflowProfile.new(:workflow_id=>wf_component.workflow_id)
+          wfp.save
+        end
+        component_ports = wfp.outputs
         component_ports.each { |cpt|
           ports[cpt.name] = {:description=>cpt.description,
             :example=> cpt.example, :workflow_port=>cpt}

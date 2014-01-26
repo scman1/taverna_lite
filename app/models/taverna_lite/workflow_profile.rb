@@ -59,19 +59,11 @@ module TavernaLite
     has_many :workflow_ports, :dependent => :destroy
 
     def inputs
-      ports =  workflow_ports.where(:port_type_id=>1)
-      if ports.nil? or ports.blank?
-        ports = get_custom_inputs
-      end
-      return ports
+      get_custom_inputs
     end
 
     def outputs
-      ports = workflow_ports.where(:port_type_id=>2)
-      if ports.nil? or ports.blank?
-        ports = get_custom_outputs
-      end
-      return ports
+      get_custom_outputs
     end
 
     def get_custom_inputs
@@ -89,11 +81,10 @@ module TavernaLite
       model = get_model
       # 3 Add missing ports (if any) to the list
       if port_type == 1
-        ports_list = model.sources()
+        ports_list = model.sources
       else
-        ports_list = model.sinks()
+        ports_list = model.sinks
       end
-
       ports_list.each{|port_x|
         if (custom_ports).where("name='#{port_x.name}'").count() == 0 then
           # missing input
@@ -121,6 +112,7 @@ module TavernaLite
           missing_port.old_example = ""
           missing_port.show = true
           missing_port.save
+          custom_ports << missing_port
         end
       }
       # 4 Return the list of custom inputs

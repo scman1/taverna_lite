@@ -183,7 +183,7 @@ wfc_13:
 
 wfc_14:
   id: 26
-  workflow_id: 189
+  workflow_id: 20
   license_id: 1
   version: 1
   family: 'POPMOD'
@@ -320,7 +320,7 @@ wfc_29:
   id: 1
   workflow_id: 119
   license_id: 1
-  version: 4
+  version: 1
   family: 'POPMOD'
   name: 'StageMatrixFromCensus'
   registry: 'http://www.myexperiment.org'
@@ -328,42 +328,6 @@ wfc_29:
 tl_workflowcomponent_01:
   id: 28
   workflow_id: 192
-  license_id: 1
-  version: 7
-  family: 'POPMOD'
-  name: 'StageMatrixFromCensus'
-  registry: 'http://www.myexperiment.org'
-
-wfc_31:
-  id: 56
-  workflow_id: 257
-  license_id: 1
-  version: 6
-  family: 'POPMOD'
-  name: 'StageMatrixFromCensus'
-  registry: 'http://www.myexperiment.org'
-
-wfc_32:
-  id: 57
-  workflow_id: 258
-  license_id: 1
-  version: 5
-  family: 'POPMOD'
-  name: 'StageMatrixFromCensus'
-  registry: 'http://www.myexperiment.org'
-
-wfc_33:
-  id: 58
-  workflow_id: 259
-  license_id: 1
-  version: 3
-  family: 'POPMOD'
-  name: 'StageMatrixFromCensus'
-  registry: 'http://www.myexperiment.org'
-
-wfc_34:
-  id: 59
-  workflow_id: 260
   license_id: 1
   version: 2
   family: 'POPMOD'

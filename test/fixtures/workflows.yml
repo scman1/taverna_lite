@@ -323,7 +323,7 @@ workflow_20:
   title: "Stage Matrix From Census Data Interactive"
   description: "This workflow component will take an r-expression c..."
   author: "Jonathan Giddy"
-  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2..."
+  workflow_file: "stage_matrix_from_census_data_interactive_993049.t2flow"
   created_at: "2013-09-27 11:43:26"
   updated_at: "2013-09-27 11:43:26"
   user_id: 1
