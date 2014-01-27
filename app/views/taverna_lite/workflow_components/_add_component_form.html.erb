@@ -65,11 +65,11 @@
       <dl class='list_any'>
         <dt class='list_title'>Name:</dt>
         <dd class='list_description'>
-          <%p_names = "'"+(all_procs-[procname]).join(",")+"'" %>
-          <%= f.text_field "name_new_#{item[:name]}", :value => item[:name],
+          <%p_names = "'"+(all_procs).join(",")+"'" %>
+          <%= f.text_field "name_for_comp_#{item[:name]}", :value => item[:name],
             :onkeyup=>"validate_name(this.id,#{p_names});", :style =>'width:95%'%>
           <%= content_tag(:span, "ERROR",
-            :id=>"error_for_processor_annotations_name_for_#{procname}",
+            :id=>"error_for_add_to_#{procname}_name_for_comp_#{item[:name]}",
             :class=>"warning_message", :style=>"display:none") %>
         </dd>
         <dt class='list_title'>Version:</dt>
