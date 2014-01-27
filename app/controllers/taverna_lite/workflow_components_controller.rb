@@ -169,24 +169,33 @@ module TavernaLite
       #    ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
       #    ["Label","EigenAnalysis:speciesName","0"]]
       input_links = []
+      new_wf_inputs = []
       params[form_id].each { |k,v|
         if k.start_with?("connects_")
           source = new_processor_name +":"+k.sub("connects_","")
           sink = processor_name+":"+v
-          input_links << [sink,source,"1"]
+          if v == "New_Workflow_Input"
+            input_links << [new_processor_name +"_"+k.sub("connects_",""),source,"0"]
+            new_wf_inputs << [new_processor_name +"_"+k.sub("connects_","")]
+          else
+            input_links << [sink,source,"1"]
+          end
         elsif  k.start_with?("wf_in_")
           source = k.sub("wf_in_","")
-          sink = new_processor_name+":"+v
-          input_links << [sink,source,"1"]
-        elsif  k.end_with?(":New_Workflow_Input")
-          source = new_processor_name+"_"+v
           sink = new_processor_name+":"+v
           input_links << [sink,source,"1"]
         end
       }
       writer = T2flowWriter.new
+      # first, if there are new input ports to create, add them to WF
+      new_wf_inputs.each {|wfins|
+        writer.add_wf_port(@workflow.workflow_filename, "", "",  wfins[0],
+          "", "", 1)
+      }
+      # add an link the component
       writer.add_component_processor(@workflow.workflow_filename,
        new_processor_name, new_comp, description, input_links)
+
       logger.info "FIND THIS--------------------------------------------------"
       logger.info params
       logger.info @form_op
@@ -194,7 +203,8 @@ module TavernaLite
       logger.info "TO " + new_comp.name
       logger.info "NEW PROCESSOR NAME " + new_processor_name
       logger.info "DESCRIPTION\n" + description
-      logger.info "Links " + input_links.to_s
+      logger.info "Links: " + input_links.to_s
+      logger.info "links to new inputs: " + new_wf_inputs.to_s
       logger.info "FIND ENDS--------------------------------------------------"
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet added'}
