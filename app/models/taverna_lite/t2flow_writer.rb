@@ -648,6 +648,8 @@ module TavernaLite
         add_datalink(document, to_proc, to_port, from_proc, from_port)
         add_input_port_and_mapping(document, to_proc, to_port,port_depth,
           port_granular)
+        add_output_port_and_mapping(document, from_proc, from_port,port_depth,
+          port_granular)
       }
     end
 
@@ -701,6 +703,38 @@ module TavernaLite
               new_inport.attributes["depth"]=depth
               cross_ports.add_element(new_inport)
             end
+          end
+        end
+      }
+    end
+    def add_output_port_and_mapping(document, to_proc, to_port, depth, granular="")
+      # get the processor element
+      root = document.root
+      processors = root.elements[Top_dataflow].elements["processors"]
+      processors.elements.each("processor/name") { |prn|
+        if prn.text == to_proc then
+          the_processor = prn.parent
+          output_maps = the_processor.elements["activities/activity/outputMap"]
+          #check if map exists, if not add else skip this
+          unless map_exists(output_maps, to_port)
+            new_map = Element.new("map")
+            new_map.attributes["from"] = to_port
+            new_map.attributes["to"] = to_port
+            output_maps.add_element(new_map)
+          end
+          output_ports = the_processor.elements["outputPorts"]
+          #check if port exists, if not add else skip this
+          unless port_exists(output_ports, to_port)
+            new_outport = Element.new("port")
+            new_outname = Element.new("name")
+            new_outname.text = to_port
+            new_depth = Element.new("depth")
+            new_depth.text = depth
+            new_granularDepth = Element.new("granularDepth")
+            new_granularDepth.text = granular
+            new_outport.add_element(new_outname)
+            new_outport.add_element(new_depth)
+            output_ports.add_element(new_outport)
           end
         end
       }
