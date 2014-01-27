@@ -643,7 +643,7 @@ module TavernaLite
           port_granular=link_depth[1]
         else
           port_depth=link_depth[0]
-          port_granular=""
+          port_granular="1"
         end
         add_datalink(document, to_proc, to_port, from_proc, from_port)
         add_input_port_and_mapping(document, to_proc, to_port,port_depth,
@@ -734,6 +734,7 @@ module TavernaLite
             new_granularDepth.text = granular
             new_outport.add_element(new_outname)
             new_outport.add_element(new_depth)
+            new_outport.add_element(new_granularDepth)
             output_ports.add_element(new_outport)
           end
         end
