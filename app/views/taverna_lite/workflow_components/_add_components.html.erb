@@ -47,7 +47,14 @@
 <% unless addcomps.nil? %>
   <div id="accordion">
     <% all_procs.each { |procname| %>
-      <h3>Connect a component to <%= procname %></h3>
+      <h3>
+        <%= image_tag "taverna_lite/brick_add.png", :alt => "Add Component"%>
+        Connect a component to <%= procname %>
+        <%= button_tag image_tag('taverna_lite/help.png'),
+          :id=>"add_component_opener_#{procname}", :style=>"padding: 0;
+          border: none; background: none;float: right;",
+          :alt => "Add Component Help" %>
+      </h3>
       <div>
         <% addcomps[procname].each {|item| %>
           <% unless(item[:connects_to].nil?) %>
@@ -61,7 +68,26 @@
       </div>
     <% } %>
   </div>
-
+  <% all_procs.each { |procname| %>
+    <div id="add_component_dialog_<%= "#{procname}" -%>"  title="Add Outputs">
+      <%= render(
+        :partial=>'taverna_lite/workflow_components/add_component_instructions')%>
+    </div>
+    <script>
+      $("#add_component_dialog_<%="#{procname}"-%>" ).dialog({
+        autoOpen: false,
+        position: {
+            my: "right",
+            at: "right",
+            of: window
+        }
+      });
+      $( "#add_component_opener_<%= "#{procname}" -%>" ).click(function() {
+        $("#add_component_dialog_<%= "#{procname}" -%>" ).dialog( "open" );
+        return false;
+      });
+    </script>
+  <% } %>
 <% end %>
 </div>
 <script>
