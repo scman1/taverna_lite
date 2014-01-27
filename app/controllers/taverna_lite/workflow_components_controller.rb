@@ -182,7 +182,7 @@ module TavernaLite
       }
       writer = T2flowWriter.new
       writer.add_component_processor(@workflow.workflow_filename,
-       new_processor_name, new_comp, input_links)
+       new_processor_name, new_comp, description, input_links)
       logger.info "FIND THIS--------------------------------------------------"
       logger.info params
       logger.info @form_op

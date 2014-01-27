@@ -819,11 +819,12 @@ module TavernaLite
       assert_equal(1, t2_model.coordinations.count)
     end #test 19
 
-    # Test of add component without connecting it
+    # Test of add component without connecting it and with no description
     test "20 Add a component" do
       writer = T2flowWriter.new
       processor_name="EigenAnalysis"
-      writer.add_component_processor(@workflow_05,processor_name,@wfc_eigenanalysis)
+      writer.add_component_processor(@workflow_05, processor_name,
+        @wfc_eigenanalysis, "")
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)
@@ -841,8 +842,8 @@ module TavernaLite
       input_links = [
         ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
         ["Label","EigenAnalysis:speciesName","0"]]
-      writer.add_component_processor(@workflow_05,processor_name,@wfc_eigenanalysis,
-        input_links)
+      writer.add_component_processor(@workflow_05, processor_name,
+        @wfc_eigenanalysis, "",  input_links)
       file_data = File.open(@workflow_05)
       t2_model = T2Flow::Parser.new.parse(file_data)
       assert_not_equal(t2_model, nil)

@@ -244,7 +244,7 @@ wfc_20:
   name: 'DefineStageAbundances'
   registry: 'http://www.myexperiment.org'
 
-wfc_21:
+eigenanalysis_dup:
   id: 20
   workflow_id: 183
   license_id: 1

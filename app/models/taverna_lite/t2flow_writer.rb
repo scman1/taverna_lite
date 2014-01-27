@@ -593,7 +593,10 @@ module TavernaLite
 
     # Add a processor containinf a component and link it if links are provided
     def add_component_processor(workflow_file, processor_name, component,
-      input_links=[], output_links=[])
+      description="", input_links=[], output_links=[])
+      if description == ""
+        description = TavernaLite.workflow_class.find(component.workflow_id).description
+      end
       # parse the workflow file as an XML document
       document = get_xml_document(workflow_file)
       # add the component
@@ -604,12 +607,16 @@ module TavernaLite
         link_processor_inputs(document,input_links)
       end
       # add links to outputs
+
       # label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
       File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
+      # add annotation to processor, if empty use component description
+      save_wf_processor_annotations(workflow_file, processor_name,
+        processor_name, description)
     end
 
     def link_processor_inputs(document,input_links)
