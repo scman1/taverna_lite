@@ -306,7 +306,6 @@ module TavernaLite
     end #test 06 should_uptate_output_name
 
     test "07 should_update_processor_description" do
-
       processor_name = 'hello'
       new_name = 'hello'
       description = "Constant string to build the greeting sentence"
@@ -853,5 +852,23 @@ module TavernaLite
       #  - from 15 to 17 data links (9 deleted)
       assert_equal(17, t2_model.datalinks.count)
     end #test 21
+
+    test "22 add an input_port not connected to any processor" do
+      port_name="new port"
+      description=""
+      example=""
+      port_type=1
+      file_data = File.open(@workflow_03)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      proc_ins_before = t2_model.sources.count
+      writer = T2flowWriter.new
+      writer.add_wf_port(@workflow_03 , "", "",  port_name,
+        description, example, port_type)
+      file_data = File.open(@workflow_03)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      proc_ins_after = t2_model.sources.count
+      assert_operator(proc_ins_after,:>,proc_ins_before)
+    end #test 14 add an output_port for FirstProcessor:FirstPort any processor
+
   end
 end

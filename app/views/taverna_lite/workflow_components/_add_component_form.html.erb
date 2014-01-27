@@ -98,7 +98,10 @@
               <% port_name = port_links[0][0].split(":")[1] %>
               <dt class='list_title'><%= port_name %><dt>
               <dd class='list_description'>
-              <% candidate_ports = port_links.collect { |link| link[1].split(":")[1] } %>
+              <% candidate_ports = port_links.collect { |link| link[1].split(":")[1] }
+                 unless candidate_ports.nil?
+                   candidate_ports << "New_Workflow_Input"
+                 end %>
               <%= f.select "connects_#{port_name}",
                   options_for_select(candidate_ports)  %>
               </dd>

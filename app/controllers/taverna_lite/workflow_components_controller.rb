@@ -178,6 +178,10 @@ module TavernaLite
           source = k.sub("wf_in_","")
           sink = new_processor_name+":"+v
           input_links << [sink,source,"1"]
+        elsif  k.end_with?(":New_Workflow_Input")
+          source = new_processor_name+"_"+v
+          sink = new_processor_name+":"+v
+          input_links << [sink,source,"1"]
         end
       }
       writer = T2flowWriter.new

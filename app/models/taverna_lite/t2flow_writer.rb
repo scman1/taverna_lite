@@ -359,6 +359,49 @@ module TavernaLite
       # parse workflow file as an XML document
       document = get_xml_document(workflow_file)
       root = document.root
+      if port_type == 1
+        add_wf_input(document, processor_name, processor_port, port_name,
+           port_description, port_example)
+      else
+        add_wf_output(document, processor_name, processor_port, port_name,
+           port_description, port_example)
+      end
+      #   - how to calculate depth and granular depth if required
+      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
+      document.root.attributes["producedBy"] = TLVersion
+
+      # save workflow in the host app passing the file
+      File.open(workflow_file, "w:UTF-8") do |f|
+        document.write f
+      end
+      # pending:
+      # - add annotations (description and example)
+      save_wf_port_annotations(workflow_file, port_name, port_name,
+        port_description, port_example,2)
+    end
+
+    def add_wf_input (document, processor_name, processor_port, port_name="",
+      port_description="", port_example="")
+      root = document.root
+      # 01 Add the port
+      inputs = root.elements[Top_dataflow].elements["inputPorts"]
+      portname = Element.new("name")
+      portname.text = port_name
+      new_port = Element.new("port")
+      new_port.add_element(portname)
+      new_port.add_element(Element.new("annotations"))
+      new_depth = Element.new("depth")
+      new_depth.text = "1"
+      new_granular = Element.new("granularDepth")
+      new_granular.text = "1"
+      new_port.add_element(new_depth)
+      new_port.add_element(new_granular)
+      inputs.add_element(new_port)
+    end
+
+    def add_wf_output (document, processor_name, processor_port, port_name="",
+      port_description="", port_example="")
+      root = document.root
       # 01 Add the port
       outputs = root.elements[Top_dataflow].elements["outputPorts"]
       portname = Element.new("name")
@@ -403,19 +446,6 @@ module TavernaLite
          end
         end
       }
-
-      #   - how to calculate depth and granular depth if required
-      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
-      document.root.attributes["producedBy"] = TLVersion
-
-      # save workflow in the host app passing the file
-      File.open(workflow_file, "w:UTF-8") do |f|
-        document.write f
-      end
-      # pending:
-      # - add annotations (description and example)
-      save_wf_port_annotations(workflow_file, port_name, port_name,
-        port_description, port_example,2)
     end
 
     def add_datalink(document, to_processor_name, to_port_name,
