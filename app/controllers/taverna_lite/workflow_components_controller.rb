@@ -161,7 +161,7 @@ module TavernaLite
       processor_name = params[:processor_name]
       form_id = "add_to_" + processor_name
       new_comp = TavernaLite::WorkflowComponent.find(params[form_id]["component_id"])
-      name_field = "name_new_"+new_comp.name
+      name_field = "name_for_comp_"+new_comp.name
       new_processor_name = params[form_id][name_field]
       description = params[form_id]["description"]
       # need to get links
@@ -172,7 +172,7 @@ module TavernaLite
       params[form_id].each { |k,v|
         if k.start_with?("connects_")
           source = new_processor_name +":"+k.sub("connects_","")
-          sink =  processor_name+":"+v
+          sink = processor_name+":"+v
           input_links << [sink,source,"1"]
         elsif  k.start_with?("wf_in_")
           source = k.sub("wf_in_","")
@@ -188,7 +188,8 @@ module TavernaLite
       logger.info @form_op
       logger.info "FROM "+ processor_name
       logger.info "TO " + new_comp.name
-      logger.info description
+      logger.info "NEW PROCESSOR NAME " + new_processor_name
+      logger.info "DESCRIPTION\n" + description
       logger.info "Links " + input_links.to_s
       logger.info "FIND ENDS--------------------------------------------------"
       respond_to do |format|

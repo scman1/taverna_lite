@@ -835,13 +835,13 @@ module TavernaLite
     # Test of add component connecting its inputs
     test "21 Add a component and connect inputs" do
       writer = T2flowWriter.new
-      processor_name="EigenAnalysis"
+      processor_name="EigenAnalysis_1"
       # input links are provided as a set of nested arrays.
       # each array contains source, sink, and depth
       # where source|sink = [processor:]port
       input_links = [
-        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
-        ["Label","EigenAnalysis:speciesName","0"]]
+        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis_1:stage_matrix","1"],
+        ["Label","EigenAnalysis_1:speciesName","0"]]
       writer.add_component_processor(@workflow_05, processor_name,
         @wfc_eigenanalysis, "",  input_links)
       file_data = File.open(@workflow_05)

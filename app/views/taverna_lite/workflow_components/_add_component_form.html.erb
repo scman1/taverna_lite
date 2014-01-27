@@ -66,7 +66,15 @@
         <dt class='list_title'>Name:</dt>
         <dd class='list_description'>
           <%p_names = "'"+(all_procs).join(",")+"'" %>
-          <%= f.text_field "name_for_comp_#{item[:name]}", :value => item[:name],
+          <% new_name = item[:name]
+             i = 0
+             begin
+               if all_procs.include?(new_name)
+                 i += 1
+                 new_name = item[:name]  + "_" + i.to_s
+               end
+             end while (all_procs.include?(new_name)) -%>
+          <%= f.text_field "name_for_comp_#{item[:name]}", :value => new_name,
             :onkeyup=>"validate_name(this.id,#{p_names});", :style =>'width:95%'%>
           <%= content_tag(:span, "ERROR",
             :id=>"error_for_add_to_#{procname}_name_for_comp_#{item[:name]}",
