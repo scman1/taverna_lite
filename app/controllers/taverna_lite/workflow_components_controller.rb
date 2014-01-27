@@ -207,7 +207,10 @@ module TavernaLite
       logger.info "links to new inputs: " + new_wf_inputs.to_s
       logger.info "FIND ENDS--------------------------------------------------"
       respond_to do |format|
-        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet added'}
+        format.html {
+          redirect_to(taverna_lite.edit_workflow_profile_path(@workflow),
+            :notice => 'componet added')
+        }
         format.json { head :no_content }
       end
     end #method: add
