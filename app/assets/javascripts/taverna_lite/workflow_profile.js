@@ -55,12 +55,10 @@
       stop: function() {
         var result = $( "#select-result" ).empty();
         $( ".ui-selected:first", this ).each(function() {
-          $(this).siblings().removeClass("ui-selected");
-          var index = $( "#selectable li" ).index( this );
+          var index = $( "#selectable li" ).index(this);
           var namex = $(this).attr('id');
           result.append( namex );
           showcomp(namex+"_component");
-          showcompalter(namex+"_alternatives");
         });
       }
     });
@@ -74,6 +72,21 @@
     }
     if (ele != null)  ele.style.display = "block";
   }
+
+  function show_add(){
+    //clear the list of selected tags
+    var list = document.getElementById("selectable");
+    var liTags = list.getElementsByTagName ("li");
+    for (var i = 0; i < liTags.length; i++) {
+               liTags[i].className="ui-widget-content ui-selectee"
+    }
+    //show the add componets panel
+    var id="Add_component"
+    showcomp("Add_component")
+    var result = document.getElementById( "select-result" )
+    result.innerHTML = "Add components to workflow"
+  }
+
 
   function showcompalter(showdl) {
     var ele = document.getElementById(showdl);

@@ -45,29 +45,30 @@
 TavernaLite::Engine.routes.draw do
   resources :features
 
-
   resources :feature_model_metadata
-
 
   resources :feature_models
 
   resources :workflow_components do
     member do
-      post "replace"
+      post "add"
       post "remove"
+      post "replace"
     end
   end
 
   resources :workflow_profiles do
     member do
+      get "copy"
+      post "save_as"
+      put "add_processors"
       put "annotate_processor"
       put "update_profile"
-      post "save_as"
-      get "copy"
     end
   end
   resources :workflow_ports do
     member do
+      post "add_outputs"
       post "download"
       post "save_custom_inputs"
       post "save_custom_outputs"

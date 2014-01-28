@@ -76,8 +76,11 @@ module TavernaLite
       @processor_names = []
       @processors.each {|p| @processor_names << p.name}
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
+      @component_alternatives = @component_additionals = nil
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
+        @component_swaps = get_component_swaps(@wf_components) # need to move the definition of this method out of controller
+        @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
       end
       # get all the processors outputs to enable add ouput
       @processor_ports = get_processor_ports(@workflow.id) # need to move the definition of this method out of controller
@@ -175,6 +178,151 @@ module TavernaLite
       return component_alternatives
     end
 
+    # Get the registered alternative components from a given list of components
+    def get_component_swaps(wf_components)
+      component_swaps = {}
+      wf_components.each do |component|
+        unless component[1][1].nil? then
+          proc_name = component[0]
+          c_name = component[1][0].name # the name of the component
+          # need to find alternatives using the version, family and registry
+          c_version = component[1][0].version
+          c_family = component[1][0].family
+          c_registry = component[1][0].registry
+          # get component from DB
+          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
+            c_family, c_registry, c_version)
+          # find alternatives registered in DB
+          unless wfc_db.nil?()
+            alt_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].alternatives
+            unless alt_features.nil?
+              component_swaps[proc_name] = []
+              alt_features.each { |af|
+                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
+                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                component_swaps[proc_name]<<[a_wfc]
+              }
+            end
+          end
+        end
+      end
+      component_swaps = format_additionals_for_output(component_swaps)
+      return component_swaps
+    end
+
+    # Get the registered components which can be added based on the list
+    # of components already in the workflow
+    def get_component_additionals(wf_components)
+      comp_add = {}
+      wf_components.each { |component|
+        unless component[1][1].nil? then
+          proc_name = component[0]
+          comp = component[1][0]
+          c_name = component[1][0].name # the name of the component
+          # need to find components that can be connected to this
+          # component outputs
+          c_version = component[1][0].version
+          c_family = component[1][0].family
+          c_registry = component[1][0].registry
+          # get components from DB
+          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
+            c_family, c_registry, c_version)
+          # find components registered in DB
+          unless wfc_db.nil?()
+            comp_add[proc_name]=[]
+            profile = TavernaLite::WorkflowProfile.find_by_workflow_id(wfc_db.workflow_id)
+            comp_outs_set = (profile.outputs.each.collect {|x| x.example_type_id }).to_set
+            comp_outs = profile.outputs
+            wfprofs = TavernaLite::WorkflowProfile.all
+            wfprofs.each { |prof|
+             comp_ins_set = (prof.inputs.each.collect {|x| x.example_type_id}).to_set
+             if comp_ins_set.subset?(comp_outs_set)
+               # need to identify which are the inputs that can be used to
+               # link the component
+               a_wfc = TavernaLite::WorkflowComponent.find_by_workflow_id(prof.workflow_id)
+               ports_to = []
+               comp_ins_set.each { |intype|
+                 # for now try type matching only
+                 prof.inputs.where(:example_type_id=>intype).each { |in_port|
+                   ports_to << comp_outs.where(:example_type_id=>intype).collect{|x|
+                     ("New_Processor_Name:"+in_port.name + ","+ proc_name+":" + x.name+","+in_port.depth.to_s).split(",")}
+                 }
+               }
+               unless (a_wfc.nil?)
+                 comp_add[proc_name]<<[a_wfc,ports_to]
+               end
+             end
+            }
+          end
+        end
+      }
+      comp_add = format_additionals_for_output(comp_add)
+      return comp_add
+    end
+
+    # Retuns a structure whit the additional components infor ready to be
+    # inserted in the UI
+    def format_additionals_for_output(comps_struct)
+      add_struct={}
+      comps_struct.each {|wf_proc,comps|
+        add_struct[wf_proc]=[]
+        ver_list = {}
+        prev_comp = prev_ver = prev_fam = prev_reg = prev_id =
+        prev_des = prev_tit = prev_outs = nil
+        comps.each do |item|
+          current_comp = item[0].name
+          current_ver = item[0].version
+          current_fam = item[0].family
+          current_reg = item[0].registry
+          current_des = item[0].workflow.description
+          current_tit = item[0].workflow.title
+          current_id = item[0].id
+          current_outs = item[1]
+          if ver_list.empty? then
+            prev_comp = current_comp
+            prev_ver = current_ver
+            prev_fam = current_fam
+            prev_reg = current_reg
+            prev_id = current_id
+            prev_des =  current_des
+            prev_tit = current_tit
+            prev_outs = current_outs
+            ver_list = {prev_ver=>prev_id}
+          elsif (current_comp == prev_comp && current_fam == prev_fam && current_reg == prev_reg)  then
+            ver_list[current_ver] = current_id
+          else
+            add_struct[wf_proc]<< {
+              :family => prev_fam,
+              :name => prev_comp,
+              :registry => prev_reg,
+              :versions => ver_list,
+              :description => prev_des,
+              :title => prev_tit,
+              :connects_to => prev_outs
+            }
+            prev_comp = current_comp
+            prev_ver = current_ver
+            prev_fam = current_fam
+            prev_reg = current_reg
+            prev_id = current_id
+            prev_des =  current_des
+            prev_tit = current_tit
+            prev_outs = current_outs
+            ver_list = {prev_ver=>prev_id}
+          end
+        end
+        add_struct[wf_proc]<< {
+              :family => prev_fam,
+              :name => prev_comp,
+              :registry => prev_reg,
+              :versions => ver_list,
+              :description => prev_des,
+              :title => prev_tit,
+              :connects_to => prev_outs
+        }
+      }
+      return add_struct
+    end
     # Read the workflow file and get all available workflow ports
     def get_processor_ports(workflow_id)
       wf =  TavernaLite.workflow_class.find(workflow_id)
@@ -204,36 +352,8 @@ module TavernaLite
       xmlFile = @workflow.workflow_filename
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
-      processor_ports = params[:processor_annotations]["#{processor_name}_ports"]
-      unless processor_ports.nil?
-        # add a new workflow port
-        the_ports = processor_ports.split(",")
-        the_ports.each do |p|
-          customise =  params[:processor_annotations]["add_#{p}"]
-          if customise == "1"
-            port_name=params[:processor_annotations]["name_for_port_#{p}"]
-            port_description=params[:processor_annotations]["description_for_port_#{p}"]
-            port_example=params[:processor_annotations]["example_for_port_#{p}"]
-            writer.add_wf_port(xmlFile, new_name, p, port_name, port_description,  port_example)
-            wfp = WorkflowPort.new()
-            wfp.name = port_name
-            wfp.description = port_description
-            wfp.example = port_example
-            wfp.workflow_id = @workflow.id
-            wfp.workflow_profile_id = WorkflowProfile.find_by_workflow_id(@workflow.id).id
-            wfp.port_type_id = 2
-            wfp.save
-          end
-        end
-      end
       comp_in_proc_id = params[:component_id]
-      if replace_id != comp_in_proc_id
-        #logger.info "Replaced component " + comp_in_proc_id + " in processor " +
-        #  processor_name +" with component: " + replace_id
-        writer.replace_component(@workflow.workflow_filename,processor_name,replace_id)
       end
-      end
-
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
         format.json { head :no_content }

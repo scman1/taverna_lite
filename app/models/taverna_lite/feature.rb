@@ -99,14 +99,6 @@ module TavernaLite
       unless instantiated
         return feature_additionals
       end
-      # get all siblings if node is optional
-      if self.feature_type_id == 5
-        parent.optional.each{ |ft|
-          unless ft.id == self.id
-            feature_additionals << ft
-          end
-        }
-      end
       # get additionals if parent is or
       if parent.feature_type_id == 4
         parent.parent.or.each { |oft|

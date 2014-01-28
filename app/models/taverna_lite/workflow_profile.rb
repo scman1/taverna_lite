@@ -59,19 +59,11 @@ module TavernaLite
     has_many :workflow_ports, :dependent => :destroy
 
     def inputs
-      ports =  workflow_ports.where(:port_type_id=>1)
-      if ports.nil? or ports.blank?
-        ports = get_custom_inputs
-      end
-      return ports
+      get_custom_inputs
     end
 
     def outputs
-      ports = workflow_ports.where(:port_type_id=>2)
-      if ports.nil? or ports.blank?
-        ports = get_custom_outputs
-      end
-      return ports
+      get_custom_outputs
     end
 
     def get_custom_inputs
@@ -81,6 +73,7 @@ module TavernaLite
     def get_custom_outputs
       get_customised_ports(2)
     end
+
     def get_customised_ports(port_type = 1)
       # 1 Get custom inputs
       custom_ports = WorkflowPort.get_custom_ports(workflow.id, port_type)
@@ -88,11 +81,10 @@ module TavernaLite
       model = get_model
       # 3 Add missing ports (if any) to the list
       if port_type == 1
-        ports_list = model.sources()
+        ports_list = model.sources
       else
-        ports_list = model.sinks()
+        ports_list = model.sinks
       end
-
       ports_list.each{|port_x|
         if (custom_ports).where("name='#{port_x.name}'").count() == 0 then
           # missing input
@@ -100,7 +92,7 @@ module TavernaLite
           missing_port.name = port_x.name
           missing_port.workflow_id = workflow.id
           missing_port.workflow_profile_id = self.id
-          missing_port.port_type_id = port_type       # id of inputs
+          missing_port.port_type_id = port_type       # id of port type
           missing_port.display_control_id = 1         # default display control
           missing_port.show = true                    # always show
           example_values = port_x.example_values
@@ -120,6 +112,7 @@ module TavernaLite
           missing_port.old_example = ""
           missing_port.show = true
           missing_port.save
+          custom_ports << missing_port
         end
       }
       # 4 Return the list of custom inputs
@@ -229,6 +222,9 @@ module TavernaLite
     def processors
       # get the workflow t2flow model
       wf_model = get_model
+      if wf_model.processors.count == 1
+        return [wf_model.processors[0]]
+      end
       processor_names = get_processors_order(wf_model)
       in_order = []
       processor_names.each do |a_processor|

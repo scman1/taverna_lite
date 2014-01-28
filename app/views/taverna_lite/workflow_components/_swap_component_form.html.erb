@@ -1,0 +1,89 @@
+<%
+# Copyright (c) 2012-2013 Cardiff University, UK.
+# Copyright (c) 2012-2013 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the names of The University of Manchester nor Cardiff University nor
+#   the names of its contributors may be used to endorse or promote products
+#   derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Authors
+#     Abraham Nieva de la Hidalga
+#
+# Synopsis
+#
+# BioVeL Taverna Lite  is a prototype interface to Taverna Server which is
+# provided to support easy inspection and execution of workflows.
+#
+# For more details see http://www.biovel.eu
+#
+# BioVeL is funded by the European Commission 7th Framework Programme (FP7),
+# through the grant agreement number 283359.
+%>
+<% componentname = item[:name] %>
+<%= form_for "replace_#{componentname}",
+  :url => {:controller => 'workflow_components', :action => 'replace'},
+  :html => {:multipart => true}, :disable_with => "Saving..."  do |fr| %>
+  <%= hidden_field_tag "id", workflow.id %>
+  <%= hidden_field_tag "selected_tab", 'components' %>
+  <%= hidden_field_tag "processor_name", procname %>
+  <%= hidden_field_tag :prev_component_id, comp_in_proc.id %>
+  <%= hidden_field_tag :prev_component_name, componentname %>
+  <%= hidden_field_tag "selected_op", "replace" %>
+  <div class="replaceable" id="<%= componentname %>">
+    <span style="float: left;width:20%">
+      <%= image_tag "taverna_lite/taverna-component.png",
+        :size => "48x48", :alt => "<<COMPONENT>>",
+        :class=>"componenticon" %>
+    </span> <!--image span -->
+    <span class="desc_div">
+      <dl class='list_any'>
+        <dt class='list_title'>Name:</dt>
+        <dd class='list_description'><%= componentname %></dd>
+        <dt class='list_title'>Version:</dt>
+        <dd class='list_description'>
+          <%= fr.select "component_id",
+            options_for_select(item[:versions])  %>
+        </dd>
+        <dt class='list_title'>Family</dt>
+        <dd class='list_description'>
+          <%= item[:family] %>
+        </dd>
+        <dt class='list_title'>Description:</dt>
+        <dd class='list_description'>
+            <%= item[:title] %>
+        </dd>
+      </dl>
+    </span> <!--description span -->
+    <span class="action_div">
+        <span title="Replace selected component"
+          alt="Replace selected component"
+          style="float:center; padding:5px;margin-top: 3px;">
+        <%= fr.submit 'Replace' %>
+        </span> <!--buton div -->
+    </span>
+  </div><!--component alternative div-->
+<% end -%> <!--form-->

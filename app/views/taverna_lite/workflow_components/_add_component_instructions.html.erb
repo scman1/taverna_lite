@@ -1,3 +1,4 @@
+<%
 # Copyright (c) 2012-2013 Cardiff University, UK.
 # Copyright (c) 2012-2013 The University of Manchester, UK.
 #
@@ -34,13 +35,56 @@
 #
 # Synopsis
 #
-# Taverna Lite is a prototype interface which is provided to support easy
+# BioVeL Taverna Lite is a prototype interface provided to support the
 # inspection and modification of workflows.
 #
 # For more details see http://www.biovel.eu
 #
 # BioVeL is funded by the European Commission 7th Framework Programme (FP7),
 # through the grant agreement number 283359.
-module TavernaLite
-  VERSION = "0.5.1"
-end
+%>
+<ul>
+  <li>
+    The components listed here can be added to the workflow.
+  </li>
+  <li>
+    The list is based on the components currently used in the workflow. Each
+    group corresponds to a component in the workflow and shows the list of
+    components that can be connected to it.
+  </li>
+  <li>
+    To add a component:
+  </li>
+  <ol>
+    <li>
+      Select a component.
+    </li>
+    <li>
+      Click on the select thick box next to the name of the selcetd component.
+    </li>
+    <li>
+      Select the version of the component.
+    </li>
+    <li>
+      Edit the proposed name if required.
+    </li>
+    <li>
+      Edit the proposed description if required.
+    </li>
+    <li>
+      Select port connections for each of the selected component inputs. These
+      can be all outputs from the selected component, outputs other components
+      in the workflow, or a workflow input.
+    </li>
+    <li>
+      Click on the "Add" button to add the selected component(s).
+    </li>
+  </ol>
+  <li>
+    Repeat previous steps for all components that need to be added.
+  </li>
+</ul>
+<span>
+  <b>NOTE:</b> The components will be added and the changes
+  saved into the workflow file.
+</span>

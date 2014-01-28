@@ -50,6 +50,9 @@
     </h3>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_inputs' %>
     <%= render :partial => 'taverna_lite/workflow_ports/edit_outputs' %>
+    <%= render :partial => 'taverna_lite/workflow_components/add_components',
+          :locals => {:workflow => @workflow, :addcomps=>@component_additionals,
+          :all_procs => @processor_names } %>
     <% @processors.each do |proc| %>
       <% if @wf_components.count > 0 && @wf_components.has_key?(proc.name)
            wfc = @wf_components[proc.name][0]
@@ -60,7 +63,8 @@
         style="display: none;">
         <%= render :partial=>'taverna_lite/workflow_components/customise',
          :locals => {:processor => proc, :proc_outs=>@processor_ports,
-         :comp_in_proc => wfc, :all_procs => @processor_names }%>
+         :comp_used => wfc, :comp_in_proc => wfc, :all_procs => @processor_names,
+         :swapcomps=>@component_swaps, :workflow=>@workflow}%>
         <% unless wfc.nil? %>
           <h4>COMPONENT DETAILS</h4>
           <dl class='list_any'>

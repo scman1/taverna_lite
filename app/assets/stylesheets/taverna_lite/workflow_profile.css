@@ -23,12 +23,16 @@
   -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;
   border: solid 1px #3300CC;}
 
-.desc_div {float: left;text-align: center;width:80%;}
+.desc_div {float: left;text-align: center;width:80%; background-color : transparent;}
 .action_div {float: center;text-align: center;width:80%;}
+
 .replaceable  { margin: 1px; padding: 0.1em; font-size: 12px;
   height:auto !important; -moz-border-radius: 8px;
   -webkit-border-radius: 8px;border-radius: 8px; border: solid 1px #3300CC;}
 
+.embeddable { margin: 1px; padding: 0.1em; font-size: 12px;
+  height:auto !important; -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;border-radius: 8px; border: solid 1px #3300CC;}
 
 .edit_components { min-height:300px; height:auto !important; height:300px;}
 #component_list { float: left; width: 25%; }

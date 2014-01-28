@@ -201,5 +201,54 @@ module TavernaLite
       filetype = MIME::Types.type_for(path)
       send_file path, :type=> filetype, :name => @workflow_port.sample_file
     end
+    # add a set of workflow outputs
+    def add_outputs
+      @workflow = TavernaLite.workflow_class.find(params[:id])
+      action = params[:commit]
+      processor_name =  params[:add_outputs][:processor_name]
+      selected_tab = params[:selected_tab]
+      selected_choice = params[:selected_choice]
+      xmlFile = @workflow.workflow_filename
+      writer = T2flowWriter.new
+      processor_ports = params[:add_outputs]["#{processor_name}_ports"]
+      unless processor_ports.nil?
+        # add a new workflow port
+        the_ports = processor_ports.split(",")
+        the_ports.each do |proc_port|
+          customise =  params[:add_outputs]["add_#{proc_port}"]
+          if customise == "1"
+            port_name=params[:add_outputs]["name_for_port_#{proc_port}"]
+            port_description=params[:add_outputs]["description_for_port_#{proc_port}"]
+            port_example=params[:add_outputs]["example_for_port_#{proc_port}"]
+            writer.add_wf_port(xmlFile, processor_name, proc_port, port_name,
+              port_description,  port_example)
+            wfp = WorkflowPort.new()
+            wfp.name = port_name
+            wfp.description = port_description
+            wfp.example = port_example
+            wfp.workflow_id = @workflow.id
+            wfp.workflow_profile_id = WorkflowProfile.find_by_workflow_id(@workflow.id).id
+            wfp.port_type_id = 2
+            wfp.save
+            logger.info "ADD OUTS-----------------------------------------------"
+            logger.info params
+            logger.info action
+            logger.info "FROM "+ processor_name
+            logger.info "ALL PORTS: " + processor_ports
+            logger.info "WORKFLOW FILE: " + xmlFile
+            logger.info "PROCESSOR PORT " + proc_port
+            logger.info "NAME FOR PORT " + port_name
+            logger.info "DESC FOR PORT " + port_description
+            logger.info "EXAM FOR PORT " + port_example
+            logger.info "ADD ENDS -----------------------------------------------"
+          end
+        end
+      end
+
+      respond_to do |format|
+        format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}
+        format.json { head :no_content }
+      end
+    end
   end
 end

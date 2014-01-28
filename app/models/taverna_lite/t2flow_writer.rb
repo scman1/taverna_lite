@@ -359,6 +359,49 @@ module TavernaLite
       # parse workflow file as an XML document
       document = get_xml_document(workflow_file)
       root = document.root
+      if port_type == 1
+        add_wf_input(document, processor_name, processor_port, port_name,
+           port_description, port_example)
+      else
+        add_wf_output(document, processor_name, processor_port, port_name,
+           port_description, port_example)
+      end
+      #   - how to calculate depth and granular depth if required
+      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
+      document.root.attributes["producedBy"] = TLVersion
+
+      # save workflow in the host app passing the file
+      File.open(workflow_file, "w:UTF-8") do |f|
+        document.write f
+      end
+      # pending:
+      # - add annotations (description and example)
+      save_wf_port_annotations(workflow_file, port_name, port_name,
+        port_description, port_example,2)
+    end
+
+    def add_wf_input (document, processor_name, processor_port, port_name="",
+      port_description="", port_example="")
+      root = document.root
+      # 01 Add the port
+      inputs = root.elements[Top_dataflow].elements["inputPorts"]
+      portname = Element.new("name")
+      portname.text = port_name
+      new_port = Element.new("port")
+      new_port.add_element(portname)
+      new_port.add_element(Element.new("annotations"))
+      new_depth = Element.new("depth")
+      new_depth.text = "1"
+      new_granular = Element.new("granularDepth")
+      new_granular.text = "1"
+      new_port.add_element(new_depth)
+      new_port.add_element(new_granular)
+      inputs.add_element(new_port)
+    end
+
+    def add_wf_output (document, processor_name, processor_port, port_name="",
+      port_description="", port_example="")
+      root = document.root
       # 01 Add the port
       outputs = root.elements[Top_dataflow].elements["outputPorts"]
       portname = Element.new("name")
@@ -403,19 +446,6 @@ module TavernaLite
          end
         end
       }
-
-      #   - how to calculate depth and granular depth if required
-      #   - UI should validate input of names "FOR ALL WF ELEMENTS"
-      document.root.attributes["producedBy"] = TLVersion
-
-      # save workflow in the host app passing the file
-      File.open(workflow_file, "w:UTF-8") do |f|
-        document.write f
-      end
-      # pending:
-      # - add annotations (description and example)
-      save_wf_port_annotations(workflow_file, port_name, port_name,
-        port_description, port_example,2)
     end
 
     def add_datalink(document, to_processor_name, to_port_name,
@@ -591,8 +621,12 @@ module TavernaLite
       }
     end # remove_control_links_for_processor
 
+    # Add a processor containinf a component and link it if links are provided
     def add_component_processor(workflow_file, processor_name, component,
-      input_links=[], output_links=[])
+      description="", input_links=[], output_links=[])
+      if description == ""
+        description = TavernaLite.workflow_class.find(component.workflow_id).description
+      end
       # parse the workflow file as an XML document
       document = get_xml_document(workflow_file)
       # add the component
@@ -603,12 +637,16 @@ module TavernaLite
         link_processor_inputs(document,input_links)
       end
       # add links to outputs
+
       # label the workflow as produced by taverna lite
       document.root.attributes["producedBy"] = TLVersion
       # save workflow in the host app passing the file
       File.open(workflow_file, "w:UTF-8") do |f|
         f.write document.root
       end
+      # add annotation to processor, if empty use component description
+      save_wf_processor_annotations(workflow_file, processor_name,
+        processor_name, description)
     end
 
     def link_processor_inputs(document,input_links)
@@ -635,10 +673,12 @@ module TavernaLite
           port_granular=link_depth[1]
         else
           port_depth=link_depth[0]
-          port_granular=""
+          port_granular="1"
         end
         add_datalink(document, to_proc, to_port, from_proc, from_port)
         add_input_port_and_mapping(document, to_proc, to_port,port_depth,
+          port_granular)
+        add_output_port_and_mapping(document, from_proc, from_port,port_depth,
           port_granular)
       }
     end
@@ -693,6 +733,39 @@ module TavernaLite
               new_inport.attributes["depth"]=depth
               cross_ports.add_element(new_inport)
             end
+          end
+        end
+      }
+    end
+    def add_output_port_and_mapping(document, to_proc, to_port, depth, granular="")
+      # get the processor element
+      root = document.root
+      processors = root.elements[Top_dataflow].elements["processors"]
+      processors.elements.each("processor/name") { |prn|
+        if prn.text == to_proc then
+          the_processor = prn.parent
+          output_maps = the_processor.elements["activities/activity/outputMap"]
+          #check if map exists, if not add else skip this
+          unless map_exists(output_maps, to_port)
+            new_map = Element.new("map")
+            new_map.attributes["from"] = to_port
+            new_map.attributes["to"] = to_port
+            output_maps.add_element(new_map)
+          end
+          output_ports = the_processor.elements["outputPorts"]
+          #check if port exists, if not add else skip this
+          unless port_exists(output_ports, to_port)
+            new_outport = Element.new("port")
+            new_outname = Element.new("name")
+            new_outname.text = to_port
+            new_depth = Element.new("depth")
+            new_depth.text = depth
+            new_granularDepth = Element.new("granularDepth")
+            new_granularDepth.text = granular
+            new_outport.add_element(new_outname)
+            new_outport.add_element(new_depth)
+            new_outport.add_element(new_granularDepth)
+            output_ports.add_element(new_outport)
           end
         end
       }
