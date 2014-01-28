@@ -79,6 +79,7 @@ module TavernaLite
       @component_alternatives = @component_additionals = nil
       unless @wf_components.nil? || @wf_components.count == 0
         @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
+        @component_swaps = get_component_swaps(@wf_components) # need to move the definition of this method out of controller
         @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
       end
       # get all the processors outputs to enable add ouput
@@ -175,6 +176,38 @@ module TavernaLite
         end
       end
       return component_alternatives
+    end
+
+    # Get the registered alternative components from a given list of components
+    def get_component_swaps(wf_components)
+      component_swaps = {}
+      wf_components.each do |component|
+        unless component[1][1].nil? then
+          proc_name = component[0]
+          c_name = component[1][0].name # the name of the component
+          # need to find alternatives using the version, family and registry
+          c_version = component[1][0].version
+          c_family = component[1][0].family
+          c_registry = component[1][0].registry
+          # get component from DB
+          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
+            c_family, c_registry, c_version)
+          # find alternatives registered in DB
+          unless wfc_db.nil?()
+            alt_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].alternatives
+            unless alt_features.nil?
+              component_swaps[proc_name] = []
+              alt_features.each { |af|
+                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
+                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                component_swaps[proc_name]<<[a_wfc]
+              }
+            end
+          end
+        end
+      end
+      component_swaps = format_additionals_for_output(component_swaps)
+      return component_swaps
     end
 
     # Get the registered components which can be added based on the list
@@ -319,34 +352,7 @@ module TavernaLite
       xmlFile = @workflow.workflow_filename
       writer = T2flowWriter.new
       writer.save_wf_processor_annotations(xmlFile, processor_name, new_name, description)
-      processor_ports = params[:processor_annotations]["#{processor_name}_ports"]
-      unless processor_ports.nil?
-        # add a new workflow port
-        the_ports = processor_ports.split(",")
-        the_ports.each do |p|
-          customise =  params[:processor_annotations]["add_#{p}"]
-          if customise == "1"
-            port_name=params[:processor_annotations]["name_for_port_#{p}"]
-            port_description=params[:processor_annotations]["description_for_port_#{p}"]
-            port_example=params[:processor_annotations]["example_for_port_#{p}"]
-            writer.add_wf_port(xmlFile, new_name, p, port_name, port_description,  port_example)
-            wfp = WorkflowPort.new()
-            wfp.name = port_name
-            wfp.description = port_description
-            wfp.example = port_example
-            wfp.workflow_id = @workflow.id
-            wfp.workflow_profile_id = WorkflowProfile.find_by_workflow_id(@workflow.id).id
-            wfp.port_type_id = 2
-            wfp.save
-          end
-        end
-      end
       comp_in_proc_id = params[:component_id]
-      if replace_id != comp_in_proc_id
-        #logger.info "Replaced component " + comp_in_proc_id + " in processor " +
-        #  processor_name +" with component: " + replace_id
-        writer.replace_component(@workflow.workflow_filename,processor_name,replace_id)
-      end
       end
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'processor updated'}

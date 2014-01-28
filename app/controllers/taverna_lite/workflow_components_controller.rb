@@ -132,9 +132,17 @@ module TavernaLite
       @workflow = Workflow.find(params[:id])
       @from_op = 'replace'
       processor_name = params[:processor_name]
-      replacement_id = WorkflowComponent.find(params[:component_id])
+      prev_component_name = params[:prev_component_name]
+      replacement_id = params["replace_#{prev_component_name}"][:component_id]
+      replacement_comp = WorkflowComponent.find(replacement_id)
+      logger.info "REPLACE THIS -----------------------------------------------"
+      logger.info params
+      logger.info @form_op
+      logger.info "FROM "+ processor_name
+      logger.info "TO " + replacement_comp.name
+      logger.info "REPLACE ENDS -----------------------------------------------"
       writer = T2flowWriter.new
-      writer.replace_component(@workflow.workflow_filename,processor_name,replacement_id)
+      writer.replace_component(@workflow.workflow_filename,processor_name,replacement_comp)
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet replaced'}
         format.json { head :no_content }
@@ -144,10 +152,10 @@ module TavernaLite
     # Remove the selected component from the workflow
     def remove
       @workflow = Workflow.find(params[:id])
-      @from_op = 'remove'
+      from_op = 'remove'
       processor_name = params[:processor_name]
       writer = T2flowWriter.new
-      writer.remove_workflow_processor(@workflow.workflow_filename,processor_name)
+      writer.remove_processor(@workflow.workflow_filename,processor_name)
       respond_to do |format|
         format.html { redirect_to taverna_lite.edit_workflow_profile_path(@workflow), :notice => 'componet removed'}
         format.json { head :no_content }
@@ -196,7 +204,7 @@ module TavernaLite
       writer.add_component_processor(@workflow.workflow_filename,
        new_processor_name, new_comp, description, input_links)
 
-      logger.info "FIND THIS--------------------------------------------------"
+      logger.info "ADD THIS--------------------------------------------------"
       logger.info params
       logger.info @form_op
       logger.info "FROM "+ processor_name
@@ -205,7 +213,7 @@ module TavernaLite
       logger.info "DESCRIPTION\n" + description
       logger.info "Links: " + input_links.to_s
       logger.info "links to new inputs: " + new_wf_inputs.to_s
-      logger.info "FIND ENDS--------------------------------------------------"
+      logger.info "ADD ENDS--------------------------------------------------"
       respond_to do |format|
         format.html {
           redirect_to(taverna_lite.edit_workflow_profile_path(@workflow),
