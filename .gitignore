@@ -1,6 +1,5 @@
 *.sxfm
-snips.txt
-tlite_hist.txt
+*.txt
 .bundle/
 log/*.log
 pkg/
