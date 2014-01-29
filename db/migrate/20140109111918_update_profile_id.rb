@@ -1,4 +1,4 @@
-class UpdateWorkflowProfileId < ActiveRecord::Migration
+class UpdateProfileId < ActiveRecord::Migration
   def up
     TavernaLite::WorkflowPort.all.each {|pt|
       unless TavernaLite::WorkflowProfile.where(:workflow_id => pt.workflow_id).blank?
