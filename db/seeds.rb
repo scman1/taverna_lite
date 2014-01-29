@@ -36,6 +36,7 @@ feature_data.each { |ft_k, ft_v|
     # search for component by name and then verify igf it can be used
     # as instance
     wf_comps = TavernaLite::WorkflowComponent.find_all_by_name(ft_v["name"])
+    prev = ft_v["component_id"]
     wf_comps.each {
       |wfcomp|
       # The Component could be used to instantiate this feature
@@ -45,6 +46,7 @@ feature_data.each { |ft_k, ft_v|
         break
       end
     }
+    next if prev == ft_v["component_id"]
   end
   TavernaLite::Feature.create(ft_v)
 }

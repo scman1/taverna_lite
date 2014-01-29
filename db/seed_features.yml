@@ -264,46 +264,6 @@ twentytwo:
   cardinality_upper_bound: 1
   component_id: 28
 
-tewntythree:
-  id: 23
-  feature_model_id: 1
-  parent_node_id: 6
-  name: 'StageMatrixFromCensus'
-  feature_type_id: 5
-  cardinality_lower_bound: 1
-  cardinality_upper_bound: 1
-  component_id: 56
-
-twentyfour:
-  id: 24
-  feature_model_id: 1
-  parent_node_id: 6
-  name: 'StageMatrixFromCensus'
-  feature_type_id: 5
-  cardinality_lower_bound: 1
-  cardinality_upper_bound: 1
-  component_id: 57
-
-twentyfive:
-  id: 25
-  feature_model_id: 1
-  parent_node_id: 6
-  name: 'StageMatrixFromCensus'
-  feature_type_id: 5
-  cardinality_lower_bound: 1
-  cardinality_upper_bound: 1
-  component_id: 58
-
-twentysix:
-  id: 26
-  feature_model_id: 1
-  parent_node_id: 6
-  name: 'StageMatrixFromCensus'
-  feature_type_id: 5
-  cardinality_lower_bound: 1
-  cardinality_upper_bound: 1
-  component_id: 59
-
 twentyseven:
   id: 27
   feature_model_id: 1
