@@ -9,7 +9,7 @@ class UpdateProfileId < ActiveRecord::Migration
   end
   def down
     TavernaLite::WorkflowPort.all.each {|pt|
-      pt.workflow_id = TavernaLite::WorkflowProfile.find(pt.workflow_profile_id).workflow_id
+      pt.workflow_profile_id = nil
       pt.save
     }
   end

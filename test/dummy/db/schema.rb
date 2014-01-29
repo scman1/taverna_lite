@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140109111918) do
+ActiveRecord::Schema.define(:version => 20140129141426) do
 
   create_table "results", :force => true do |t|
     t.string   "name"
@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(:version => 20140109111918) do
     t.string   "note"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "taverna_lite_example_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "taverna_lite_feature_model_metadata", :force => true do |t|
