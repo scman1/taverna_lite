@@ -912,16 +912,20 @@ module TavernaLite
       description="plain text report of the tables used for generating matrix"
       example=""
       port_type=2
+      port_depth=1
+      port_granular=1
       writer.add_wf_port(@workflow_07, proc_name, proc_port,  port_name,
-      description, example, port_type)
+      description, example, port_type,port_granular)
       proc_name = "RToText"
       proc_port = "plain_text_output"
       port_name="Stage_Matrix_Text"
       description="plain text report of the tables used for generating matrix"
       example=""
       port_type=2
+      port_depth=0
+      port_granular=0
       writer.add_wf_port(@workflow_07, proc_name, proc_port,  port_name,
-        description, example, port_type)
+        description, example, port_type,port_depth,port_granular)
 
     end #test 21
   end

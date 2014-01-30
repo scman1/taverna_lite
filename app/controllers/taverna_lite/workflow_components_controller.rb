@@ -176,6 +176,7 @@ module TavernaLite
       #  input_links = [
       #    ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
       #    ["Label","EigenAnalysis:speciesName","0"]]
+      # NEED TO CHANGE THIS TO PASS CORRECT DEPTHS TO PORTS...!!!!!
       input_links = []
       new_wf_inputs = []
       params[form_id].each { |k,v|
