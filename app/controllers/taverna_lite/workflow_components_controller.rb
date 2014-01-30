@@ -183,15 +183,15 @@ module TavernaLite
           source = new_processor_name +":"+k.sub("connects_","")
           sink = processor_name+":"+v
           if v == "New_Workflow_Input"
-            input_links << [new_processor_name +"_"+k.sub("connects_",""),source,"0"]
+            input_links << [new_processor_name +"_"+k.sub("connects_",""),source,"0","0"]
             new_wf_inputs << [new_processor_name +"_"+k.sub("connects_","")]
           else
-            input_links << [sink,source,"1"]
+            input_links << [sink,source,"1","1"]
           end
         elsif  k.start_with?("wf_in_")
           source = k.sub("wf_in_","")
           sink = new_processor_name+":"+v
-          input_links << [sink,source,"1"]
+          input_links << [sink,source,"1","1"]
         end
       }
       writer = T2flowWriter.new

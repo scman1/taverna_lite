@@ -392,15 +392,12 @@ module TavernaLite
       new_port.add_element(Element.new("annotations"))
       new_depth = Element.new("depth")
       new_depth.text = "1"
-      new_granular = Element.new("granularDepth")
-      new_granular.text = "1"
       new_port.add_element(new_depth)
-      new_port.add_element(new_granular)
       inputs.add_element(new_port)
     end
 
     def add_wf_output (document, processor_name, processor_port, port_name="",
-      port_description="", port_example="")
+      port_description="", port_example="", depth=0,gr_depth=0)
       root = document.root
       # 01 Add the port
       outputs = root.elements[Top_dataflow].elements["outputPorts"]
@@ -430,12 +427,13 @@ module TavernaLite
             output_maps.add_element(new_map)
           end
           output_ports = the_processor.elements["outputPorts"]
-          #check if port exists, if not add else skip this
+          # check if port exists, if not add else skip this
           unless port_exists(output_ports, processor_port)
             new_outport = Element.new("port")
             new_outname = Element.new("name")
             new_outname.text = processor_port
             new_depth = Element.new("depth")
+            # depth for single values (includuing a file or an image is 0)
             new_depth.text = "1"
             new_granular = Element.new("granularDepth")
             new_granular.text = "1"
@@ -653,7 +651,9 @@ module TavernaLite
       input_links.each { |il|
         link_source=il[0].split(":")
         link_sink=il[1].split(":")
-        link_depth=il[2].split(":")
+        link_source_depth=il[2].split(":")
+        link_sink_depth=il[3].split(":")
+
         if link_source.length>1
           from_proc = link_source[0]
           from_port = link_source[1]
@@ -668,18 +668,25 @@ module TavernaLite
           to_port=link_sink[0]
           to_proc=""
         end
-        if link_depth.length>1
-          port_depth=link_depth[0]
-          port_granular=link_depth[1]
+        if link_source_depth.length>1
+          port_source_depth=link_source_depth[0]
+          port_source_granular=link_source_depth[1]
         else
-          port_depth=link_depth[0]
-          port_granular="1"
+          port_source_depth=link_source_depth[0]
+          port_source_granular=""
+        end
+        if link_sink_depth.length>1
+          port_sink_depth=link_sink_depth[0]
+          port_sink_granular=link_sink_depth[1]
+        else
+          port_sink_depth=link_sink_depth[0]
+          port_sink_granular=""
         end
         add_datalink(document, to_proc, to_port, from_proc, from_port)
-        add_input_port_and_mapping(document, to_proc, to_port,port_depth,
-          port_granular)
-        add_output_port_and_mapping(document, from_proc, from_port,port_depth,
-          port_granular)
+        add_input_port_and_mapping(document, to_proc, to_port,port_source_depth,
+          port_source_granular)
+        add_output_port_and_mapping(document, from_proc, from_port,port_sink_depth,
+          port_sink_granular)
       }
     end
 
@@ -737,7 +744,7 @@ module TavernaLite
         end
       }
     end
-    def add_output_port_and_mapping(document, to_proc, to_port, depth, granular="")
+    def add_output_port_and_mapping(document, to_proc, to_port, depth="0", granular="0")
       # get the processor element
       root = document.root
       processors = root.elements[Top_dataflow].elements["processors"]
