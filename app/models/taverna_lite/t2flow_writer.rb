@@ -392,8 +392,11 @@ module TavernaLite
       new_port.add_element(portname)
       new_port.add_element(Element.new("annotations"))
       new_depth = Element.new("depth")
+      new_granular = Element.new("granularDepth")
+      new_granular.text = gr_depth
       new_depth.text = depth
       new_port.add_element(new_depth)
+      new_port.add_element(new_granular)
       inputs.add_element(new_port)
     end
 
