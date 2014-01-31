@@ -49,7 +49,7 @@ module TavernaLite
     # GET /workflow_ports
     # GET /workflow_ports.json
     def index
-      @workflow_ports = WorkflowPort.where(:depth=>0,:granular_depth=>0,:port_type_id=>2)
+      @workflow_ports = WorkflowPort.order(:workflow_id)
       respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @workflow_ports }

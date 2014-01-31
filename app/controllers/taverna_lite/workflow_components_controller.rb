@@ -194,7 +194,7 @@ module TavernaLite
             new_wf_inputs << [new_wf_in]
           else
             wf_file = @workflow.workflow_filename
-            from_depth = get_proc_out_port_depths(wf_filen,processor_name,v)
+            from_depth = get_proc_out_port_depths(wf_file,processor_name,v)
             input_links << [pro_from,new_dest,from_depth,dest_depth]
           end
         end
