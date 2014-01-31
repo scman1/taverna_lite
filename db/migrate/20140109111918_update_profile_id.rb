@@ -1,4 +1,4 @@
-class UpdateWorkflowProfileId < ActiveRecord::Migration
+class UpdateProfileId < ActiveRecord::Migration
   def up
     TavernaLite::WorkflowPort.all.each {|pt|
       unless TavernaLite::WorkflowProfile.where(:workflow_id => pt.workflow_id).blank?
@@ -9,7 +9,7 @@ class UpdateWorkflowProfileId < ActiveRecord::Migration
   end
   def down
     TavernaLite::WorkflowPort.all.each {|pt|
-      pt.workflow_id = TavernaLite::WorkflowProfile.find(pt.workflow_profile_id).workflow_id
+      pt.workflow_profile_id = nil
       pt.save
     }
   end

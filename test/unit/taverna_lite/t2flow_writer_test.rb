@@ -119,9 +119,26 @@ module TavernaLite
       to_there = fixtures_path+'/test_workflows/test_result/'+filename
       FileUtils.cp from_here, to_there
       @workflow_06 = to_there
+
+      # short_01.t2flow
+      # This file contains only workflow components, it has:
+      #  - 1 outputs
+      #  - 3 data links
+      #  - 7 processor output ports (2 of them used)
+      #  - 2 processors (all components)
+      #  - 0 control links
+      fixtures_path = ActiveSupport::TestCase.fixture_path
+      filename ='short_01.t2flow'
+      from_here =fixtures_path+'/test_workflows/'+filename
+      to_there = fixtures_path+'/test_workflows/test_result/'+filename
+      FileUtils.cp from_here, to_there
+      @workflow_07 = to_there
+
       @wf_component = taverna_lite_workflow_components(:tl_workflowcomponent_03)
       @wfc_eigenanalysis = taverna_lite_workflow_components(:eigenanalysis)
+      @wfc_TextFromR = taverna_lite_workflow_components(:wfc_24)
     end # Test setup
+
     test "01 should update_workflow_annotations" do
       author = "Stian Soiland Reyes"
        description = "Extension to helloworld.t2flow\n\t The workflow takes a "+
@@ -839,8 +856,8 @@ module TavernaLite
       # each array contains source, sink, and depth
       # where source|sink = [processor:]port
       input_links = [
-        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis_1:stage_matrix","1"],
-        ["Label","EigenAnalysis_1:speciesName","0"]]
+        ["StageMatrixFromCensus:stage_matrix","EigenAnalysis_1:stage_matrix","1","1"],
+        ["Label","EigenAnalysis_1:speciesName","0","0"]]
       writer.add_component_processor(@workflow_05, processor_name,
         @wfc_eigenanalysis, "",  input_links)
       file_data = File.open(@workflow_05)
@@ -870,5 +887,45 @@ module TavernaLite
       assert_operator(proc_ins_after,:>,proc_ins_before)
     end #test 14 add an output_port for FirstProcessor:FirstPort any processor
 
+    test "23 Add a component, connect inputs and add 2 outputs" do
+      writer = T2flowWriter.new
+      processor_name="RToText"
+      # input links are provided as a set of nested arrays.
+      # each array contains source, sink, and depths
+      input_links = [
+        ["StageMatrixFromCensus:stage_matrix","RToText:r_expression_input","2:2","1"]]
+
+      writer.add_component_processor(@workflow_07, processor_name,
+        @wfc_TextFromR, "",  input_links)
+      file_data = File.open(@workflow_07)
+      t2_model = T2Flow::Parser.new.parse(file_data)
+      assert_not_equal(t2_model, nil)
+      # After add the workflow should change:
+      #  - from 2 to 3 processors (1 added)
+      assert_equal(3, t2_model.processors.count)
+      #  - from 2 to 3 data links (1 added)
+      assert_equal(3, t2_model.datalinks.count)
+      proc_name = "StageMatrixFromCensus"
+      proc_port = "report"
+      port_name="Matrix_Report"
+      description="plain text report of the tables used for generating matrix"
+      example=""
+      port_type=2
+      port_depth=1
+      port_granular=1
+      writer.add_wf_port(@workflow_07, proc_name, proc_port,  port_name,
+      description, example, port_type,port_granular)
+      proc_name = "RToText"
+      proc_port = "plain_text_output"
+      port_name="Stage_Matrix_Text"
+      description="plain text report of the tables used for generating matrix"
+      example=""
+      port_type=2
+      port_depth=0
+      port_granular=0
+      writer.add_wf_port(@workflow_07, proc_name, proc_port,  port_name,
+        description, example, port_type,port_depth,port_granular)
+
+    end #test 21
   end
 end

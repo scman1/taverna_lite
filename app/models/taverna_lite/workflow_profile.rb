@@ -58,6 +58,7 @@ module TavernaLite
     # each profile can have several ports
     has_many :workflow_ports, :dependent => :destroy
 
+
     def inputs
       get_custom_inputs
     end

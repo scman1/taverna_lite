@@ -169,9 +169,9 @@
       This processor has no outputs
     <% end -%>
     <!-- Alternative Components -->
-    <% unless (@component_alternatives.nil? ||
-      @component_alternatives[processor.name].nil? ||
-      @component_alternatives[processor.name].count == 0) %>
+    <% unless (swapcomps.nil? ||
+      swapcomps[processor.name].nil? ||
+      swapcomps[processor.name].count == 0) %>
       <h3>
         <%= image_tag "taverna_lite/arrow_switch.png", :alt => "Swap Component"%>
         Swap Component

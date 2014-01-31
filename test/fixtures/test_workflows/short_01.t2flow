@@ -1,0 +1,124 @@
+<workflow xmlns="http://taverna.sf.net/2008/xml/t2flow" version="1" producedBy="taverna-2.4.0"><dataflow id="9f7565bc-b2f2-427f-8ae5-98c75b4db711" role="top"><name>Workflow54</name><inputPorts><port><name>TextTableToR_table_file</name><depth>0</depth><granularDepth>0</granularDepth><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>A table</text>
+      </annotationBean>
+      <date>2014-01-30 13:16:48.0 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+        <text></text>
+      </annotationBean>
+      <date>2014-01-30 13:16:48.0 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port></inputPorts><outputPorts /><processors><processor><name>TextTableToR</name><inputPorts><port><name>table_file</name><depth>0</depth></port></inputPorts><outputPorts><port><name>r_expression</name><depth>1</depth><granularDepth>1</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.component</group><artifact>component-activity</artifact><version>1.1.2</version></raven><class>net.sf.taverna.t2.component.ComponentActivity</class><inputMap><map from="table_file" to="table_file" /></inputMap><outputMap><map from="r_expression" to="r_expression" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.component.ComponentActivityConfigurationBean xmlns="">
+  <registryBase>http://www.myexperiment.org</registryBase>
+  <familyName>POPMOD</familyName>
+  <componentName>TextTableToR</componentName>
+  <componentVersion>6</componentVersion>
+</net.sf.taverna.t2.component.ComponentActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="table_file" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>StageMatrixFromCensus</name><inputPorts><port><name>census_data</name><depth>1</depth></port></inputPorts><outputPorts /><annotations /><activities><activity><raven><group>net.sf.taverna.t2.component</group><artifact>component-activity</artifact><version>1.1.2</version></raven><class>net.sf.taverna.t2.component.ComponentActivity</class><inputMap><map from="census_data" to="census_data" /></inputMap><outputMap /><configBean encoding="xstream"><net.sf.taverna.t2.component.ComponentActivityConfigurationBean xmlns="">
+  <registryBase>http://www.myexperiment.org</registryBase>
+  <familyName>POPMOD</familyName>
+  <componentName>StageMatrixFromCensus</componentName>
+  <componentVersion>2</componentVersion>
+</net.sf.taverna.t2.component.ComponentActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>1.4</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="census_data" depth="1" /></cross></strategy></iteration></iterationStrategyStack></processor></processors><conditions /><datalinks><datalink><sink type="processor"><processor>TextTableToR</processor><port>table_file</port></sink><source type="dataflow"><port>TextTableToR_table_file</port></source></datalink><datalink><sink type="processor"><processor>StageMatrixFromCensus</processor><port>census_data</port></sink><source type="processor"><processor>TextTableToR</processor><port>r_expression</port></source></datalink></datalinks><annotations><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>28a3d03b-ec29-42a4-8921-94161b5c2fbf</identification>
+      </annotationBean>
+      <date>2014-01-30 15:17:12.574 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>9f7565bc-b2f2-427f-8ae5-98c75b4db711</identification>
+      </annotationBean>
+      <date>2014-01-30 15:46:27.704 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>cd8fe3d5-4ef5-416d-8b04-d47faa0fc2bf</identification>
+      </annotationBean>
+      <date>2014-01-30 09:22:10.412 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>350eb4fc-40bc-45b8-8513-a876774a6a11</identification>
+      </annotationBean>
+      <date>2014-01-30 15:44:31.967 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>e465a6d7-c345-4a34-b563-e07a5d0e7daa</identification>
+      </annotationBean>
+      <date>2014-01-30 15:33:54.86 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>7e751fcd-f112-4919-8a24-e3e8226b59ea</identification>
+      </annotationBean>
+      <date>2014-01-30 15:18:18.658 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2><annotation_chain_2_2 encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.IdentificationAssertion">
+        <identification>34e6d51a-f15a-48a6-ae90-cea1140fc42b</identification>
+      </annotationBean>
+      <date>2014-01-29 17:15:28.454 UTC</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain_2_2></annotations></dataflow></workflow>

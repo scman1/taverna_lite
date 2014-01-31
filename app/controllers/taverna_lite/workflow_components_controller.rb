@@ -167,6 +167,7 @@ module TavernaLite
       @workflow = Workflow.find(params[:id])
       @from_op = params[:action]
       processor_name = params[:processor_name]
+
       form_id = "add_to_" + processor_name
       new_comp = TavernaLite::WorkflowComponent.find(params[form_id]["component_id"])
       name_field = "name_for_comp_"+new_comp.name
@@ -176,22 +177,26 @@ module TavernaLite
       #  input_links = [
       #    ["StageMatrixFromCensus:stage_matrix","EigenAnalysis:stage_matrix","1"],
       #    ["Label","EigenAnalysis:speciesName","0"]]
+      # NEED TO CHANGE THIS TO PASS CORRECT DEPTHS TO PORTS...!!!!!
       input_links = []
       new_wf_inputs = []
       params[form_id].each { |k,v|
         if k.start_with?("connects_")
-          source = new_processor_name +":"+k.sub("connects_","")
-          sink = processor_name+":"+v
+          dest_in_name = k.sub("connects_","")
+          new_dest = new_processor_name + ':' + dest_in_name
+          dest_depth = get_comp_in_port_depth(new_comp,dest_in_name)
+          pro_from = processor_name+":"+v
           if v == "New_Workflow_Input"
-            input_links << [new_processor_name +"_"+k.sub("connects_",""),source,"0"]
-            new_wf_inputs << [new_processor_name +"_"+k.sub("connects_","")]
+            new_wf_in =  new_processor_name +"_"+k.sub("connects_","")
+            # the depth of a new workflo input is the same as the depth of the
+            # processor input port it is connected to
+            input_links << [new_wf_in,new_dest,dest_depth,dest_depth]
+            new_wf_inputs << [new_wf_in]
           else
-            input_links << [sink,source,"1"]
+            wf_file = @workflow.workflow_filename
+            from_depth = get_proc_out_port_depths(wf_file,processor_name,v)
+            input_links << [pro_from,new_dest,from_depth,dest_depth]
           end
-        elsif  k.start_with?("wf_in_")
-          source = k.sub("wf_in_","")
-          sink = new_processor_name+":"+v
-          input_links << [sink,source,"1"]
         end
       }
       writer = T2flowWriter.new
@@ -200,6 +205,7 @@ module TavernaLite
         writer.add_wf_port(@workflow.workflow_filename, "", "",  wfins[0],
           "", "", 1)
       }
+
       # add an link the component
       writer.add_component_processor(@workflow.workflow_filename,
        new_processor_name, new_comp, description, input_links)
@@ -222,6 +228,28 @@ module TavernaLite
         format.json { head :no_content }
       end
     end #method: add
+
+    def get_proc_out_port_depths(wf_filename,proc_name,out_name)
+      # get the processor component
+      reader = TavernaLite::T2flowGetters.new()
+      components = reader.get_workflow_components(wf_filename)
+      comp_from = components[proc_name][0]
+      return get_comp_out_port_depth(comp_from,out_name)
+    end
+
+    def get_comp_out_port_depth(comp,out_name)
+      profile = TavernaLite::WorkflowProfile.find_by_workflow_id(comp.workflow_id)
+      out = profile.outputs.where(:name=>out_name)[0]
+      pd = out.depth.to_s + ':' +out.granular_depth.to_s
+      return pd
+    end
+
+    def get_comp_in_port_depth(comp,in_name)
+      profile = TavernaLite::WorkflowProfile.find_by_workflow_id(comp.workflow_id)
+      inpt = profile.inputs.where(:name=>in_name)[0]
+      pd = inpt.depth.to_s
+      return pd
+    end
 
   end # Class WorkflowComponentsController
 end # Module TavernaLite

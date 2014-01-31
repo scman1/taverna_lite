@@ -1,0 +1,395 @@
+# Copyright (c) 2012-2013 Cardiff University, UK.
+# Copyright (c) 2012-2013 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the names of The University of Manchester nor Cardiff University nor
+#   the names of its contributors may be used to endorse or promote products
+#   derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Authors
+#     Abraham Nieva de la Hidalga
+#
+# Synopsis
+#
+# BioVeL Taverna Lite is a prototype interface provided to support the
+# inspection and modification of workflows.
+#
+# For more details see http://www.biovel.eu
+#
+# BioVeL is funded by the European Commission 7th Framework Programme (FP7),
+# through the grant agreement number 283359.
+
+# Read about fixtures at http: //api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  feature_model_id: 1
+  parent_node_id: 0
+  name: 'Matrix Population Modelling'
+  feature_type_id: 1
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+two:
+  id: 2
+  feature_model_id: 1
+  parent_node_id: 1
+  name: 'Get Stage Matrix'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+three:
+  id: 3
+  feature_model_id: 1
+  parent_node_id: 2
+  name: 'Build Matrix'
+  feature_type_id: 3
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+four:
+  id: 4
+  feature_model_id: 1
+  parent_node_id: 2
+  name: 'Read Stage Matrix'
+  feature_type_id: 3
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+five:
+  id: 5
+  feature_model_id: 1
+  parent_node_id: 3
+  name: 'Read Census Data'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+six:
+  id: 6
+  feature_model_id: 1
+  parent_node_id: 3
+  name: 'Build Stage Matrix'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+seven:
+  id: 7
+  feature_model_id: 1
+  parent_node_id: 2
+  name: 'Read Data'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+eight:
+  id: 8
+  feature_model_id: 1
+  parent_node_id: 7
+  name: 'Read Data into R expression'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+nine:
+  id: 9
+  feature_model_id: 1
+  parent_node_id: 8
+  name: 'Read Plain Text'
+  feature_type_id: 3
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+ten:
+  id: 10
+  feature_model_id: 1
+  parent_node_id: 8
+  name: 'Read CSV'
+  feature_type_id: 3
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+eleven:
+  id: 11
+  feature_model_id: 1
+  parent_node_id: 8
+  name: 'Read Spreadsheet'
+  feature_type_id: 3
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+twelve:
+  id: 12
+  feature_model_id: 1
+  parent_node_id: 9
+  name: 'TextTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 3
+
+thirteen:
+  id: 13
+  feature_model_id: 1
+  parent_node_id: 9
+  name: 'TextTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 29
+
+fourteen:
+  id: 14
+  feature_model_id: 1
+  parent_node_id: 9
+  name: 'TextTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 60
+
+fifteen:
+  id: 15
+  feature_model_id: 1
+  parent_node_id: 9
+  name: 'TextTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 61
+
+sixteen:
+  id: 16
+  feature_model_id: 1
+  parent_node_id: 9
+  name: 'TextTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 62
+
+seventeen:
+  id: 17
+  feature_model_id: 1
+  parent_node_id: 10
+  name: 'CSVTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 4
+
+eighteen:
+  id: 18
+  feature_model_id: 1
+  parent_node_id: 10
+  name: 'CSVTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 27
+
+nineteen:
+  id: 19
+  feature_model_id: 1
+  parent_node_id: 10
+  name: 'CSVTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 55
+
+twenty:
+  id: 20
+  feature_model_id: 1
+  parent_node_id: 11
+  name: 'SpreadsheetTableToR'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 5
+
+twentyone:
+  id: 21
+  feature_model_id: 1
+  parent_node_id: 6
+  name: 'StageMatrixFromCensus'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 1
+
+twentytwo:
+  id: 22
+  feature_model_id: 1
+  parent_node_id: 6
+  name: 'StageMatrixFromCensus'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 28
+
+twentyseven:
+  id: 27
+  feature_model_id: 1
+  parent_node_id: 1
+  name: 'Analyse Stage Matrix'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 6
+  component_id: nil
+
+twentyeight:
+  id: 28
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Eigen Analysis'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+twentynine:
+  id: 29
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Build Fundamenta Matrix'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+thirty:
+  id: 30
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Calculate Gestation Time'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+thirtyone:
+  id: 31
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Calculate Net Reproductive Rate'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+thirtytwo:
+  id: 32
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Transient Dynamics'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+tewntythree:
+  id: 33
+  feature_model_id: 1
+  parent_node_id: 27
+  name: 'Bootstrap Observations'
+  feature_type_id: 4
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil
+
+thirtyfour:
+  id: 34
+  feature_model_id: 1
+  parent_node_id: 28
+  name: 'EigenAnalysis'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 20
+
+thirtyfive:
+  id: 35
+  feature_model_id: 1
+  parent_node_id: 28
+  name: 'EigenAnalysis'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 31
+
+thirtysix:
+  id: 36
+  feature_model_id: 1
+  parent_node_id: 32
+  name: 'TransientDynamics'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 23
+
+thirtyseven:
+  id: 37
+  feature_model_id: 1
+  parent_node_id: 32
+  name: 'TransientDynamics'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 36
+
+thirtyeight:
+  id: 38
+  feature_model_id: 1
+  parent_node_id: 33
+  name: 'BootstrapOfObservTrans'
+  feature_type_id: 5
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: 26
+
+thirtynine:
+  id: 39
+  feature_model_id: 1
+  parent_node_id: 1
+  name: 'Write Analysis Results'
+  feature_type_id: 2
+  cardinality_lower_bound: 1
+  cardinality_upper_bound: 1
+  component_id: nil

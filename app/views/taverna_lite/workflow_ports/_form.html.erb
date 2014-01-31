@@ -1,0 +1,37 @@
+<%= form_for(@workflow_port) do |f| %>
+  <% if @workflow_port.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@workflow_port.errors.count, "error") %> prohibited this workflow_port from being saved:</h2>
+
+      <ul>
+      <% @workflow_port.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <b><%= f.label :workflow_id %></b>
+    <%= f.label Workflow.find(@workflow_port.workflow_id).name %>
+  </div>
+  <div class="field">
+    <b><%= f.label :port_type_id %></b>
+    <%= f.label @workflow_port.port_type_id %>
+  </div>
+  <div class="field">
+    <b><%= f.label :name %></b>
+    <%= f.label @workflow_port.name %>
+  </div>
+  <div class="field">
+    <%= f.label :depth %>
+    <%= f.number_field :depth %>
+  </div>
+  <div class="field">
+    <%= f.label :granular_depth %>
+    <%= f.number_field :granular_depth %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

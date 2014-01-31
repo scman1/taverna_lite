@@ -1,0 +1,48 @@
+<h1>Listing workflow_ports</h1>
+
+<table>
+  <tr>
+    <th>Edit</th>
+    <th>Workflow</th>
+    <th>Port type</th>
+    <th>Name</th>
+    <th>Depth</th>
+    <th>Granular depth</th>
+    <th>Description</th>
+    <th>Example</th>
+    <th>Ex_t_id</th>
+    <th>Display</th>
+    <th>Old Name</th>
+    <th>Old Description</th>
+    <th>Old Example</th>
+    <th>Order</th>
+    <th>Port type</th>
+    <th>Workflow</th>
+    <th>Workflow profile</th>
+  </tr>
+<% @workflow_ports.each do |workflow_port| %>
+  <tr>
+    <td><%= link_to 'Edit', edit_workflow_port_path(workflow_port) %></td>
+    <td><%= Workflow.find(workflow_port.workflow_id).name %></td>
+    <td><%= workflow_port.port_type_id %></td>
+    <td><%= workflow_port.name %></td>
+    <td><%= workflow_port.depth %></td>
+    <td><%= workflow_port.granular_depth %></td>
+    <td><%= workflow_port.description %></td>
+    <td><%= workflow_port.example %></td>
+    <td><%= workflow_port.example_type_id %></td>
+    <td><%= workflow_port.display_control_id %></td>
+    <td><%= workflow_port.old_name %></td>
+    <td><%= workflow_port.old_description %></td>
+    <td><%= workflow_port.old_example %></td>
+    <td><%= workflow_port.order %></td>
+    <td><%= workflow_port.port_type_id %></td>
+    <td><%= workflow_port.workflow_id %></td>
+    <td><%= workflow_port.workflow_profile_id %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Workflow port', new_workflow_port_path %>

@@ -45,7 +45,8 @@ module TavernaLite
   class WorkflowPort < ActiveRecord::Base
     attr_accessible :description, :display_control_id, :example, :example_type,
       :example_type_id, :name, :old_description, :old_example, :old_name,
-      :order, :port_type_id, :workflow_id, :depth, :granular_depth
+      :order, :port_type_id, :workflow_id, :depth, :granular_depth,
+      :workflow_profile_id
 
     # Each port will be mapped to a workflow_profile in the main application
     belongs_to :workflow_profile

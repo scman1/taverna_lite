@@ -45,6 +45,38 @@ require_dependency "taverna_lite/application_controller"
 
 module TavernaLite
   class WorkflowPortsController < ApplicationController
+
+    # GET /workflow_ports
+    # GET /workflow_ports.json
+    def index
+      @workflow_ports = WorkflowPort.order(:workflow_id)
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @workflow_ports }
+      end
+    end
+
+    # GET /workflow_ports/1/edit
+    def edit
+      @workflow_port = WorkflowPort.find(params[:id])
+    end
+
+    # PUT /workflow_ports/1
+    # PUT /workflow_ports/1.json
+    def update
+      @workflow_port = WorkflowPort.find(params[:id])
+
+      respond_to do |format|
+        if @workflow_port.update_attributes(params[:workflow_port])
+          format.html { redirect_to :workflow_ports, notice: 'Workflow port was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @workflow_port.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
     def save_custom_inputs
       action = params[:commit]
       @workflow = Workflow.find(params[:id])
@@ -220,6 +252,7 @@ module TavernaLite
             port_name=params[:add_outputs]["name_for_port_#{proc_port}"]
             port_description=params[:add_outputs]["description_for_port_#{proc_port}"]
             port_example=params[:add_outputs]["example_for_port_#{proc_port}"]
+            # need to pass depth and granular depth here  !!!!!
             writer.add_wf_port(xmlFile, processor_name, proc_port, port_name,
               port_description,  port_example)
             wfp = WorkflowPort.new()

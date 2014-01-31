@@ -78,7 +78,6 @@ module TavernaLite
       @wf_components = get_workflow_components(@workflow_profile.id) # need to move the definition of this method out of controller
       @component_alternatives = @component_additionals = nil
       unless @wf_components.nil? || @wf_components.count == 0
-        @component_alternatives = get_component_alternatives(@wf_components) # need to move the definition of this method out of controller
         @component_swaps = get_component_swaps(@wf_components) # need to move the definition of this method out of controller
         @component_additionals = get_component_additionals(@wf_components) # need to move the definition of this method out of controller
       end
@@ -148,37 +147,6 @@ module TavernaLite
     end
 
     # Get the registered alternative components from a given list of components
-    def get_component_alternatives(wf_components)
-      component_alternatives = {}
-      wf_components.each do |component|
-        unless component[1][1].nil? then
-          proc_name = component[0]
-          c_name = component[1][0].name # the name of the component
-          # need to find alternatives using the version, family and registry
-          c_version = component[1][0].version
-          c_family = component[1][0].family
-          c_registry = component[1][0].registry
-          # get component from DB
-          wfc_db = TavernaLite::WorkflowComponent.find_by_name_and_family_and_registry_and_version(c_name,
-            c_family, c_registry, c_version)
-          # find alternatives registered in DB
-          unless wfc_db.nil?()
-            alt_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].alternatives
-            unless alt_features.nil?
-              component_alternatives[proc_name] = []
-              alt_features.each { |af|
-                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
-                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
-                component_alternatives[proc_name]<<[a_wfc,wf]
-              }
-            end
-          end
-        end
-      end
-      return component_alternatives
-    end
-
-    # Get the registered alternative components from a given list of components
     def get_component_swaps(wf_components)
       component_swaps = {}
       wf_components.each do |component|
@@ -194,14 +162,17 @@ module TavernaLite
             c_family, c_registry, c_version)
           # find alternatives registered in DB
           unless wfc_db.nil?()
-            alt_features = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0].alternatives
-            unless alt_features.nil?
-              component_swaps[proc_name] = []
-              alt_features.each { |af|
-                a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
-                wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
-                component_swaps[proc_name]<<[a_wfc]
-              }
+            comp_feature = TavernaLite::Feature.where(:component_id=>wfc_db.id)[0]
+            unless comp_feature.nil?
+              alt_features = comp_feature.alternatives
+              unless alt_features.nil?
+                component_swaps[proc_name] = []
+                alt_features.each { |af|
+                  a_wfc = TavernaLite::WorkflowComponent.find(af.component_id)
+                  wf =  TavernaLite.workflow_class.find(a_wfc.workflow_id)
+                  component_swaps[proc_name]<<[a_wfc]
+                }
+              end
             end
           end
         end

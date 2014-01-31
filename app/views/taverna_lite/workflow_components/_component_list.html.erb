@@ -85,7 +85,7 @@
             <%= image_tag "taverna_lite/webservice.png", :alt => "WS",
               :class=>"componenticon" %>
           <%elsif item.type =="beanshell"%>
-            <%= image_tag "taverna_lite/beanshell.png", alt => "WS",
+            <%= image_tag "taverna_lite/beanshell.png", :alt => "WS",
               :class=>"componenticon" %>
           <%elsif item.type =="component"%>
             <%= image_tag "taverna_lite/taverna-component.png", :alt => "WS",
@@ -102,15 +102,15 @@
               show add output icon -->
           <%= image_tag "taverna_lite/output_add.png", :alt => "Edit"%>
           <!-- show replace icon if alternatives exist -->
-          <% unless (@component_alternatives.nil? ||
-            @component_alternatives[componentname].nil? ||
-            @component_alternatives[componentname].count == 0) %>
+          <% unless (@component_swaps.nil? ||
+            @component_swaps[componentname].nil? ||
+            @component_swaps[componentname].count == 0) %>
             <%= image_tag "taverna_lite/arrow_switch.png", :alt => "Swap"%>
           <% end %>
           <!-- show remove icon if processor can be removed -->
-          <% if removable && !(@component_alternatives.nil? ||
-               @component_alternatives[componentname].nil? ||
-               @component_alternatives[componentname].count == 0) %>
+          <% if removable && !(@component_swaps.nil? ||
+               @component_swaps[componentname].nil? ||
+               @component_swaps[componentname].count == 0) %>
             <%= image_tag "taverna_lite/brick_delete.png", :alt => "Remove"%>
           <% end %>
         </div>
