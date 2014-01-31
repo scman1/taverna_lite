@@ -891,10 +891,9 @@ module TavernaLite
       writer = T2flowWriter.new
       processor_name="RToText"
       # input links are provided as a set of nested arrays.
-      # each array contains source, sink, and depth
-      # where source|sink = [processor:]port
+      # each array contains source, sink, and depths
       input_links = [
-        ["StageMatrixFromCensus:stage_matrix","RToText:r_expression_input","1","2:2"]]
+        ["StageMatrixFromCensus:stage_matrix","RToText:r_expression_input","2:2","1"]]
 
       writer.add_component_processor(@workflow_07, processor_name,
         @wfc_TextFromR, "",  input_links)

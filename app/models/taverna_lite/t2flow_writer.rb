@@ -650,44 +650,44 @@ module TavernaLite
 
     def link_processor_inputs(document,input_links)
       input_links.each { |il|
-        link_source=il[0].split(":")
-        link_sink=il[1].split(":")
-        link_source_depth=il[2].split(":")
-        link_sink_depth=il[3].split(":")
+        link_from = il[0].split(":")
+        link_dest = il[1].split(":")
+        link_from_depth=il[2].split(":")
+        link_dest_depth=il[3].split(":")
 
-        if link_source.length>1
-          from_proc = link_source[0]
-          from_port = link_source[1]
+        if link_from.length>1
+          from_proc = link_from[0]
+          from_port = link_from[1]
         else
-          from_port=link_source[0]
+          from_port=link_from[0]
           from_proc=""
         end
-        if link_sink.length>1
-          to_proc = link_sink[0]
-          to_port = link_sink[1]
+        if link_dest.length>1
+          to_proc = link_dest[0]
+          to_port = link_dest[1]
         else
-          to_port=link_sink[0]
+          to_port=link_dest[0]
           to_proc=""
         end
-        if link_source_depth.length>1
-          port_source_depth=link_source_depth[0]
-          port_source_granular=link_source_depth[1]
+        if link_from_depth.length>1
+          port_from_depth=link_from_depth[0]
+          port_from_granular=link_from_depth[1]
         else
-          port_source_depth=link_source_depth[0]
-          port_source_granular=""
+          port_from_depth=link_from_depth[0]
+          port_from_granular=""
         end
-        if link_sink_depth.length>1
-          port_sink_depth=link_sink_depth[0]
-          port_sink_granular=link_sink_depth[1]
+        if link_dest_depth.length>1
+          port_dest_depth=link_dest_depth[0]
+          port_dest_granular=link_dest_depth[1]
         else
-          port_sink_depth=link_sink_depth[0]
-          port_sink_granular=""
+          port_dest_depth=link_dest_depth[0]
+          port_dest_granular=""
         end
         add_datalink(document, to_proc, to_port, from_proc, from_port)
-        add_input_port_and_mapping(document, to_proc, to_port,port_source_depth,
-          port_source_granular)
-        add_output_port_and_mapping(document, from_proc, from_port,port_sink_depth,
-          port_sink_granular)
+        add_input_port_and_mapping(document, to_proc, to_port,port_dest_depth,
+          port_dest_granular)
+        add_output_port_and_mapping(document, from_proc, from_port,port_from_depth,
+          port_from_granular)
       }
     end
 
