@@ -52,7 +52,7 @@ module TavernaLite
       @workflow_ports = WorkflowPort.order(:workflow_id)
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @workflow_ports }
+        format.json { render :json => @workflow_ports }
       end
     end
 
@@ -68,11 +68,11 @@ module TavernaLite
 
       respond_to do |format|
         if @workflow_port.update_attributes(params[:workflow_port])
-          format.html { redirect_to :workflow_ports, notice: 'Workflow port was successfully updated.' }
+          format.html { redirect_to :workflow_ports, :notice => 'Workflow port was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @workflow_port.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @workflow_port.errors, :status => :unprocessable_entity }
         end
       end
     end
