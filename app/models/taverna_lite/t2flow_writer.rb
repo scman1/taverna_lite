@@ -130,7 +130,7 @@ module TavernaLite
       text_node = Element.new("text")
       text_node.text = ERB::Util.html_escape(content)
       date = Element.new("date")
-      date.text = Time.now.to_s
+      date.text = Time.now.strftime("%Y-%m-%d %H:%M-%S.000 %Z")
       creators = Element.new("creators")
       curationEventList = Element.new("curationEventList")
       annotationbean.add_element(text_node)
