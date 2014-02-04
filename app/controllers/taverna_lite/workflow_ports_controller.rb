@@ -52,7 +52,7 @@ module TavernaLite
       @workflow_ports = WorkflowPort.order(:workflow_id)
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @workflow_ports }
+        format.json { render :json => @workflow_ports }
       end
     end
 
@@ -68,11 +68,11 @@ module TavernaLite
 
       respond_to do |format|
         if @workflow_port.update_attributes(params[:workflow_port])
-          format.html { redirect_to :workflow_ports, notice: 'Workflow port was successfully updated.' }
+          format.html { redirect_to :workflow_ports, :notice => 'Workflow port was successfully updated.' }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @workflow_port.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @workflow_port.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -252,9 +252,11 @@ module TavernaLite
             port_name=params[:add_outputs]["name_for_port_#{proc_port}"]
             port_description=params[:add_outputs]["description_for_port_#{proc_port}"]
             port_example=params[:add_outputs]["example_for_port_#{proc_port}"]
-            # need to pass depth and granular depth here  !!!!!
+            # pass the correct depth and granular depth
+            port_depth = params[:add_outputs]["depth_for_port_#{proc_port}"]
+            port_granular = params[:add_outputs]["granular_for_port_#{proc_port}"]
             writer.add_wf_port(xmlFile, processor_name, proc_port, port_name,
-              port_description,  port_example)
+              port_description, port_example, 2, port_depth, port_granular)
             wfp = WorkflowPort.new()
             wfp.name = port_name
             wfp.description = port_description
@@ -262,6 +264,7 @@ module TavernaLite
             wfp.workflow_id = @workflow.id
             wfp.workflow_profile_id = WorkflowProfile.find_by_workflow_id(@workflow.id).id
             wfp.port_type_id = 2
+            wfp.show = 1  # Always show new ports
             wfp.save
             logger.info "ADD OUTS-----------------------------------------------"
             logger.info params

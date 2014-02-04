@@ -4,6 +4,8 @@
   <tr>
     <th>Edit</th>
     <th>Workflow</th>
+    <th>WF_ID</th>
+    <th>PT_ID</th>
     <th>Port type</th>
     <th>Name</th>
     <th>Depth</th>
@@ -24,6 +26,8 @@
   <tr>
     <td><%= link_to 'Edit', edit_workflow_port_path(workflow_port) %></td>
     <td><%= Workflow.find(workflow_port.workflow_id).name %></td>
+    <td><%= workflow_port.workflow_id %></td>
+    <td><%= workflow_port.id %></td>
     <td><%= workflow_port.port_type_id %></td>
     <td><%= workflow_port.name %></td>
     <td><%= workflow_port.depth %></td>

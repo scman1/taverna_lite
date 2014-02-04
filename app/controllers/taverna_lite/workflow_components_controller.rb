@@ -191,7 +191,7 @@ module TavernaLite
             # the depth of a new workflo input is the same as the depth of the
             # processor input port it is connected to
             input_links << [new_wf_in,new_dest,dest_depth,dest_depth]
-            new_wf_inputs << [new_wf_in]
+            new_wf_inputs << [new_wf_in,dest_depth,dest_depth]
           else
             wf_file = @workflow.workflow_filename
             from_depth = get_proc_out_port_depths(wf_file,processor_name,v)
@@ -203,9 +203,10 @@ module TavernaLite
       # first, if there are new input ports to create, add them to WF
       new_wf_inputs.each {|wfins|
         writer.add_wf_port(@workflow.workflow_filename, "", "",  wfins[0],
-          "", "", 1)
+          "", "", 1,wfins[1],wfins[2])
       }
-
+      # add_wf_port(workflow_file, processor_name, processor_port, port_name="",
+      #   port_description="", port_example="", port_type=2, depth=0,granular=0)
       # add an link the component
       writer.add_component_processor(@workflow.workflow_filename,
        new_processor_name, new_comp, description, input_links)

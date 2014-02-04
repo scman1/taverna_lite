@@ -157,6 +157,10 @@
                  </td>
                </tr>
                <%= f.hidden_field "#{processor.name}_#{portname}", :value =>  port_k %>
+               <% unless  port_v[:workflow_port].nil? %>
+                 <%= f.hidden_field "depth_for_port_#{portname}", :value =>  port_v[:workflow_port].depth %>
+                 <%= f.hidden_field "granular_for_port_#{portname}", :value =>  port_v[:workflow_port].granular_depth %>
+               <% end %>
             <% end %>
             <%= f.hidden_field "#{processor.name}_ports", :value =>  proc_ports %>
           </table>

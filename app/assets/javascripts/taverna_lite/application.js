@@ -61,3 +61,4 @@
 //= require jquery.ui.dialog
 //= require_tree .
 //= require jquery_ujs
+//= require dataTables/jquery.dataTables
