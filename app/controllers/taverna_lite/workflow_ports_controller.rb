@@ -252,9 +252,12 @@ module TavernaLite
             port_name=params[:add_outputs]["name_for_port_#{proc_port}"]
             port_description=params[:add_outputs]["description_for_port_#{proc_port}"]
             port_example=params[:add_outputs]["example_for_port_#{proc_port}"]
-            # need to pass depth and granular depth here  !!!!!
+            # need to pass the correct depth and granular depth here  !!!!!
+            puts [:add_outputs]["depth_for_port_#{proc_port}"]
+            port_depth = [:add_outputs]["depth_for_port_#{proc_port}"]
+            port_granular = [:add_outputs]["granular_for_port_#{proc_port}"]
             writer.add_wf_port(xmlFile, processor_name, proc_port, port_name,
-              port_description, port_example)
+              port_description, port_example, 2, port_depth, port_granular)
             wfp = WorkflowPort.new()
             wfp.name = port_name
             wfp.description = port_description
